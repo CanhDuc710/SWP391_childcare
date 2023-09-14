@@ -4,6 +4,7 @@
  */
 package AuthenticationController;
 
+import Model.Account;
 import Model.Patient;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,10 +17,11 @@ import java.io.IOException;
  *
  * @author GL
  */
-public abstract class BaseAuthenticationController {
+public abstract class BaseAuthenticationController extends HttpServlet {
+
     private boolean isAuthenticated(HttpServletRequest request) {
-        Patient patient = (Patient) request.getSession().getAttribute("account");
-        return patient!= null;
+        Account account = (Account) request.getSession().getAttribute("account");
+        return account!= null;
     }
     
     protected abstract void doGet(HttpServletRequest request, HttpServletResponse response,Account acc)
@@ -51,7 +53,7 @@ public abstract class BaseAuthenticationController {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if(isAuthenticated(request)) {
-            Patient account = (Account)request.getSession().getAttribute("account");
+            Account account = (Account)request.getSession().getAttribute("account");
             doGet(request, response, account);
         }
         else {

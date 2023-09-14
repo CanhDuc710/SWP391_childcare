@@ -8,8 +8,6 @@ package Model;
  *
  * @author GL
  */
-public class Patient extends Account{
-    
-    
+public class Staff extends Account{
     
 }
