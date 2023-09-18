@@ -2,23 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Model;
+package dao;
 
+import Model.Feature;
+import Model.Role;
 import java.util.ArrayList;
 
 /**
  *
  * @author GL
  */
-public class Staff extends Account{
-    private ArrayList<Role> roles;
-
-    public ArrayList<Role> getRoles() {
+public class StaffDBContext {
+    
+    public ArrayList<Role> getRole() {
+        ArrayList<Role> roles = new ArrayList<>();
         return roles;
     }
-
-    public void setRoles(ArrayList<Role> roles) {
-        this.roles = roles;
-    }
+    
     
 }

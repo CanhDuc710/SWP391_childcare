@@ -6,6 +6,7 @@ package AuthenticationController;
 
 import Model.Account;
 import Model.Patient;
+import Model.Staff;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,9 +20,16 @@ import java.io.IOException;
  */
 public abstract class BaseAuthenticationController extends HttpServlet {
 
-    private boolean isAuthenticated(HttpServletRequest request) {
-        Account account = (Account) request.getSession().getAttribute("account");
-        return account!= null;
+    private Account isAuthenticated(HttpServletRequest request) {
+        if (request.getSession().getAttribute("staff")!= null) {
+            Patient patient = (Patient) request.getSession().getAttribute("patient");
+            return patient;
+        }
+        else if (request.getSession().getAttribute("staff")!= null) {
+            Staff staff = (Staff) request.getSession().getAttribute("staff");
+            return staff;
+        }
+        return null;
     }
     
     protected abstract void doGet(HttpServletRequest request, HttpServletResponse response,Account acc)
@@ -52,9 +60,9 @@ public abstract class BaseAuthenticationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(isAuthenticated(request)) {
-            Account account = (Account)request.getSession().getAttribute("account");
-            doGet(request, response, account);
+        Account acc = isAuthenticated(request);
+        if(acc!= null) {
+            doGet(request, response, acc);
         }
         else {
             response.getWriter().print("Access Denied!");
@@ -72,13 +80,11 @@ public abstract class BaseAuthenticationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                if(isAuthenticated(request)) {
-            Account account = (Account)request.getSession().getAttribute("account");
-            doPost(request, response, account);
-        }
-        else {
-            response.getWriter().print("Access Denied!");
-        }
+        
+        Account acc = isAuthenticated(request);
+                if(acc != null) doPost(request, response, acc);
+
+        else response.getWriter().print("Access Denied!");
         
     }
 
