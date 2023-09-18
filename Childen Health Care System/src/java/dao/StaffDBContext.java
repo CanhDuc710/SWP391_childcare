@@ -16,6 +16,7 @@ public class StaffDBContext {
     
     public ArrayList<Role> getRole() {
         ArrayList<Role> roles = new ArrayList<>();
+        
         return roles;
     }
     
