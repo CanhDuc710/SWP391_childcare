@@ -21,23 +21,36 @@ import java.util.ArrayList;
  */
 public abstract class BaseStaffAuthorizationController extends BaseStaffAuthenticationController{
     
-    private ArrayList<Feature> isAuthorized(HttpServletRequest request) {
+    private boolean isAuthorized(HttpServletRequest request, Staff staff) {
         String accessURL = request.getServletPath();
         StaffDBContext sdb = new StaffDBContext();
-        Staff staff = (Staff)request.getServletContext().getAttribute("staff");
-        staff.getRoles().
+        staff.setRoles(sdb.getRoles(staff.getUsername()));
+        ArrayList<Feature> features = sdb.getFeatures(staff.getUsername());
+        for (Feature f : features) {
+            if(f.getUrl().equals(accessURL)) return true;
+        }
+        return false;
     }
     
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account acc) throws ServletException, IOException {
-       Staff staff = (Staff)request.getSession().getAttribute("staff");
-       doAuthGet(request, response, staff);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Staff staff) throws ServletException, IOException {
+       if(isAuthorized(request, staff)) {
+            doAuthGet(request, response, staff);
+        }
+        else {
+            response.getWriter().println("Access Denied");
+        }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account acc) throws ServletException, IOException {
-        Staff staff = (Staff)request.getSession().getAttribute("staff");
-        doAuthPost(request, response, staff);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Staff staff) throws ServletException, IOException {
+        
+        if(isAuthorized(request, staff)) {
+            doAuthPost(request, response, staff);
+        }
+        else {
+            response.getWriter().println("Access Denied");
+        }
     }
     
     protected abstract void doAuthGet(HttpServletRequest request, HttpServletResponse response, Staff staff)

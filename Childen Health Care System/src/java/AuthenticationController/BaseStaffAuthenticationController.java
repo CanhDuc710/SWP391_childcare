@@ -4,11 +4,8 @@
  */
 package AuthenticationController;
 
-import Model.Account;
-import Model.Patient;
 import Model.Staff;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,19 +18,19 @@ import java.io.IOException;
 public abstract class BaseStaffAuthenticationController extends HttpServlet {
 
     private Staff isAuthenticated(HttpServletRequest request) {
-        
-        if (request.getSession().getAttribute("staff")!= null) {
+        if (request.getSession().getAttribute("staff") != null) {
             Staff staff = (Staff) request.getSession().getAttribute("staff");
             return staff;
         }
         return null;
     }
-    
-    protected abstract void doGet(HttpServletRequest request, HttpServletResponse response,Account acc)
-    throws ServletException, IOException; 
-    
-    protected abstract void doPost(HttpServletRequest request, HttpServletResponse response,Account acc)
-    throws ServletException, IOException; 
+
+    protected abstract void doGet(HttpServletRequest request, HttpServletResponse response, Staff staff)
+            throws ServletException, IOException;
+
+    protected abstract void doPost(HttpServletRequest request, HttpServletResponse response, Staff staff)
+            throws ServletException, IOException;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,7 +40,6 @@ public abstract class BaseStaffAuthenticationController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -58,10 +54,9 @@ public abstract class BaseStaffAuthenticationController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Staff staff = isAuthenticated(request);
-        if(staff!= null) {
+        if (staff != null) {
             doGet(request, response, staff);
-        }
-        else {
+        } else {
             response.getWriter().print("Access Denied!");
         }
     }
@@ -77,12 +72,14 @@ public abstract class BaseStaffAuthenticationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        Account acc = isAuthenticated(request);
-                if(acc != null) doPost(request, response, acc);
 
-        else response.getWriter().print("Access Denied!");
-        
+        Staff staff = isAuthenticated(request);
+        if (staff != null) {
+            doPost(request, response, staff);
+        } else {
+            response.getWriter().print("Access Denied!");
+        }
+
     }
 
     /**
