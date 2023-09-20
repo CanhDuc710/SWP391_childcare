@@ -30,6 +30,7 @@ public class PatientDBContext extends DBContext{
                 Patient patient = new Patient();
                 patient.setUsername(username);
                 patient.setPassword(password);
+                patient.setUsername(displayname);
                 return patient;
             }
         } catch (SQLException ex) {

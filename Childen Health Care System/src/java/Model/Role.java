@@ -11,10 +11,19 @@ import java.util.ArrayList;
  * @author GL
  */
 public class Role {
+    private String name;
     private ArrayList<Feature> features;
 
     public ArrayList<Feature> getFeatures() {
         return features;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
     
     public void setFeatures(ArrayList<Feature> features) {
