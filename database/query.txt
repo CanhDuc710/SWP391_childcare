@@ -1,0 +1,117 @@
+use master
+
+GO
+
+-- Tạo database mới
+CREATE DATABASE SWP391_Database;
+
+GO
+
+-- Sử dụng database mới
+USE SWP391_Database;
+
+GO
+
+-- Tạo bảng Customer
+CREATE TABLE Customer (
+    customer_id INT PRIMARY KEY,
+    username NVARCHAR(50) NULL,
+    password NVARCHAR(50) NULL,
+    email NVARCHAR(100) NULL,
+    phone NVARCHAR(15) NULL
+);
+
+-- Tạo bảng Staff
+CREATE TABLE Staff (
+    staff_id INT PRIMARY KEY,
+    username NVARCHAR(50) NULL,
+    password NVARCHAR(50) NULL,
+    email NVARCHAR(100) NULL,
+    phone NVARCHAR(15) NULL
+);
+
+-- Tạo bảng Admin
+CREATE TABLE Admin (
+    admin_id INT PRIMARY KEY,
+    username NVARCHAR(50) NULL,
+    password NVARCHAR(50) NULL
+);
+
+-- Tạo bảng Role
+CREATE TABLE Role (
+    role_id INT PRIMARY KEY,
+    staff_id INT NULL,
+    role_type INT NULL
+);
+
+-- Tạo bảng Role_type
+CREATE TABLE Role_type (
+    role_type INT PRIMARY KEY,
+    role_type_name NVARCHAR(50) NULL
+);
+
+-- Tạo bảng Service
+CREATE TABLE Service (
+    service_id INT PRIMARY KEY,
+    image NVARCHAR(200) NULL,
+    service_category INT NULL,
+    name NVARCHAR(100) NULL,
+    detail NVARCHAR(MAX) NULL,
+    price DECIMAL(10, 2) NULL,
+    discount DECIMAL(5, 2) NULL
+);
+
+-- Tạo bảng Service_category
+CREATE TABLE Service_category (
+    service_category_id INT PRIMARY KEY,
+    service_id INT NULL,
+    category NVARCHAR(50) NULL,
+    detail NVARCHAR(MAX) NULL
+);
+
+-- Tạo bảng Post
+CREATE TABLE Post (
+    post_id INT PRIMARY KEY,
+    title NVARCHAR(200) NULL,
+    author NVARCHAR(100) NULL,
+    updated_date DATE NULL,
+    post_category INT NULL,
+    detail NVARCHAR(MAX) NULL,
+    image NVARCHAR(200) NULL
+);
+
+-- Tạo bảng Post_category
+CREATE TABLE Post_category (
+    post_category_id INT PRIMARY KEY,
+    post_id INT NULL,
+    category NVARCHAR(50) NULL,
+    detail NVARCHAR(MAX) NULL
+);
+
+-- Tạo bảng Reservation
+CREATE TABLE Reservation (
+    reservation_id INT PRIMARY KEY,
+    slot_id INT NULL,
+    customer_id INT NULL,
+    staff_id INT NULL,
+    status NVARCHAR(50) NULL,
+    date DATE NULL,
+    total DECIMAL(10, 2) NULL
+);
+
+-- Tạo bảng Reservation_detail
+CREATE TABLE Reservation_detail (
+    reservation_detail_id INT PRIMARY KEY,
+    reservation_id INT NULL,
+    service_id INT NULL,
+    quantity INT NULL,
+    person_amount INT NULL,
+    total DECIMAL(10, 2) NULL
+);
+
+-- Tạo bảng Slot
+CREATE TABLE Slot (
+    slot_id INT PRIMARY KEY,
+    start_time TIME NULL,
+    end_time TIME NULL
+);
