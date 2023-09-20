@@ -21,5 +21,4 @@ public class Role {
         this.features = features;
     }
     
-    
 }
