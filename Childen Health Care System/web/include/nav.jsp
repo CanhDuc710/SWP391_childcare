@@ -4,6 +4,7 @@
     Author     : BlackZ36
 --%>
 
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -49,33 +50,37 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#hero">Home</a>
+                            <a class="nav-link" href="Blog">Blog List</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#about">About</a>
+                            <a class="nav-link" href="#about">Services List</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#timeline">Timeline</a>
+                            <a class="nav-link" href="#timeline">Feedback</a>
                         </li>
 
-                        <a class="navbar-brand d-none d-lg-block" href="index.html">
-                            Medic Care
-                            <strong class="d-block">Children's Health</strong>
+                        <a class="navbar-brand d-none d-lg-block" href="Home">
+                            Children Health
+                            <strong class="d-block">Care System</strong>
                         </a>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#reviews">Testimonials</a>
+                            <a class="nav-link" href="#reviews">Reservation Details</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#booking">Booking</a>
+                            <a class="nav-link" href="#booking">Feedback</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#contact">Contact</a>
+                            <a class="nav-link" href="#contact">Account</a>
                         </li>
+
+
+
+
                     </ul>
                 </div>
 

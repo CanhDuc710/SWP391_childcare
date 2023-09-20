@@ -20,7 +20,7 @@ public class DBHelper {
             String username = "sa"; //username of the mySQL
             String password = "123456"; //password of the mySQL
 
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=PRJ301_Assignment"; //name of the database
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=SWP391_Database"; //name of the database
 
             //make connection
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
