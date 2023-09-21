@@ -43,7 +43,7 @@ public class PatientLoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("Login.jsp").forward(request, response);
     }
 
     /**
@@ -61,13 +61,14 @@ public class PatientLoginController extends HttpServlet {
         String password = request.getParameter("password");
         PatientDBContext pdb = new PatientDBContext();
         Patient patient = pdb.getAccount(username, password);
+        response.getWriter().print(patient.getUsername());
         if (patient == null) {
             response.sendRedirect("Login?error=true");
         }
         else {
             HttpSession session = request.getSession();
             session.setAttribute("patient", patient);
-            response.getWriter().print("Login Successful! Welcome " + patient.getDisplayname());
+            response.getWriter().print("Login Successful! Welcome ");
         }
     }
 

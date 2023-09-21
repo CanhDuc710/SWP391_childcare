@@ -4,6 +4,7 @@
     Author     : BlackZ36
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -48,34 +49,37 @@
 
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mx-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#hero">Home</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#about">About</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#timeline">Timeline</a>
-                        </li>
-
-                        <a class="navbar-brand d-none d-lg-block" href="index.html">
+                        
+                        <a class="navbar-brand d-none d-lg-block" href="Home">
                             Medic Care
                             <strong class="d-block">Children's Health</strong>
                         </a>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#reviews">Testimonials</a>
+                            <a class="nav-link" href="#about">Blog</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#booking">Booking</a>
+                            <a class="nav-link" href="#timeline">Service</a>
+                        </li> 
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#reviews">Feedback</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#contact">Contact</a>
+                            <a class="nav-link" href="#booking">Reservation</a>
                         </li>
+
+                        <c:choose>
+                            <c:when test="${empty Account}">
+                                <a class="nav-link" href="Login">Login</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a class="nav-link" href="Account">Account</a>
+                            </c:otherwise>
+                        </c:choose>
+
                     </ul>
                 </div>
 

@@ -11,5 +11,4 @@ package Model;
 public class Patient extends Account{
     
     
-    
 }

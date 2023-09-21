@@ -70,7 +70,7 @@ public class StaffLoginController extends HttpServlet {
             sdb.getFeatures(staff.getUsername());
             HttpSession session = request.getSession();
             session.setAttribute("staff", staff);
-            response.getWriter().print("Login Successful! Welcome " + staff.getDisplayname());
+            response.getWriter().print("Login Successful! Welcome " + staff.getAccount_id());
             if(staff.getRoles() == null) response.getWriter().print("Can't get Roles");
             else response.getWriter().print(" as " + staff.getRoles().get(0));
             if(staff.getRoles().get(0).getFeatures() == null) response.getWriter().print("Can't get Features");

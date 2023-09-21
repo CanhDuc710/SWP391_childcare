@@ -141,7 +141,15 @@ CREATE TABLE Reservation_detail (
     FOREIGN KEY (service_id) REFERENCES Service(service_id)
 );
 
-
+-- Tạo bảng Feedback
+CREATE TABLE Feedback (
+    feedback_id INT PRIMARY KEY,
+    patient_id INT NULL,
+    rate INT NULL,
+    title NVARCHAR(100) NULL,
+    detail NVARCHAR(15) NULL,
+    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)
+);
 
 -- Thêm dữ liệu vào bảng Admin
 INSERT INTO [dbo].[Admin] ([admin_id], [username], [password]) VALUES (1, N'admin', N'admin');

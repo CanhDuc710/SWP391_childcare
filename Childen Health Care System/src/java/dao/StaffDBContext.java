@@ -35,7 +35,6 @@ public class StaffDBContext extends DBContext {
                 Staff staff = new Staff();
                 staff.setUsername(username);
                 staff.setPassword(password);
-                staff.setDisplayname(displayname);
                 return staff;
             }
         } catch (SQLException ex) {
