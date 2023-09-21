@@ -15,7 +15,6 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Medic Care Bootstrap 5 CSS Template</title>
 
         <!-- CSS FILES -->        
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,7 +37,7 @@
     <body>
         <nav class="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
             <div class="container">
-                <a class="navbar-brand mx-auto d-lg-none" href="index.html">
+                <a class="navbar-brand mx-auto d-lg-none" href="Home">
                     Medic Care
                     <strong class="d-block">Health Specialist</strong>
                 </a>
@@ -56,19 +55,19 @@
                         </a>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#about">Blog</a>
+                            <a class="nav-link" href="Blog">Blog</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#timeline">Service</a>
+                            <a class="nav-link" href="Service">Services</a>
                         </li> 
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#reviews">Feedback</a>
+                            <a class="nav-link" href="Feedback">Feedback</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#booking">Reservation</a>
+                            <a class="nav-link" href="Reservation">Reservation</a>
                         </li>
 
                         <c:choose>

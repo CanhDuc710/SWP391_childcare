@@ -14,25 +14,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <form action="Login" method="POST">
-            <table>
-            <tr>
-                <td><b>Username</b></td>
-                <td><input type="text" name="username" id="username"></td>
-            </tr>
-            <tr>
-                <td><b>Password</b></td>
-                <td><input type="password" name="password" id="password"></td>
-            </tr>
-            <c:if test="${param.error eq true}">
-                <tr>
-                    <td colspan="2" style="text-align: center; color: red">Either username or password is wrong
-                </tr>
-            </c:if>
-            <tr>
-                <td colspan="2" style="text-align: center" ><input type="submit" value="Login"></td>
-            </tr>
-            </table>
-        </form>
+        <!--nav bar section begin-->
+        <jsp:include page="include/nav.jsp" />
+        <!--nav bar section end-->
+        
+        <jsp:include page="include/LoginAndRegister.jsp" />
     </body>
 </html>
