@@ -4,7 +4,7 @@
     Author     : BlackZ36
 --%>
 
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -15,7 +15,6 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Medic Care Bootstrap 5 CSS Template</title>
 
         <!-- CSS FILES -->        
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,7 +37,7 @@
     <body>
         <nav class="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
             <div class="container">
-                <a class="navbar-brand mx-auto d-lg-none" href="index.html">
+                <a class="navbar-brand mx-auto d-lg-none" href="Home">
                     Medic Care
                     <strong class="d-block">Health Specialist</strong>
                 </a>
@@ -49,37 +48,36 @@
 
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mx-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="Blog">Blog List</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#about">Services List</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#timeline">Feedback</a>
-                        </li>
-
+                        
                         <a class="navbar-brand d-none d-lg-block" href="Home">
-                            Children Health
-                            <strong class="d-block">Care System</strong>
+                            Medic Care
+                            <strong class="d-block">Children's Health</strong>
                         </a>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#reviews">Reservation Details</a>
+                            <a class="nav-link" href="Blog">Blog</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#booking">Feedback</a>
+                            <a class="nav-link" href="Service">Services</a>
+                        </li> 
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="Feedback">Feedback</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#contact">Account</a>
+                            <a class="nav-link" href="Reservation">Reservation</a>
                         </li>
 
-
-
+                        <c:choose>
+                            <c:when test="${empty Account}">
+                                <a class="nav-link" href="Login">Login</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a class="nav-link" href="Account">Account</a>
+                            </c:otherwise>
+                        </c:choose>
 
                     </ul>
                 </div>

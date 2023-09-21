@@ -5,6 +5,7 @@
 package dao;
 
 import Model.Feature;
+import Model.Staff;
 import Model.Role;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,17 +20,43 @@ import java.util.logging.Logger;
  */
 public class StaffDBContext extends DBContext {
 
+    
+    public Staff getAccount(String username, String password) {
+        try {
+            String sql = "Select username, password, displayname from Patient\n"
+                    + "where username = ?\n"
+                    + "and password = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, username);
+            stm.setString(2, password);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                String displayname = rs.getString("displayname");
+                Staff staff = new Staff();
+                staff.setUsername(username);
+                staff.setPassword(password);
+                return staff;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PatientDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     public ArrayList<Role> getRoles(String username) {
         ArrayList<Role> roles = new ArrayList<>();
         try{
-            String sql = "?";
+            String sql = "select name from role where username = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Role r = new Role();
-                
+                String name = rs.getString(1);
+                r.setName(name);
+                roles.add(r);
             }
+            return roles;
         } catch (SQLException ex) {
             Logger.getLogger(StaffDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
