@@ -8,7 +8,7 @@ package Model;
  *
  * @author GL
  */
-public class Patient {
+public class Patient extends Account{
 
     private int account_id;
     private String username;

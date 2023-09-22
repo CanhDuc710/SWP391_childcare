@@ -60,7 +60,7 @@ public class LoginServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
             rd.forward(request, response);
         } else {
-            response.sendRedirect("Home");
+            response.sendRedirect("Account");
         }
 
     }
@@ -77,6 +77,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAO dao = new DAO();
+        HttpSession session = request.getSession();
 
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
@@ -91,14 +92,12 @@ public class LoginServlet extends HttpServlet {
             Patient patient = dao.PatientLogin(username, password);
 
             if (patient == null) {
-                request.setAttribute("MESSAGE", "login failed. entered account: " + username + password );
-                RequestDispatcher rd = request.getRequestDispatcher("test.jsp");
+                request.setAttribute("LOGIN_VALID", "Login Failed. Please Check Username/Password" );
+                RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
                 rd.forward(request, response);
             } else {
-                String message = patient.getUsername() + patient.getPassword();
-                request.setAttribute("MESSAGE", message);
-                RequestDispatcher rd = request.getRequestDispatcher("test.jsp");
-                rd.forward(request, response);
+                session.setAttribute("ACCOUNT", (Account) patient);
+                response.sendRedirect("Home");
             }
 
         }

@@ -48,7 +48,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mx-auto">
-                        
+
                         <a class="navbar-brand d-none d-lg-block" href="Home">
                             Medic Care
                             <strong class="d-block">Children's Health</strong>
@@ -62,22 +62,17 @@
                             <a class="nav-link" href="Service">Services</a>
                         </li> 
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="Feedback">Feedback</a>
-                        </li>
+
 
                         <li class="nav-item">
                             <a class="nav-link" href="Reservation">Reservation</a>
                         </li>
-
-                        <c:choose>
-                            <c:when test="${empty Account}">
-                                <a class="nav-link" href="Login">Login</a>
-                            </c:when>
-                            <c:otherwise>
-                                <a class="nav-link" href="Account">Account</a>
-                            </c:otherwise>
-                        </c:choose>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Feedback">Feedback</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Login">Account</a>
+                        </li>
 
                     </ul>
                 </div>

@@ -45,14 +45,14 @@ public class DAO extends DBHelper {
             rs = st.executeQuery();
 
             while (rs.next()) {
-                int accountId = rs.getInt("account_id");
+                int patient_id = rs.getInt("patient_id");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
-                String name = rs.getString("name");
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
+                String name = rs.getString("name");
 
-                patient = new Patient(accountId, username, password, email, phone, name);
+                patient = new Patient(patient_id, username, password, email, phone, name);
                 return patient;
             }
 
