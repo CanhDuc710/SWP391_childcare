@@ -18,13 +18,15 @@ import java.util.logging.Logger;
 public class PatientDBContext extends DBContext{
     public Patient getAccount(String username, String password) {
         try {
-            String sql = "Select * "
-                    + "where username = ? "
-                    + "and password = ?";
+            String sql = "SELECT * FROM Patient "
+                    + "WHERE username = ? "
+                    + "AND password = ?";
+            
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
             stm.setString(2, password);
             ResultSet rs = stm.executeQuery();
+            
             if (rs.next()) {
 
                 Patient patient = new Patient();
@@ -35,12 +37,12 @@ public class PatientDBContext extends DBContext{
                 patient.setPhone(rs.getString("phone"));
                 patient.setName(rs.getString("name"));
                 
-                
                 return patient;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PatientDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return null;
     }
+    
 }

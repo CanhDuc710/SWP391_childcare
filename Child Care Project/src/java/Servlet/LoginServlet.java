@@ -12,6 +12,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import Model.*;
+import dal.DAO;
 
 /**
  *
@@ -37,7 +41,7 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");            
+            out.println("<title>Servlet LoginServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
@@ -46,14 +50,19 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
-        RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
-        rd.forward(request, response);
+        HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("ACCOUNT");
+
+        if (account == null) {
+            RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
+            rd.forward(request, response);
+        } else {
+            response.sendRedirect("Home");
+        }
+
     }
 
     /**
@@ -67,7 +76,33 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        DAO dao = new DAO();
+
+        String username = request.getParameter("txtUsername");
+        String password = request.getParameter("txtPassword");
+        String type = request.getParameter("txtType");
+
+        if (type.equalsIgnoreCase("staff")) {
+            String message = "pending";
+            request.setAttribute("MESSAGE", message);
+            RequestDispatcher rd = request.getRequestDispatcher("test.jsp");
+            rd.forward(request, response);
+        } else if (type.equalsIgnoreCase("patient")) {
+            Patient patient = dao.PatientLogin(username, password);
+
+            if (patient == null) {
+                request.setAttribute("MESSAGE", "login failed. entered account: " + username + password );
+                RequestDispatcher rd = request.getRequestDispatcher("test.jsp");
+                rd.forward(request, response);
+            } else {
+                String message = patient.getUsername() + patient.getPassword();
+                request.setAttribute("MESSAGE", message);
+                RequestDispatcher rd = request.getRequestDispatcher("test.jsp");
+                rd.forward(request, response);
+            }
+
+        }
+
     }
 
     /**
