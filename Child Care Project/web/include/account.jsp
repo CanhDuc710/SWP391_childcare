@@ -8,7 +8,6 @@
 
         <title>Sign In and Sign Up Page - Bootdey.com</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
         <style type="text/css">
             body{
@@ -95,7 +94,7 @@
 
                                                 <div class="form-group">
                                                     <label for="inputUsername">Account ID</label>
-                                                    <input type="text" class="form-control" value="ACC_0${LOGIN_ACCOUNT.account_id}" readonly>
+                                                    <input type="text" class="form-control" value="ACC_${LOGIN_ACCOUNT.account_id}" readonly>
                                                 </div>
 
                                                 <div class="form-group">
@@ -109,6 +108,11 @@
                                                     <input type="password" class="form-control" value="${LOGIN_ACCOUNT.password}" readonly>
                                                 </div>
 
+                                                <div class="form-group">
+                                                    <label for="inputUsername">Account Type</label>
+
+
+                                                </div>
                                             </div>         
                                         </div>
                                     </form>
@@ -124,28 +128,33 @@
                                 </div>
                                 <div class="card-body">
                                     <form method="post" action="Update">
+                                        
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="inputFirstName">Full name</label>
                                                 <input type="text" class="form-control" name="txtUpdateName" value="${LOGIN_ACCOUNT.name}">
                                             </div>
                                         </div>
+                                            
                                         <div class="form-group">
                                             <label for="inputEmail4">Email</label>
                                             <input type="hidden" name="email_first" value="${LOGIN_ACCOUNT.email}">
                                             <input type="email" class="form-control" name="txtUpdateEmail" value="${LOGIN_ACCOUNT.email}">
                                         </div>
+                                        
                                         <div class="form-group">
                                             <label for="inputAddress">Phone Number</label>
                                             <input type="hidden" name="phone_first" value="${LOGIN_ACCOUNT.phone}">
                                             <input type="text" class="form-control" name="txtUpdatePhone" value="${LOGIN_ACCOUNT.phone}">
                                         </div>
 
+
                                         <input type="hidden" name="txtID" value="${ACCOUNT.account_id}">
                                         <button type="submit" name="action" class="btn btn-primary" value="Save changes">Save changes</button>
 
 
                                     </form>
+                                    <label>${EMAIL_SEND}</label>
                                 </div>
                             </div>
                         </div>
@@ -173,10 +182,10 @@
                                             <label for="inputPasswordNew2">Verify password</label>
                                             <input type="password" class="form-control" id="inputPasswordNew2" name="confirm_password">
                                         </div>
-                                        <input type="hidden" name="txtID" value="${LOGIN_ACCOUNT.accountId}">
+                                        <input type="hidden" name="txtID" value="${LOGIN_ACCOUNT.account_id}">
                                         <button type="submit" class="btn btn-primary" name="action" value="changePassword" >Save changes</button>
                                     </form>
-                                    ${CHANGE_MESSAGE}
+
                                 </div>
                             </div>
                         </div>
@@ -202,119 +211,13 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Shop Product List Manager</h5>
 
-                                    <table border="1" style="text-align: center;">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Type</th>
-                                                <th>Name</th>
-                                                <th>Detail</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th>Rate</th>
-                                                <th>Image</th>
-                                                <th>Created</th>
-                                                <th>Updated</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach var="product" items="${SELLER_PRODUCT_LIST}">
-                                                <tr>
-                                                    <td> ${product.productId}  </td>
-                                                    <td> ${product.categoryId}  </td>
-                                                    <td> ${product.name}  </td>
-                                                    <td> ${product.detail}  </td>
-                                                    <td> ${product.quantity}  </td>
-                                                    <td> $${product.price}  </td>
-                                                    <td> ${product.rate}  </td>
-                                                    <td> <img src="images/${product.image}" alt="" style="width: 100px; height: 100px;">  </td>
-                                                    <td> ${product.createdAt}  </td>
-                                                    <td> ${product.updatedAt}  </td>
-                                                    <td> 
-                                                        <c:if test="${product.status eq 1}">
-                                                            <label style="color: green">actived</label>
-                                                        </c:if>
-                                                        <c:if test="${product.status eq 0}">
-                                                            <label style="color: red">deactived</label>
-                                                        </c:if>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
 
 
                                 </div>
                             </div>
                         </div>
 
-                        <!--product upload-->
-                        <div class="tab-pane fade" id="uploadproduct" role="tabpanel">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="card-title mb-0">Upload Product</h5>
-                                </div>
-                                <div class="card-body">
-                                    <form method="post" action="Add-Product">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label for="inputFirstName">Product Name</label>
-                                                <input type="text" class="form-control" name="txtUpdateName" value="">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputEmail4">Email</label>
-                                            <input type="hidden" name="email_first" value="${LOGIN_ACCOUNT.email}">
-                                            <input type="email" class="form-control" name="txtUpdateEmail" value="${LOGIN_ACCOUNT.email}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputAddress">Phone Number</label>
-                                            <input type="hidden" name="phone_first" value="${LOGIN_ACCOUNT.phone}">
-                                            <input type="text" class="form-control" name="txtUpdatePhone" value="${LOGIN_ACCOUNT.phone}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputAddress2">Address</label>
-                                            <input type="text" class="form-control" name="txtUpdateAddress" value="${LOGIN_ACCOUNT.address}">
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label for="inputCity">Account Created Date</label>
-                                                <input type="text" class="form-control" value="${LOGIN_ACCOUNT.createdAt}" readonly>
-                                            </div>
-                                            <div class="form-group col-md-2">
-                                                <label for="inputZip">Status </label>
-                                                <c:choose>
-                                                    <c:when test="${LOGIN_ACCOUNT.status==1}">
-                                                        <input type="text" class="form-control" style="color: green; font-weight: bold" value="ACTIVED" readonly>
-                                                    </c:when>
-                                                    <c:when test="${LOGIN_ACCOUNT.status==0}">
-                                                        <input type="text" class="form-control" style="color: red; font-weight: bold" value="FLAGGED" readonly>
-                                                    </c:when>
-                                                    <c:when test="${LOGIN_ACCOUNT.status==3}">
-                                                        <input type="text" class="form-control" style="color: orange; font-weight: bold" value="PENDING" readonly>
-                                                    </c:when>
-                                                </c:choose>
 
-                                            </div>
-                                        </div>
-
-                                        <input type="hidden" name="txtID" value="${ACCOUNT.accountId}">
-                                        <button type="submit" name="action" class="btn btn-primary" value="Save changes">Save changes</button>
-
-                                        <c:if test="${ACCOUNT.status == 3}">
-                                            <input type="hidden" name="txtEmail" value="${ACCOUNT.email}" >
-                                            <button type="submit" name="action" class="btn btn-primary" value="Activate">Activate</button>
-                                        </c:if>
-                                        <c:if test="${ACCOUNT.status == 0}">
-                                            <a href="https://www.facebook.com/duchinh0306" class="btn btn-primary">Contact Admin</a>
-                                        </c:if>
-
-                                    </form>
-                                    <label>${EMAIL_SEND}</label>
-                                </div>
-                            </div>
-                        </div>
 
 
 
