@@ -37,11 +37,9 @@
             <!--nav bar section begin ----------------------------------------------------------------------------------->
             <jsp:include page="include/nav.jsp" />
             <!--nav bar section end ------------------------------------------------------------------------------------->
-            
+
             <!--slider section begin-->
             <jsp:include page="include/slider.jsp"/>
-
-
             <!--slider section end-->
 
 
