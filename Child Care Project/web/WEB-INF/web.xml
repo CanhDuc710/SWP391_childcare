@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-         version="3.1">
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>StaffLogin</servlet-name>
         <servlet-class>AuthenticationController.StaffLoginController</servlet-class>
@@ -12,6 +8,22 @@
         <servlet-name>CreatePatientController</servlet-name>
         <servlet-class>AuthenticationController.PatientRegisterController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateServlet</servlet-name>
+        <servlet-class>Servlet.UpdateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>Servlet.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <servlet-class>Servlet.ResetPasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResetServlet</servlet-name>
+        <servlet-class>Servlet.ResetServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StaffLogin</servlet-name>
         <url-pattern>/staff0816login</url-pattern>
@@ -19,6 +31,22 @@
     <servlet-mapping>
         <servlet-name>CreatePatientController</servlet-name>
         <url-pattern>/CreatePatientController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateServlet</servlet-name>
+        <url-pattern>/Update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <url-pattern>/ResetPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetServlet</servlet-name>
+        <url-pattern>/Reset</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>Home</welcome-file>

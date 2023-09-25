@@ -62,23 +62,18 @@ public class DAO extends DBHelper {
         return null;
     }
 
-    public boolean register(int id, String username, String password, String name, String address, String email, String phone, int role, Date date, int status) {
-        String sql = "INSERT INTO Account (account_id, username, password, name, address, email, phone, role, created_at, status) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        java.sql.Date newDate = new java.sql.Date(date.getTime());
+    public boolean register(int id, String username, String password, String name, String email, String phone) {
+        String sql = "INSERT INTO Patient (account_id, username, password, email, phone, name) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
         try {
             st = connection.prepareStatement(sql);
 
             st.setInt(1, id);
             st.setString(2, username);
             st.setString(3, password);
-            st.setString(4, name);
-            st.setString(5, address);
-            st.setString(6, email);
-            st.setString(7, phone);
-            st.setInt(8, role);
-            st.setDate(9, newDate);
-            st.setInt(10, status);
+            st.setString(4, email);
+            st.setString(5, phone);
+            st.setString(6, name);
 
             int rowsUpdated = st.executeUpdate();
             if (rowsUpdated > 0) {
@@ -127,10 +122,10 @@ public class DAO extends DBHelper {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(user_email));
 
             // Thiết lập tiêu đề email
-            message.setSubject("Account Verification FROM PRJ301 Assignment");
+            message.setSubject("Password Reset FROM SWP391 Project");
 
             // Tạo nội dung HTML cho email
-            String originalLink = "http://localhost:8080/PRJ301-Assignment/Verify";
+            String originalLink = "http://localhost:8080/Child_Care_Project/Reset";
 
             // Mã hóa email
             String encodedEmail = Base64.getUrlEncoder().encodeToString(user_email.getBytes(StandardCharsets.UTF_8));
@@ -140,10 +135,9 @@ public class DAO extends DBHelper {
 
             String content = "<html>"
                     + "<body>"
-                    + "<p>This is an automatic email for account activation.</p>"
-                    + "<p>Please click the link below to verify your account.</p>"
-                    + "<p>Link: <a href=\"" + link + "\">Verify Account</a></p>"
-                    + "<p>or copy this: " + link + " </p>"
+                    + "<p>This is an automatic email for password reset.</p>"
+                    + "<p>Please click the link below to reset your account password.</p>"
+                    + "<p>Link: <a href=\"" + link + "\">Reset Password</a></p>"
                     + "</body>"
                     + "</html>";
 
@@ -180,4 +174,104 @@ public class DAO extends DBHelper {
         return false;
     }
 
+    public ArrayList<Patient> get_patient_list() {
+        ArrayList<Patient> list = new ArrayList<>();
+        sql = "SELECT * FROM Patient";
+
+        try {
+
+            st = connection.prepareStatement(sql);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                int accountId = rs.getInt("patient_id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String name = rs.getString("name");
+
+                Patient patient = new Patient(accountId, username, password, email, phone, name);
+                list.add(patient);
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
+    public boolean change_password(int id, String password) {
+
+        sql = "UPDATE Patient "
+                + "SET password = ? "
+                + "WHERE patient_id = ?";
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, password);
+            st.setInt(2, id);
+            int row = st.executeUpdate();
+
+            if (row > 0) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return false;
+    }
+
+    public boolean updateInfor(int id, String name, String email, String phone) {
+
+        sql = "UPDATE Patient SET name = ?, email = ?, phone = ? WHERE patient_id = ?";
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.setString(2, email);
+            st.setString(3, phone);
+            st.setInt(4, id);
+
+            int row = st.executeUpdate();
+
+            if (row > 0) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return false;
+    }
+
+    public Account get_patient_by_id(int id) {
+        Patient patient = new Patient();
+        sql = "SELECT * "
+                + "FROM Patient "
+                + "WHERE patient_id = ?";
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                int accountId = rs.getInt("patient_id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+
+                patient = new Patient(accountId, username, password, email, phone, name);
+                return patient;
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return null;
+    }
 }

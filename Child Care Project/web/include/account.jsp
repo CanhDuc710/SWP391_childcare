@@ -63,7 +63,7 @@
                             <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account" role="tab">
                                 Account
                             </a>
-                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#password" role="tab">
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#password" id="password-tab" role="tab">
                                 Password
                             </a>
 
@@ -110,7 +110,7 @@
 
                                                 <div class="form-group">
                                                     <label for="inputUsername">Account Type</label>
-
+                                                    <input type="text" class="form-control" value="PATIENT" readonly>
 
                                                 </div>
                                             </div>         
@@ -128,20 +128,20 @@
                                 </div>
                                 <div class="card-body">
                                     <form method="post" action="Update">
-                                        
+
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="inputFirstName">Full name</label>
                                                 <input type="text" class="form-control" name="txtUpdateName" value="${LOGIN_ACCOUNT.name}">
                                             </div>
                                         </div>
-                                            
+
                                         <div class="form-group">
                                             <label for="inputEmail4">Email</label>
                                             <input type="hidden" name="email_first" value="${LOGIN_ACCOUNT.email}">
                                             <input type="email" class="form-control" name="txtUpdateEmail" value="${LOGIN_ACCOUNT.email}">
                                         </div>
-                                        
+
                                         <div class="form-group">
                                             <label for="inputAddress">Phone Number</label>
                                             <input type="hidden" name="phone_first" value="${LOGIN_ACCOUNT.phone}">
@@ -165,30 +165,32 @@
 
                         <div class="tab-pane fade" id="password" role="tabpanel">
                             <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Change Password</h5>
+                                </div>
                                 <div class="card-body">
-                                    <h5 class="card-title">Password</h5>
-
                                     <form method="post" action="Update">
                                         <div class="form-group">
-                                            <label for="inputPasswordCurrent">Current password</label>
-                                            <input type="password" class="form-control" id="inputPasswordCurrent" name="old_password">
+                                            <label for="inputPasswordCurrent">Current Password</label>
+                                            <input type="password" class="form-control" id="inputPasswordCurrent" name="old_password" required>
                                             <small><a href="#">Forgot your password?</a></small>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputPasswordNew">New password</label>
-                                            <input type="password" class="form-control" id="inputPasswordNew" name="change_password">
+                                            <label for="inputPasswordNew">New Password</label>
+                                            <input type="password" class="form-control" id="inputPasswordNew" name="change_password" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputPasswordNew2">Verify password</label>
-                                            <input type="password" class="form-control" id="inputPasswordNew2" name="confirm_password">
+                                            <label for="inputPasswordNew2">Confirm New Password</label>
+                                            <input type="password" class="form-control" id="inputPasswordNew2" name="confirm_password" required>
                                         </div>
                                         <input type="hidden" name="txtID" value="${LOGIN_ACCOUNT.account_id}">
-                                        <button type="submit" class="btn btn-primary" name="action" value="changePassword" >Save changes</button>
+                                        <button type="submit" class="btn btn-primary" name="action" value="changePassword">Save Changes</button>
                                     </form>
-
+                                        Message: ${CHANGE_MESSAGE}
                                 </div>
                             </div>
                         </div>
+
 
 
 
@@ -231,7 +233,23 @@
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
         <script type="text/javascript">
+            // Hàm để chọn tab dựa trên tham số tab trong URL
+            function selectTabFromURL() {
+                var urlParams = new URLSearchParams(window.location.search);
+                var selectedTab = urlParams.get("tab");
+                if (selectedTab === "password") {
+                    // Nếu tham số tab là 'password', chọn tab #password
+                    $('#password-tab').tab('show');
+                } else {
+                    // Mặc định chọn tab khác nếu không có hoặc không hợp lệ
+                    // Ví dụ: $('#default-tab').tab('show');
+                }
+            }
 
+            // Gọi hàm khi trang được tải
+            $(document).ready(function () {
+                selectTabFromURL();
+            });
         </script>
     </body>
 </html>

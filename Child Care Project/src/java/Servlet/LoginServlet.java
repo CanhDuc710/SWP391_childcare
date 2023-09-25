@@ -84,7 +84,7 @@ public class LoginServlet extends HttpServlet {
         String type = request.getParameter("txtType");
 
         if (type.equalsIgnoreCase("staff")) {
-            String message = "pending";
+            String message = "staff login";
             request.setAttribute("MESSAGE", message);
             RequestDispatcher rd = request.getRequestDispatcher("test.jsp");
             rd.forward(request, response);

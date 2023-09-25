@@ -150,7 +150,7 @@
                                 </div>
 
                                 <div class="d-flex flex-wrap justify-content-between">
-                                    <a class="nav-link-inline font-size-sm" href="#">Forgot password?</a>
+                                    <a class="nav-link-inline font-size-sm" href="ResetPassword">Forgot password?</a>
                                     <label style="color:red; font-weight: bold">${LOGIN_VALID}</label>
                                 </div>
 

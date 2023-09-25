@@ -71,7 +71,7 @@
                             <a class="nav-link" href="Feedback">Feedback</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="Login">Account</a>
+                            <a class="nav-link" href="Account">Account</a>
                         </li>
 
                     </ul>

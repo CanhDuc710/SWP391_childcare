@@ -13,6 +13,18 @@
 <body>
     
     ${MESSAGE}
-    
+    id: ${id} <br/>
+    email_current: ${email} <br/>
+    phone_current: ${phone} <br/>
+    ---------------- <br/>
+    email: ${email1} <br/>
+    phone1: ${phone1} <br/>
+    name1: ${name1} <br/>
+    -------------------- <br/>
+    tab-param: ${tab}
+    -------------------- <br/>
+    pass_old: ${password1}
+    pass_change: ${password2}
+    pass_confirm: ${password3}
 </body>
 </html>
