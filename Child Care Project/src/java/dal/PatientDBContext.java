@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dao;
+package dal;
 
 import Model.Patient;
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author GL
  */
-public class PatientDBContext extends DBContext{
+public class PatientDBContext extends DBHelper {
     public Patient getAccount(String username, String password) {
         try {
             String sql = "SELECT * FROM Patient "

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dao;
+package dal;
 
 import Model.Feature;
 import Model.Staff;
@@ -18,12 +18,11 @@ import java.util.logging.Logger;
  *
  * @author GL
  */
-public class StaffDBContext extends DBContext {
+public class StaffDBContext extends DBHelper {
 
-    
     public Staff getAccount(String username, String password) {
         try {
-            String sql = "Select username, password, displayname from Patient\n"
+            String sql = "Select username, password, name from Patient\n"
                     + "where username = ?\n"
                     + "and password = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -31,7 +30,7 @@ public class StaffDBContext extends DBContext {
             stm.setString(2, password);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
-                String displayname = rs.getString("displayname");
+                String name = rs.getString("name");
                 Staff staff = new Staff();
                 staff.setUsername(username);
                 staff.setPassword(password);
@@ -42,10 +41,10 @@ public class StaffDBContext extends DBContext {
         }
         return null;
     }
-    
+
     public ArrayList<Role> getRoles(String username) {
         ArrayList<Role> roles = new ArrayList<>();
-        try{
+        try {
             String sql = "select name from role where username = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
