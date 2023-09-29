@@ -70,10 +70,19 @@
                         <li class="nav-item">
                             <a class="nav-link" href="Feedback">Feedback</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="Account">Account</a>
-                        </li>
 
+                        <c:choose>
+                            <c:when test="${ACCOUNT == null}">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="Account">Login</a>
+                                </li>
+                            </c:when>
+                            <c:when test="${ACCOUNT != null}">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="Account">Account</a>
+                                </li>
+                            </c:when> 
+                        </c:choose>
                     </ul>
                 </div>
 

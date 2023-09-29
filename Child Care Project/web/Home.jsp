@@ -61,12 +61,6 @@
         <script src="js/owl.carousel.min.js"></script>
         <script src="js/scrollspy.min.js"></script>
         <script src="js/custom.js"></script>
-        <!--
-        
-        TemplateMo 566 Medic Care
-        
-        https://templatemo.com/tm-566-medic-care
-        
-        -->
+
     </body>
 </html>

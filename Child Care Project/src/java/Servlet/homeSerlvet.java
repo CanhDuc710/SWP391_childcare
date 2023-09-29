@@ -21,8 +21,8 @@ import Model.*;
  *
  * @author duchi
  */
-@WebServlet(name = "homeSerlvet", urlPatterns = {"/Home"})
-public class homeSerlvet extends HttpServlet {
+@WebServlet(name = "HomeSerlvet", urlPatterns = {"/Home"})
+public class HomeSerlvet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

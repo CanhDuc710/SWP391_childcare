@@ -170,12 +170,6 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="inputEmail4">Email</label>
-                                            <input type="hidden" name="email_first" value="${LOGIN_ACCOUNT.email}">
-                                            <input type="email" class="form-control" name="txtUpdateEmail" value="${LOGIN_ACCOUNT.email}">
-                                        </div>
-
-                                        <div class="form-group">
                                             <label for="inputAddress">Phone Number</label>
                                             <input type="hidden" name="phone_first" value="${LOGIN_ACCOUNT.phone}">
                                             <input type="text" class="form-control" name="txtUpdatePhone" value="${LOGIN_ACCOUNT.phone}">

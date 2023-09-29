@@ -9,21 +9,7 @@
         <title>Sign In and Sign Up Page - Bootdey.com</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- CSS FILES -->        
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-
-        <link href="css/bootstrap-icons.css" rel="stylesheet">
-
-        <link href="css/owl.carousel.min.css" rel="stylesheet">
-
-        <link href="css/owl.theme.default.min.css" rel="stylesheet">
-
-        <link href="css/templatemo-medic-care.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
         <style type="text/css">
             body{
                 background-color:#eee;
@@ -67,7 +53,7 @@
                 -ms-flex: 1 1 auto;
                 flex: 1 1 auto;
                 width: 1%;
-                margin-bottom: 20px;
+                margin-bottom: 0;
             }
             .input-group-text {
                 display: -webkit-box;
