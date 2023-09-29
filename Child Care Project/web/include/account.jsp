@@ -94,7 +94,7 @@
 
                                                 <div class="form-group">
                                                     <label for="inputUsername">Account ID</label>
-                                                    <input type="text" class="form-control" value="ACC_${LOGIN_ACCOUNT.account_id}" readonly>
+                                                    <input type="text" class="form-control" value="${LOGIN_ACCOUNT.accountId}" readonly>
                                                 </div>
 
                                                 <div class="form-group">
@@ -102,6 +102,10 @@
                                                     <input type="text" class="form-control" value="${LOGIN_ACCOUNT.username}" readonly>
                                                 </div>
 
+                                                <div class="form-group">
+                                                    <label for="inputUsername">Email</label>
+                                                    <input type="text" class="form-control" value="${LOGIN_ACCOUNT.email}" readonly>
+                                                </div>
 
                                                 <div class="form-group">
                                                     <label for="inputUsername">Password</label>
@@ -110,7 +114,36 @@
 
                                                 <div class="form-group">
                                                     <label for="inputUsername">Account Type</label>
-                                                    <input type="text" class="form-control" value="PATIENT" readonly>
+                                                    <c:choose>
+                                                        <c:when test="${LOGIN_ACCOUNT.roleId == 1}">
+                                                            <input type="text" class="form-control" style="color: green;" value="Patient" readonly>
+                                                        </c:when>
+                                                        <c:when test="${LOGIN_ACCOUNT.roleId == 2}">
+                                                            <input type="text" class="form-control" style="color: blue;" value="Nurse" readonly>
+                                                        </c:when>
+                                                        <c:when test="${LOGIN_ACCOUNT.roleId == 3}">
+                                                            <input type="text" class="form-control" style="color: yellow;" value="Doctor" readonly>
+                                                        </c:when>
+                                                        <c:when test="${LOGIN_ACCOUNT.roleId == 4}">
+                                                            <input type="text" class="form-control" style="color: orange;" value="Manager" readonly>
+                                                        </c:when>
+                                                    </c:choose>
+
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="inputZip">Status </label>
+                                                    <c:choose>
+                                                        <c:when test="${LOGIN_ACCOUNT.statusId == 2}">
+                                                            <input type="text" class="form-control" style="color: green; font-weight: bold" value="ACTIVED" readonly>
+                                                        </c:when>
+                                                        <c:when test="${LOGIN_ACCOUNT.statusId == 3}">
+                                                            <input type="text" class="form-control" style="color: red; font-weight: bold" value="FLAGGED" readonly>
+                                                        </c:when>
+                                                        <c:when test="${LOGIN_ACCOUNT.statusId == 1}">
+                                                            <input type="text" class="form-control" style="color: orange; font-weight: bold" value="PENDING" readonly>
+                                                        </c:when>
+                                                    </c:choose>
 
                                                 </div>
                                             </div>         
@@ -149,9 +182,15 @@
                                         </div>
 
 
-                                        <input type="hidden" name="txtID" value="${ACCOUNT.account_id}">
+                                        <input type="hidden" name="txtID" value="${ACCOUNT.accountId}">
                                         <button type="submit" name="action" class="btn btn-primary" value="Save changes">Save changes</button>
-
+                                        <c:if test="${LOGIN_ACCOUNT.statusId == 1}">
+                                            <input type="hidden" name="txtEmail" value="${ACCOUNT.email}" >
+                                            <button type="submit" name="action" class="btn btn-primary" value="Activate">Activate</button>
+                                        </c:if>
+                                        <c:if test="${LOGIN_ACCOUNT.statusId == 3}">
+                                            <a href="https://www.facebook.com/duchinh0306" class="btn btn-primary">Contact Admin</a>
+                                        </c:if>
 
                                     </form>
                                     <label>${EMAIL_SEND}</label>
@@ -183,10 +222,10 @@
                                             <label for="inputPasswordNew2">Confirm New Password</label>
                                             <input type="password" class="form-control" id="inputPasswordNew2" name="confirm_password" required>
                                         </div>
-                                        <input type="hidden" name="txtID" value="${LOGIN_ACCOUNT.account_id}">
+                                        <input type="hidden" name="txtID" value="${LOGIN_ACCOUNT.accountId}">
                                         <button type="submit" class="btn btn-primary" name="action" value="changePassword">Save Changes</button>
                                     </form>
-                                        Message: ${CHANGE_MESSAGE}
+                                    Message: ${CHANGE_MESSAGE}
                                 </div>
                             </div>
                         </div>

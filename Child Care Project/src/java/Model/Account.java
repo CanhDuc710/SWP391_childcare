@@ -6,36 +6,45 @@ package Model;
 
 /**
  *
- * @author GL
+ * @author BlackZ36
  */
 public class Account {
 
-    private int account_id;
+    private int accountId;
     private String username;
     private String password;
     private String email;
     private String phone;
     private String name;
+    private String gender;
+    private String avatar;
+    private int roleId;
+    private int statusId;
 
-    public Account(int account_id, String username, String password, String email, String phone, String name) {
-        this.account_id = account_id;
+    //constructor
+    public Account() {
+    }
+
+    public Account(int accountId, String username, String password, String email, String phone, String name, String gender, String avatar, int roleId, int statusId) {
+        this.accountId = accountId;
         this.username = username;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.name = name;
-    }
-
-    public Account() {
+        this.gender = gender;
+        this.avatar = avatar;
+        this.roleId = roleId;
+        this.statusId = statusId;
     }
 
     //getter and setter
-    public int getAccount_id() {
-        return account_id;
+    public int getAccountId() {
+        return accountId;
     }
 
-    public void setAccount_id(int account_id) {
-        this.account_id = account_id;
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 
     public String getUsername() {
@@ -76,6 +85,44 @@ public class Account {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+
+    //other logic method
+    @Override
+    public String toString() {
+        return "Account{" + "accountId=" + accountId + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", name=" + name + ", gender=" + gender + ", avatar=" + avatar + ", roleId=" + roleId + ", statusId=" + statusId + '}';
     }
 
 }

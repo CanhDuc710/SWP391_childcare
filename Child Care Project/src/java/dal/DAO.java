@@ -31,8 +31,8 @@ public class DAO extends DBHelper {
     private ResultSet rs;
     private String sql;
 
-    public Patient PatientLogin(String txtUsername, String txtPassword) {
-        Patient patient = new Patient();
+    public Account PatientLogin(String txtUsername, String txtPassword) {
+        Account account = new Account();
         sql = "SELECT * "
                 + "FROM Patient "
                 + "WHERE username = ? "
@@ -45,15 +45,19 @@ public class DAO extends DBHelper {
             rs = st.executeQuery();
 
             while (rs.next()) {
-                int patient_id = rs.getInt("patient_id");
+                int account_id = rs.getInt("patient_id");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String name = rs.getString("name");
+                String gender = rs.getString("gender");
+                String avatar = rs.getString("avatar");
+                int status = rs.getInt("status_id");
+                int role = rs.getInt("role_id");
 
-                patient = new Patient(patient_id, username, password, email, phone, name);
-                return patient;
+                account = new Account(account_id, username, password, email, phone, name, gender, avatar, role, status);
+                return account;
             }
 
         } catch (SQLException e) {
@@ -62,7 +66,42 @@ public class DAO extends DBHelper {
         return null;
     }
 
-    public boolean register(int id, String username, String password, String name, String email, String phone) {
+    public Account StaffLogin(String txtUsername, String txtPassword) {
+        Account account = new Account();
+        sql = "SELECT * "
+                + "FROM Staff "
+                + "WHERE username = ? "
+                + "AND password = ?";
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, txtUsername);
+            st.setString(2, txtPassword);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                int account_id = rs.getInt("staff_id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String name = rs.getString("name");
+                String gender = rs.getString("gender");
+                String avatar = rs.getString("avatar");
+                int status = rs.getInt("status_id");
+                int role = rs.getInt("role_id");
+
+                account = new Account(account_id, username, password, email, phone, name, gender, avatar, role, status);
+                return account;
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return null;
+    }
+
+    public boolean PatientRegister(int id, String username, String password, String name, String email, String phone) {
         String sql = "INSERT INTO Patient (account_id, username, password, email, phone, name) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
         try {
@@ -86,7 +125,7 @@ public class DAO extends DBHelper {
         return false;
     }
 
-    public String Send(String user_email) throws UnsupportedEncodingException {
+    public String Send_Verify_Email(String user_email) throws UnsupportedEncodingException {
 
         // Thông tin tài khoản email
         String username = "duchinh03061@gmail.com";
@@ -153,10 +192,10 @@ public class DAO extends DBHelper {
         return "Email sent failed ";
     }
 
-    public boolean verify(String email) {
+    public boolean VerifyEmail(String email) {
 
-        sql = "UPDATE Account "
-                + "SET status = 1 "
+        sql = "UPDATE Patient "
+                + "SET status = 2 "
                 + "WHERE email = ?";
 
         try {
@@ -174,34 +213,7 @@ public class DAO extends DBHelper {
         return false;
     }
 
-    public ArrayList<Patient> get_patient_list() {
-        ArrayList<Patient> list = new ArrayList<>();
-        sql = "SELECT * FROM Patient";
-
-        try {
-
-            st = connection.prepareStatement(sql);
-            rs = st.executeQuery();
-
-            while (rs.next()) {
-                int accountId = rs.getInt("patient_id");
-                String username = rs.getString("username");
-                String password = rs.getString("password");
-                String email = rs.getString("email");
-                String phone = rs.getString("phone");
-                String name = rs.getString("name");
-
-                Patient patient = new Patient(accountId, username, password, email, phone, name);
-                list.add(patient);
-            }
-
-        } catch (SQLException e) {
-        }
-
-        return list;
-    }
-
-    public boolean change_password(int id, String password) {
+    public boolean change_patient_password(int id, String password) {
 
         sql = "UPDATE Patient "
                 + "SET password = ? "
@@ -223,16 +235,63 @@ public class DAO extends DBHelper {
         return false;
     }
 
-    public boolean updateInfor(int id, String name, String email, String phone) {
+    public boolean change_staff_password(int id, String password) {
 
-        sql = "UPDATE Patient SET name = ?, email = ?, phone = ? WHERE patient_id = ?";
+        sql = "UPDATE Staff "
+                + "SET password = ? "
+                + "WHERE patient_id = ?";
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, password);
+            st.setInt(2, id);
+            int row = st.executeUpdate();
+
+            if (row > 0) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return false;
+    }
+
+    public boolean update_patient(int id, String name, String phone, String gender, String avatar) {
+
+        sql = "UPDATE Patient SET name = ?, phone = ?, gender = ?, avatar = ? WHERE patient_id = ?";
 
         try {
             st = connection.prepareStatement(sql);
             st.setString(1, name);
-            st.setString(2, email);
-            st.setString(3, phone);
-            st.setInt(4, id);
+            st.setString(2, phone);
+            st.setString(3, gender);
+            st.setString(4, avatar);
+            st.setInt(5, id);
+
+            int row = st.executeUpdate();
+
+            if (row > 0) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return false;
+    }
+
+    public boolean update_staff(int id, String name, String phone, String gender, String avatar) {
+
+        sql = "UPDATE Staff SET name = ?, phone = ?, gender = ?, avatar = ? WHERE staff_id = ?";
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.setString(2, phone);
+            st.setString(3, gender);
+            st.setString(4, avatar);
+            st.setInt(5, id);
 
             int row = st.executeUpdate();
 
@@ -247,7 +306,7 @@ public class DAO extends DBHelper {
     }
 
     public Account get_patient_by_id(int id) {
-        Patient patient = new Patient();
+        Account patient = new Account();
         sql = "SELECT * "
                 + "FROM Patient "
                 + "WHERE patient_id = ?";
@@ -258,14 +317,18 @@ public class DAO extends DBHelper {
             rs = st.executeQuery();
 
             while (rs.next()) {
-                int accountId = rs.getInt("patient_id");
+                int account_id = rs.getInt("staff_id");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
-                String name = rs.getString("name");
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
+                String name = rs.getString("name");
+                String gender = rs.getString("gender");
+                String avatar = rs.getString("avatar");
+                int status = rs.getInt("status_id");
+                int role = rs.getInt("role_id");
 
-                patient = new Patient(accountId, username, password, email, phone, name);
+                patient = new Account(account_id, username, password, email, phone, name, gender, avatar, role, status);
                 return patient;
             }
 
@@ -273,5 +336,74 @@ public class DAO extends DBHelper {
         }
 
         return null;
+    }
+
+    public Account get_staff_by_id(int id) {
+        Account staff = new Account();
+        sql = "SELECT * "
+                + "FROM Staff "
+                + "WHERE patient_id = ?";
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                int account_id = rs.getInt("staff_id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String name = rs.getString("name");
+                String gender = rs.getString("gender");
+                String avatar = rs.getString("avatar");
+                int status = rs.getInt("status_id");
+                int role = rs.getInt("role_id");
+
+                staff = new Account(account_id, username, password, email, phone, name, gender, avatar, role, status);
+                return staff;
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return null;
+    }
+
+    public boolean checkExistEmail(String email) {
+        return false;
+    }
+
+    public ArrayList<Account> get_account_list() {
+        ArrayList<Account> list = new ArrayList<>();
+        String sql = "SELECT  staff_id AS id, username, password, email, phone, name, gender, avatar, role_id, status_id "
+                + "FROM Staff "
+                + "UNION ALL "
+                + "SELECT patient_id AS id, username, password, email, phone, name, gender, avatar, role_id, status_id "
+                + "FROM Patient";
+        try {
+            st = connection.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+
+                int account_id = rs.getInt("id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String name = rs.getString("name");
+                String gender = rs.getString("gender");
+                String avatar = rs.getString("avatar");
+                int status = rs.getInt("status_id");
+                int role = rs.getInt("role_id");
+
+                Account account = new Account(account_id, username, password, email, phone, name, gender, avatar, role, status);
+                list.add(account);
+            }
+        } catch (SQLException e) {
+
+        }
+        return list;
     }
 }

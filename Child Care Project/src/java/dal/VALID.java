@@ -16,10 +16,10 @@ public class VALID {
     public boolean valid_email(String email) {
 
         DAO dao = new DAO();
-        ArrayList<Patient> patient_list = dao.get_patient_list();
+        ArrayList<Account> account_list = dao.get_account_list();
 
-        for (Patient patient : patient_list) {
-            if (patient.getEmail().equals(email)) {
+        for (Account account : account_list) {
+            if (account.getEmail().equals(email)) {
                 return true;
             }
         }
@@ -30,10 +30,10 @@ public class VALID {
     public boolean valid_phone(String phone) {
 
         DAO dao = new DAO();
-        ArrayList<Patient> patient_list = dao.get_patient_list();
+        ArrayList<Account> account_list = dao.get_account_list();
 
-        for (Patient patient : patient_list) {
-            if (patient.getPhone().equals(phone)) {
+        for (Account account : account_list) {
+            if (account.getPhone().equals(phone)) {
                 return true;
             }
         }

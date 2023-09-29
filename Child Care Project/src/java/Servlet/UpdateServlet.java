@@ -79,17 +79,10 @@ public class UpdateServlet extends HttpServlet {
             String first_phone = request.getParameter("phone_first");
 
             String name = request.getParameter("txtUpdateName");
-            String email = request.getParameter("txtUpdateEmail");
             String phone = request.getParameter("txtUpdatePhone");
 
             boolean check = true;
             //kiem tra mail exist
-            if (!first_email.equals(email)) {
-                if (valid.valid_email(email)) {
-                    check = false;
-                    request.setAttribute("EMAIL_SEND", "Email existed. please try again.");
-                }
-            }
             //kiem tra phone exist,length,format
             if (!first_phone.equals(phone)) {
                 if (valid.valid_phone(phone)) {
@@ -98,15 +91,15 @@ public class UpdateServlet extends HttpServlet {
                 }
             }
 
-            if (check) {
-                boolean updateCheck = dao.updateInfor(id, name, email, phone);
-                if (updateCheck) {
-
-                    request.setAttribute("EMAIL_SEND", "Updated Successfully.");
-                } else {
-                    request.setAttribute("EMAIL_SEND", "Updated Failed. Please try again.");
-                }
-            }
+//            if (check) {
+//                boolean updateCheck = dao.update_patient(id, name, email, phone);
+//                if (updateCheck) {
+//
+//                    request.setAttribute("EMAIL_SEND", "Updated Successfully.");
+//                } else {
+//                    request.setAttribute("EMAIL_SEND", "Updated Failed. Please try again.");
+//                }
+//            }
 
             update = dao.get_patient_by_id(id);
             session.setAttribute("ACCOUNT", update);
@@ -129,7 +122,7 @@ public class UpdateServlet extends HttpServlet {
             if (patient.getPassword().equals(old)) {
                 if (valid.valid_password(change)) {
                     if (change.equals(confirm)) {
-                        boolean check = dao.change_password(id, change);
+                        boolean check = dao.change_patient_password(id, change);
 
                         if (check) {
                             request.setAttribute("CHANGE_MESSAGE", "Updated Successfully.");

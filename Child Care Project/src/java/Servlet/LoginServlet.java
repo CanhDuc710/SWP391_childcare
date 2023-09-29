@@ -24,15 +24,6 @@ import dal.DAO;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/Login"})
 public class LoginServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -65,14 +56,6 @@ public class LoginServlet extends HttpServlet {
 
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -84,19 +67,26 @@ public class LoginServlet extends HttpServlet {
         String type = request.getParameter("txtType");
 
         if (type.equalsIgnoreCase("staff")) {
-            String message = "staff login";
-            request.setAttribute("MESSAGE", message);
-            RequestDispatcher rd = request.getRequestDispatcher("test.jsp");
-            rd.forward(request, response);
-        } else if (type.equalsIgnoreCase("patient")) {
-            Patient patient = dao.PatientLogin(username, password);
 
-            if (patient == null) {
-                request.setAttribute("LOGIN_VALID", "Login Failed. Please Check Username/Password" );
+            Account staff = dao.StaffLogin(username, password);
+            if (staff == null) {
+                request.setAttribute("LOGIN_VALID", "Login Failed. Please Check Username/Password");
                 RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
                 rd.forward(request, response);
             } else {
-                session.setAttribute("ACCOUNT", (Account) patient);
+                session.setAttribute("ACCOUNT", staff);
+                response.sendRedirect("Home");
+            }
+
+        } else if (type.equalsIgnoreCase("patient")) {
+            
+            Account patient = dao.PatientLogin(username, password);
+            if (patient == null) {
+                request.setAttribute("LOGIN_VALID", "Login Failed. Please Check Username/Password");
+                RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
+                rd.forward(request, response);
+            } else {
+                session.setAttribute("ACCOUNT", patient);
                 response.sendRedirect("Home");
             }
 
@@ -104,11 +94,6 @@ public class LoginServlet extends HttpServlet {
 
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

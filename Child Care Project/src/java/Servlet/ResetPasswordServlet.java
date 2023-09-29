@@ -74,7 +74,7 @@ public class ResetPasswordServlet extends HttpServlet {
         String email = request.getParameter("txtEmail");
         request.setAttribute("email", email);
         
-        dao.Send(email);
+        //dao.Send(email);
         
         request.setAttribute("LOGIN_VALID", "Please Check Your Email");
         RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");

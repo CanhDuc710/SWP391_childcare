@@ -40,7 +40,7 @@ public class AccountSerlvet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AccountSerlvet</title>");            
+            out.println("<title>Servlet AccountSerlvet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet AccountSerlvet at " + request.getContextPath() + "</h1>");
@@ -49,33 +49,30 @@ public class AccountSerlvet extends HttpServlet {
         }
     }
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         DAO dao = new DAO();
         Account account = (Account) session.getAttribute("ACCOUNT");
-        
-        if(account != null){
+
+        if (account != null) {
             request.setAttribute("LOGIN_ACCOUNT", account);
             RequestDispatcher rd = request.getRequestDispatcher("Account.jsp");
             rd.forward(request, response);
-        }else{
+        } else {
             request.setAttribute("LOGIN_VALID", "Please Login First");
             RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
             rd.forward(request, response);
         }
-       
-    }
 
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
 
     @Override
     public String getServletInfo() {
