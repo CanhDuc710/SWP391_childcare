@@ -15,42 +15,42 @@ import java.io.IOException;
  *
  * @author GL
  */
-public abstract class BasePatientAuthenticationController extends HttpServlet{
+public abstract class BaseAccountAuthenticationController extends HttpServlet{
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-    public Patient isAuthenticated(HttpServletRequest request) {
-        if (request.getSession().getAttribute("patient")!= null) {
-            Patient patient = (Patient) request.getSession().getAttribute("patient");
-            return patient;
+    public Account isAuthenticated(HttpServletRequest request) {
+        if (request.getSession().getAttribute("account")!= null) {
+            Account acc = (Account) request.getSession().getAttribute("account");
+            return acc;
         }
         return null;
     }
     
-    protected abstract void doGet(HttpServletRequest request, HttpServletResponse response, Patient patient) 
+    protected abstract void doGet(HttpServletRequest request, HttpServletResponse response, Account acc) 
             throws ServletException, IOException;
-    protected abstract void doPost(HttpServletRequest request, HttpServletResponse response, Patient patient) 
+    protected abstract void doPost(HttpServletRequest request, HttpServletResponse response, Account acc) 
             throws ServletException, IOException;
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Patient patient = isAuthenticated(request);
-        if(patient!= null) {
-            doGet(request, response, patient);
+        Account acc = isAuthenticated(request);
+        if(acc!= null) {
+            doGet(request, response, acc);
         }
         else {
-            response.getWriter().print("Access Denied!");
+            response.sendRedirect("../Error403");
         }
     }
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Patient patient = isAuthenticated(request);
-        if(patient!= null) {
-            doGet(request, response, patient);
+        Account acc = isAuthenticated(request);
+        if(acc!= null) {
+            doPost(request, response, acc);
         }
         else {
-            response.getWriter().print("Access Denied!");
+            response.sendRedirect("../Error403");
         }
     }
     

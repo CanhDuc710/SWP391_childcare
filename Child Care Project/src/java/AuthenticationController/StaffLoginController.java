@@ -6,7 +6,7 @@ package AuthenticationController;
 
 import Model.Patient;
 import Model.Staff;
-import dal.StaffDBContext;
+import dal.AccountDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -60,7 +60,7 @@ public class StaffLoginController extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        StaffDBContext sdb = new StaffDBContext();
+        AccountDBContext sdb = new AccountDBContext();
         Staff staff = sdb.getAccount(username, password);
         if (staff == null) {
             response.sendRedirect("Login?error=true");

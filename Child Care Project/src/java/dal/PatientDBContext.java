@@ -28,7 +28,6 @@ public class PatientDBContext extends DBHelper {
             ResultSet rs = stm.executeQuery();
             
             if (rs.next()) {
-
                 Patient patient = new Patient();
                 patient.setAccount_id(rs.getInt("patient_id"));
                 patient.setUsername(username);

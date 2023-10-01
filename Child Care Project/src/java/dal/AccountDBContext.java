@@ -5,8 +5,7 @@
 package dal;
 
 import Model.Feature;
-import Model.Staff;
-import Model.Role;
+import Model.Account;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,11 +17,11 @@ import java.util.logging.Logger;
  *
  * @author GL
  */
-public class StaffDBContext extends DBHelper {
+public class AccountDBContext extends DBHelper {
 
-    public Staff getAccount(String username, String password) {
+    public Account getAccount(String username, String password) {
         try {
-            String sql = "Select username, password, name from Patient\n"
+            String sql = "Select username, password, name from Account\n"
                     + "where username = ?\n"
                     + "and password = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -31,10 +30,10 @@ public class StaffDBContext extends DBHelper {
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 String name = rs.getString("name");
-                Staff staff = new Staff();
-                staff.setUsername(username);
-                staff.setPassword(password);
-                return staff;
+                Account acc = new Account();
+                acc.setUsername(username);
+                acc.setPassword(password);
+                return acc;
             }
         } catch (SQLException ex) {
             Logger.getLogger(PatientDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -57,7 +56,7 @@ public class StaffDBContext extends DBHelper {
             }
             return roles;
         } catch (SQLException ex) {
-            Logger.getLogger(StaffDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return roles;
     }
@@ -81,7 +80,7 @@ public class StaffDBContext extends DBHelper {
                 features.add(f);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(StaffDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return features;
     }
