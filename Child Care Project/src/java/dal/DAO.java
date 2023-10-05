@@ -441,7 +441,7 @@ public class DAO extends DBHelper {
 
     public ArrayList<Account> get_doctor_list() {
         ArrayList<Account> list = new ArrayList<>();
-        String sql = "SELECT  * "
+        String sql = "SELECT * "
                 + "FROM Staff "
                 + "WHERE role_id = 3";
         try {
@@ -468,20 +468,6 @@ public class DAO extends DBHelper {
 
         }
         return list;
-
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }
