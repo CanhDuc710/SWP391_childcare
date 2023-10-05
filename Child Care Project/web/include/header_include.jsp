@@ -46,7 +46,16 @@
                         <!--drop about-->
                         <li><a class="nav-link scrollto" href="#services">Services</a></li>
                         <li><a class="nav-link scrollto" href="#departments">Reservation</a></li>
-                        <li><a class="nav-link scrollto" href="#doctors">Blog</a></li>
+
+                        <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down"></i></a>
+                            <ul>
+                                <li><a href="#slider">Post</a></li>
+                                <li><a href="#doctors">Doctor</a></li>
+                                <li><a href="#feedback">Feedback</a></li>
+                                <li><a href="#contact">Contact</a></li>
+                                <li><a href="test.jsp?doctor=3">Test</a></li>
+                            </ul>
+                        </li>
 
 
                         <c:choose>

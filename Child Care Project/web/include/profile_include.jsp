@@ -135,18 +135,23 @@
                                     <!-- Form Group (phone number)-->
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputPhone">Phone number</label>
-                                        <input class="form-control" id="inputPhone" type="text"value="${ACCOUNT.phone}">
+                                        <input class="form-control" id="inputPhone" type="text" value="${ACCOUNT.phone}">
                                     </div>
                                     <!-- Form Group (birthday)-->
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputBirthday">Gender</label>
-                                        <c:if test="${ACCOUNT.gender == 1}">
-                                            <input class="form-control" id="inputBirthday" type="text" name="txtGender"value="Male">
-                                        </c:if>
-                                        <c:if test="${ACCOUNT.gender == 0}">
-                                            <input class="form-control" id="inputBirthday" type="text" name="txtGender"value="Female">
-                                        </c:if>
+                                        <%--<c:if test="${ACCOUNT.gender == 1}">--%>
+                                        <!--<input class="form-control" id="inputBirthday" type="text" name="txtGender"value="Male">-->
+                                        <%--</c:if>--%>
+                                        <%--<c:if test="${ACCOUNT.gender == 0}">--%>
+                                        <!--<input class="form-control" id="inputBirthday" type="text" name="txtGender"value="Female">-->
+                                        <%--</c:if>--%>
+                                        <select class="form-control" name="txtGender" style="height: 48px;" type="text">
+                                            <option ${ACCOUNT.gender == 1 ? 'selected' : ''}>Male</option>
+                                            <option ${ACCOUNT.gender != 1 ? 'selected' : ''}>Female</option>
+                                        </select>
                                     </div>
+
                                 </div>
                                 <!-- Save changes button-->
                                 <button class="btn btn-primary" type="button">Save changes</button>

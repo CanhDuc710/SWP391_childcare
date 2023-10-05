@@ -25,10 +25,10 @@ public abstract class BaseStaffAuthenticationController extends HttpServlet {
         return null;
     }
 
-    protected abstract void doGet(HttpServletRequest request, HttpServletResponse response, Staff staff)
+    protected abstract void doGet(HttpServletRequest request, HttpServletResponse response, Account staff)
             throws ServletException, IOException;
 
-    protected abstract void doPost(HttpServletRequest request, HttpServletResponse response, Staff staff)
+    protected abstract void doPost(HttpServletRequest request, HttpServletResponse response, Account staff)
             throws ServletException, IOException;
 
     /**
@@ -53,7 +53,7 @@ public abstract class BaseStaffAuthenticationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Staff staff = isAuthenticated(request);
+        Account staff = isAuthenticated(request);
         if (staff != null) {
             doGet(request, response, staff);
         } else {
@@ -73,7 +73,7 @@ public abstract class BaseStaffAuthenticationController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Staff staff = isAuthenticated(request);
+        Account staff = isAuthenticated(request);
         if (staff != null) {
             doPost(request, response, staff);
         } else {

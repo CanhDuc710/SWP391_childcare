@@ -18,6 +18,7 @@ public class Account {
     private String name;
     private String gender;
     private String avatar;
+    private String address;
     private int roleId;
     private int statusId;
 
@@ -25,7 +26,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(int accountId, String username, String password, String email, String phone, String name, String gender, String avatar, int roleId, int statusId) {
+    public Account(int accountId, String username, String password, String email, String phone, String name, String gender, String avatar, String address, int roleId, int statusId) {
         this.accountId = accountId;
         this.username = username;
         this.password = password;
@@ -34,11 +35,11 @@ public class Account {
         this.name = name;
         this.gender = gender;
         this.avatar = avatar;
+        this.address = address;
         this.roleId = roleId;
         this.statusId = statusId;
     }
 
-    //getter and setter
     public int getAccountId() {
         return accountId;
     }
@@ -103,6 +104,14 @@ public class Account {
         this.avatar = avatar;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public int getRoleId() {
         return roleId;
     }
@@ -117,12 +126,6 @@ public class Account {
 
     public void setStatusId(int statusId) {
         this.statusId = statusId;
-    }
-
-    //other logic method
-    @Override
-    public String toString() {
-        return "Account{" + "accountId=" + accountId + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", name=" + name + ", gender=" + gender + ", avatar=" + avatar + ", roleId=" + roleId + ", statusId=" + statusId + '}';
     }
 
 }

@@ -53,10 +53,11 @@ public class DAO extends DBHelper {
                 String name = rs.getString("name");
                 String gender = rs.getString("gender");
                 String avatar = rs.getString("avatar");
+                String address = rs.getString("address");
                 int status = rs.getInt("status_id");
                 int role = rs.getInt("role_id");
 
-                account = new Account(account_id, username, password, email, phone, name, gender, avatar, role, status);
+                account = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
                 return account;
             }
 
@@ -88,10 +89,11 @@ public class DAO extends DBHelper {
                 String name = rs.getString("name");
                 String gender = rs.getString("gender");
                 String avatar = rs.getString("avatar");
+                String address = rs.getString("address");
                 int status = rs.getInt("status_id");
                 int role = rs.getInt("role_id");
 
-                account = new Account(account_id, username, password, email, phone, name, gender, avatar, role, status);
+                account = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
                 return account;
             }
 
@@ -325,10 +327,11 @@ public class DAO extends DBHelper {
                 String name = rs.getString("name");
                 String gender = rs.getString("gender");
                 String avatar = rs.getString("avatar");
+                String address = rs.getString("address");
                 int status = rs.getInt("status_id");
                 int role = rs.getInt("role_id");
 
-                patient = new Account(account_id, username, password, email, phone, name, gender, avatar, role, status);
+                Account account = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
                 return patient;
             }
 
@@ -358,10 +361,11 @@ public class DAO extends DBHelper {
                 String name = rs.getString("name");
                 String gender = rs.getString("gender");
                 String avatar = rs.getString("avatar");
+                String address = rs.getString("address");
                 int status = rs.getInt("status_id");
                 int role = rs.getInt("role_id");
 
-                staff = new Account(account_id, username, password, email, phone, name, gender, avatar, role, status);
+                Account account = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
                 return staff;
             }
 
@@ -395,10 +399,11 @@ public class DAO extends DBHelper {
                 String name = rs.getString("name");
                 String gender = rs.getString("gender");
                 String avatar = rs.getString("avatar");
+                String address = rs.getString("address");
                 int status = rs.getInt("status_id");
                 int role = rs.getInt("role_id");
 
-                Account account = new Account(account_id, username, password, email, phone, name, gender, avatar, role, status);
+                Account account = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
                 list.add(account);
             }
         } catch (SQLException e) {
@@ -406,4 +411,77 @@ public class DAO extends DBHelper {
         }
         return list;
     }
+
+    public ArrayList<Services> get_service_list() {
+        ArrayList<Services> list = new ArrayList<>();
+        String sql = "SELECT * FROM Service";
+
+        try {
+            st = connection.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("service_id");
+                String image = rs.getString("image");
+                String name = rs.getString("name");
+                String detail = rs.getString("detail");
+                double price = rs.getDouble("price");
+                double discount = rs.getDouble("discount");
+
+                Services service = new Services(id, image, name, detail, price, discount);
+                list.add(service);
+
+            }
+
+        } catch (SQLException e) {
+
+        }
+
+        return list;
+    }
+
+    public ArrayList<Account> get_doctor_list() {
+        ArrayList<Account> list = new ArrayList<>();
+        String sql = "SELECT  * "
+                + "FROM Staff "
+                + "WHERE role_id = 3";
+        try {
+            st = connection.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+
+                int account_id = rs.getInt("id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String name = rs.getString("name");
+                String gender = rs.getString("gender");
+                String avatar = rs.getString("avatar");
+                String address = rs.getString("address");
+                int status = rs.getInt("status_id");
+                int role = rs.getInt("role_id");
+
+                Account account = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
+                list.add(account);
+            }
+        } catch (SQLException e) {
+
+        }
+        return list;
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

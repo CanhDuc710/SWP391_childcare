@@ -6,7 +6,6 @@ package AuthenticationController;
 
 import Model.Account;
 import Model.Feature;
-import dal.AccountDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,16 +21,15 @@ public abstract class BaseAccountAuthorizationController extends BaseStaffAuthen
     
     private boolean isAuthorized(HttpServletRequest request, Account acc) {
         String accessURL = request.getServletPath();
-        AccountDBContext adb = new AccountDBContext();
-        ArrayList<Feature> features = adb.getFeatures(staff.getUsername());
-        for (Feature f : features) {
-            if(f.getUrl().equals(accessURL)) return true;
-        }
+//        ArrayList<Feature> features = adb.getFeatures(Account.getUsername());
+//        for (Feature f : features) {
+//            if(f.getUrl().equals(accessURL)) return true;
+//        }
         return false;
     }
     
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, Staff staff) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account staff) throws ServletException, IOException {
        if(isAuthorized(request, staff)) {
             doAuthGet(request, response, staff);
         }
@@ -41,7 +39,7 @@ public abstract class BaseAccountAuthorizationController extends BaseStaffAuthen
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response, Staff staff) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account staff) throws ServletException, IOException {
         
         if(isAuthorized(request, staff)) {
             doAuthPost(request, response, staff);
@@ -51,9 +49,9 @@ public abstract class BaseAccountAuthorizationController extends BaseStaffAuthen
         }
     }
     
-    protected abstract void doAuthGet(HttpServletRequest request, HttpServletResponse response, Staff staff)
+    protected abstract void doAuthGet(HttpServletRequest request, HttpServletResponse response, Account staff)
             throws ServletException, IOException;
     
-    protected abstract void doAuthPost(HttpServletRequest request, HttpServletResponse response, Staff staff) 
+    protected abstract void doAuthPost(HttpServletRequest request, HttpServletResponse response, Account staff) 
             throws ServletException, IOException;
 }

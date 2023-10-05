@@ -22,17 +22,18 @@
                             <div class="footer-info">
                                 <h3>Medicio</h3>
                                 <p>
-                                    A108 Adam Street <br>
-                                    NY 535022, USA<br><br>
-                                    <strong>Phone:</strong> +1 5589 55488 55<br>
+                                    Hoa Lac Hi-Tech Park <br>
+                                    Thach Hoa, Thach That, Hanoi<br>
+                                    Km29 Thang Long Avenue <br><br>
+                                    <strong>Phone:</strong> +84 0123456789<br>
                                     <strong>Email:</strong> info@example.com<br>
                                 </p>
                                 <div class="social-links mt-3">
-                                    <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-                                    <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-                                    <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-                                    <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-                                    <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                                    <a href="" class="twitter"><i class="bx bxl-twitter"></i></a>
+                                    <a href="" class="facebook"><i class="bx bxl-facebook"></i></a>
+                                    <a href="" class="instagram"><i class="bx bxl-instagram"></i></a>
+                                    <a href="" class="google-plus"><i class="bx bxl-skype"></i></a>
+                                    <a href="" class="linkedin"><i class="bx bxl-linkedin"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -40,11 +41,9 @@
                         <div class="col-lg-2 col-md-6 footer-links">
                             <h4>Useful Links</h4>
                             <ul>
-                                <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+                                <li><i class="bx bx-chevron-right"></i> <a href="Home">Home</a></li>
                                 <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-                                <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-                                <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-                                <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+                                <li><i class="bx bx-chevron-right"></i> <a href="#services">Services</a></li>
                             </ul>
                         </div>
 

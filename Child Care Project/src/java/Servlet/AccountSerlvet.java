@@ -57,7 +57,7 @@ public class AccountSerlvet extends HttpServlet {
         Account account = (Account) session.getAttribute("ACCOUNT");
 
         if (account != null) {
-            request.setAttribute("LOGIN_ACCOUNT", account);
+            request.setAttribute("ACCOUNT", account);
             RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
             rd.forward(request, response);
         } else {
