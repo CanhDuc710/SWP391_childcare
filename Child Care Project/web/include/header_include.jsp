@@ -53,7 +53,7 @@
                                 <li><a href="#doctors">Doctor</a></li>
                                 <li><a href="#feedback">Feedback</a></li>
                                 <li><a href="#contact">Contact</a></li>
-                                <li><a href="test.jsp?doctor=3">Test</a></li>
+                                <li><a href="Test">Test</a></li>
                             </ul>
                         </li>
 

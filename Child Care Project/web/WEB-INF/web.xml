@@ -1,77 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <servlet>
-        <servlet-name>StaffLogin</servlet-name>
-        <servlet-class>AuthenticationController.StaffLoginController</servlet-class>
+        <servlet-name>TestServlet</servlet-name>
+        <servlet-class>Servlet.TestServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreatePatientController</servlet-name>
-        <servlet-class>AuthenticationController.PatientRegisterController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UpdateServlet</servlet-name>
-        <servlet-class>Servlet.UpdateServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>Servlet.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ResetPasswordServlet</servlet-name>
-        <servlet-class>Servlet.ResetPasswordServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ResetServlet</servlet-name>
-        <servlet-class>Servlet.ResetServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AccessDeniedController</servlet-name>
-        <servlet-class>AuthenticationController.AccessDeniedController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>BookReservationController</servlet-name>
-        <servlet-class>Reservation.BookReservationController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CreateReservationController</servlet-name>
-        <servlet-class>Reservation.CreateReservationController</servlet-class>
+        <servlet-name>VerifyServlet</servlet-name>
+        <servlet-class>Servlet.VerifyServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>StaffLogin</servlet-name>
-        <url-pattern>/staff0816login</url-pattern>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/Test</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreatePatientController</servlet-name>
-        <url-pattern>/CreatePatientController</url-pattern>
+        <servlet-name>VerifyServlet</servlet-name>
+        <url-pattern>/Verify</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UpdateServlet</servlet-name>
-        <url-pattern>/Update</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/Logout</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ResetPasswordServlet</servlet-name>
-        <url-pattern>/ResetPassword</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ResetServlet</servlet-name>
-        <url-pattern>/Reset</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AccessDeniedController</servlet-name>
-        <url-pattern>/Error403</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>BookReservationController</servlet-name>
-        <url-pattern>/Reservation/Book</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CreateReservationController</servlet-name>
-        <url-pattern>/Reservation/Create</url-pattern>
-    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            15
+        </session-timeout>
+    </session-config>
     <welcome-file-list>
         <welcome-file>Home</welcome-file>
     </welcome-file-list>

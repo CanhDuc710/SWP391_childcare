@@ -6,15 +6,11 @@ package dal;
 
 import java.io.UnsupportedEncodingException;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -127,82 +123,16 @@ public class DAO extends DBHelper {
         return false;
     }
 
-    public String Send_Verify_Email(String user_email) throws UnsupportedEncodingException {
-
-        // Thông tin tài khoản email
-        String username = "duchinh03061@gmail.com";
-        String password = "ygdiuklubcwheyur";
-
-        // Cấu hình SMTP server và thông tin cổng
-        String host = "smtp.gmail.com";
-        int port = 587;
-
-        // Cấu hình các thuộc tính kết nối
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", port);
-
-        // Tạo đối tượng Session để xác thực truy cập SMTP server
-        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
-            }
-        });
-
-        try {
-            // Tạo đối tượng MimeMessage
-            MimeMessage message = new MimeMessage(session);
-
-            // Thiết lập thông tin người gửi
-            message.setFrom(new InternetAddress(username));
-
-            // Thiết lập thông tin người nhận
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(user_email));
-
-            // Thiết lập tiêu đề email
-            message.setSubject("Password Reset FROM SWP391 Project");
-
-            // Tạo nội dung HTML cho email
-            String originalLink = "http://localhost:8080/Child_Care_Project/Reset";
-
-            // Mã hóa email
-            String encodedEmail = Base64.getUrlEncoder().encodeToString(user_email.getBytes(StandardCharsets.UTF_8));
-
-            // Tạo đường dẫn hoàn chỉnh chứa phần mã hóa
-            String link = originalLink + "?encodedEmail=" + encodedEmail;
-
-            String content = "<html>"
-                    + "<body>"
-                    + "<p>This is an automatic email for password reset.</p>"
-                    + "<p>Please click the link below to reset your account password.</p>"
-                    + "<p>Link: <a href=\"" + link + "\">Reset Password</a></p>"
-                    + "</body>"
-                    + "</html>";
-
-            // Thiết lập nội dung email dưới dạng HTML với encoding UTF-8
-            message.setContent(content, "text/html; charset=UTF-8");
-
-            // Gửi email
-            Transport.send(message);
-            return "Email has been sent successfully";
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-        return "Email sent failed ";
-    }
-
-    public boolean VerifyEmail(String email) {
+    public boolean set_status_patient(String email, int status) {
 
         sql = "UPDATE Patient "
-                + "SET status = 2 "
+                + "SET status = ? "
                 + "WHERE email = ?";
 
         try {
             st = connection.prepareStatement(sql);
-            st.setString(1, email);
+            st.setInt(1, status);
+            st.setString(2, email);
             int row = st.executeUpdate();
 
             if (row > 0) {
@@ -381,10 +311,10 @@ public class DAO extends DBHelper {
 
     public ArrayList<Account> get_account_list() {
         ArrayList<Account> list = new ArrayList<>();
-        String sql = "SELECT  staff_id AS id, username, password, email, phone, name, gender, avatar, role_id, status_id "
+        String sql = "SELECT  staff_id AS id, username, password, email, phone, name, gender, avatar, address, role_id, status_id "
                 + "FROM Staff "
                 + "UNION ALL "
-                + "SELECT patient_id AS id, username, password, email, phone, name, gender, avatar, role_id, status_id "
+                + "SELECT patient_id AS id, username, password, email, phone, name, gender, avatar, address, role_id, status_id "
                 + "FROM Patient";
         try {
             st = connection.prepareStatement(sql);
@@ -414,20 +344,22 @@ public class DAO extends DBHelper {
 
     public ArrayList<Services> get_service_list() {
         ArrayList<Services> list = new ArrayList<>();
-        String sql = "SELECT * FROM Service";
+        String sql = "SELECT * FROM Service WHERE status_id = 1";
 
         try {
             st = connection.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("service_id");
+                int cate = rs.getInt("category_id");
                 String image = rs.getString("image");
                 String name = rs.getString("name");
                 String detail = rs.getString("detail");
                 double price = rs.getDouble("price");
                 double discount = rs.getDouble("discount");
+                int status = rs.getInt("status_id");
 
-                Services service = new Services(id, image, name, detail, price, discount);
+                Services service = new Services(id, cate, image, name, detail, price, discount, status);
                 list.add(service);
 
             }
@@ -443,13 +375,13 @@ public class DAO extends DBHelper {
         ArrayList<Account> list = new ArrayList<>();
         String sql = "SELECT * "
                 + "FROM Staff "
-                + "WHERE role_id = 3";
+                + "WHERE role_id = 3 ";
         try {
             st = connection.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
 
-                int account_id = rs.getInt("id");
+                int account_id = rs.getInt("staff_id");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 String email = rs.getString("email");
@@ -470,4 +402,120 @@ public class DAO extends DBHelper {
         return list;
     }
 
+    public ArrayList<ServicesCategory> get_service_category_list() {
+
+        ArrayList<ServicesCategory> list = new ArrayList<>();
+
+        String sql = "SELECT * "
+                + "FROM Service_category";
+        try {
+            st = connection.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+
+                int category_id = rs.getInt("category_id");
+                String name = rs.getString("name");
+                String detail = rs.getString("detail");
+
+                ServicesCategory sc = new ServicesCategory(category_id, name, detail);
+                list.add(sc);
+
+            }
+        } catch (SQLException e) {
+
+        }
+
+        return list;
+    }
+
+    public boolean register_patient(Account patient) {
+        String sql = "INSERT INTO patients (username, password, email, phone, name, gender, avatar, address, role_id, status_id) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            st = connection.prepareStatement(sql);
+            // Đặt giá trị cho các tham số trong câu lệnh SQL
+            st.setString(1, patient.getUsername());
+            st.setString(2, patient.getPassword());
+            st.setString(3, patient.getEmail());
+            st.setString(4, patient.getPhone());
+            st.setString(5, patient.getName());
+            st.setString(6, patient.getGender());
+            st.setString(7, patient.getAvatar());
+            st.setString(8, "default address");
+            st.setInt(9, 1); // role_id luôn = 1 cho bệnh nhân
+            st.setInt(10, 1); // status_id  = 1 cho register
+
+            // Thực hiện câu lệnh SQL
+            int rowsAffected = st.executeUpdate();
+
+            // Trả về true nếu có ít nhất một dòng bị ảnh hưởng (thêm thành công)
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý lỗi SQL
+            return false;
+        }
+    }
+
+    public String Send_Verify_Email(String email, String template) throws UnsupportedEncodingException {
+        // Đọc nội dung từ file template
+        String templateContent = template;
+
+        // Thông tin tài khoản email
+        String username = "duchinh03061@gmail.com";
+        String password = "ygdiuklubcwheyur";
+
+        // Cấu hình SMTP server và thông tin cổng
+        String host = "smtp.gmail.com";
+        int port = 587;
+
+        // Cấu hình các thuộc tính kết nối
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", port);
+
+        // Tạo đối tượng Session để xác thực truy cập SMTP server
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+        try {
+            // Tạo đối tượng MimeMessage
+            MimeMessage message = new MimeMessage(session);
+
+            // Thiết lập thông tin người gửi
+            message.setFrom(new InternetAddress(username));
+
+            // Thiết lập thông tin người nhận
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+
+            // Thiết lập tiêu đề email
+            message.setSubject("Verification Email FROM SWP391 Project");
+
+            // Mã hóa email
+            // String encodedEmail = Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
+            // Thay thế các placeholder trong template bằng dữ liệu thực tế
+            String emailContent = templateContent.replace("{{username}}", "Tên Người Dùng")
+                    .replace("{{email}}", email)
+                    .replace("{{phone}}", "Số Điện Thoại")
+                    .replace("{{link}}", "google.com")
+                    .replace("{{link}}", "google.com");
+
+            // Thiết lập nội dung email dưới dạng HTML với encoding UTF-8
+            message.setContent(emailContent, "text/html; charset=UTF-8");
+
+            // Gửi email
+            Transport.send(message);
+            return "Email has been sent successfully";
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return "Email sent failed: " + e.getMessage();
+        }
+    }
 }

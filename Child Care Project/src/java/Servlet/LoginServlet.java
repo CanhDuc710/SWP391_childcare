@@ -88,19 +88,25 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
         String type = request.getParameter("txtType");
-        
+
         if (type == null) {
-            
+
         } else if (type.equalsIgnoreCase("staff")) {
 
             Account staff = dao.StaffLogin(username, password);
             if (staff == null) {
                 request.setAttribute("LOGIN_VALID", "Login Failed. Please Check Username/Password");
-                RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("Login_inner_staff.jsp");
                 rd.forward(request, response);
             } else {
-                session.setAttribute("ACCOUNT", staff);
-                response.sendRedirect("Home");
+                if (staff.getStatusId() == 2) {
+                    session.setAttribute("ACCOUNT", staff);
+                    response.sendRedirect("Home");
+                } else {
+                    request.setAttribute("LOGIN_VALID", "Please Contact <a href='#'> Admin</a> For More.");
+                    RequestDispatcher rd = request.getRequestDispatcher("Login_inner_staff.jsp");
+                    rd.forward(request, response);
+                }
             }
 
         } else if (type.equalsIgnoreCase("patient")) {
@@ -108,11 +114,17 @@ public class LoginServlet extends HttpServlet {
             Account patient = dao.PatientLogin(username, password);
             if (patient == null) {
                 request.setAttribute("LOGIN_VALID", "Login Failed. Please Check Username/Password");
-                RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("Login_inner.jsp");
                 rd.forward(request, response);
             } else {
-                session.setAttribute("ACCOUNT", patient);
-                response.sendRedirect("Home");
+                if (patient.getStatusId() == 2) {
+                    session.setAttribute("ACCOUNT", patient);
+                    response.sendRedirect("Home");
+                } else {
+                    request.setAttribute("LOGIN_VALID", "Please Verify Your Email Before Login");
+                    RequestDispatcher rd = request.getRequestDispatcher("Login_inner.jsp");
+                    rd.forward(request, response);
+                }
             }
 
         }

@@ -110,6 +110,15 @@
                                             <c:when test="${ACCOUNT.roleId == 1}" >
                                                 <input class="form-control" id="inputPhone" type="text" style="background-color: rgba(220,220,220,0.9); color: green;" value="Patient">
                                             </c:when>
+                                            <c:when test="${ACCOUNT.roleId == 2}" >
+                                                <input class="form-control" id="inputPhone" type="text" style="background-color: rgba(220,220,220,0.9); color: green;" value="Nurse">
+                                            </c:when>
+                                            <c:when test="${ACCOUNT.roleId == 3}" >
+                                                <input class="form-control" id="inputPhone" type="text" style="background-color: rgba(220,220,220,0.9); color: green;" value="Doctor">
+                                            </c:when>
+                                            <c:when test="${ACCOUNT.roleId == 4}" >
+                                                <input class="form-control" id="inputPhone" type="text" style="background-color: rgba(220,220,220,0.9); color: green;" value="Manager">
+                                            </c:when>
                                         </c:choose>
                                     </div>
                                 </div>

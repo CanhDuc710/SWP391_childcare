@@ -16,18 +16,20 @@
         <section id="featured-services" class="featured-services">
             <div class="container" data-aos="fade-up">
 
-                <div class="row justify-content-between">
+                <div class="row justify-content-center">
 
 
-                    <c:forEach var="service" items="${SERVICE_LIST}">
-                        <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" >
-                            <div class="icon-box" data-aos="fade-up" data-aos-delay="200" style="margin-bottom: 35px;">
+                    <c:forEach var="category" items="${CATEGORY_LIST}">
+                        <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+                            <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
                                 <div class="icon"><i class="fas fa-hand-holding-medical"></i></div>
-                                <h4 class="title"><a href="">${service.name}</a></h4>
-                                <p class="description">${service.detail}</p>
+                                <h4 class="title"><a href="">${category.name}</a></h4>
+                                <p class="description">${category.detail}</p>
                             </div>
                         </div>
+                            </div>
                     </c:forEach>
+
 
                 </div>
 

@@ -101,17 +101,6 @@
                         <div class="card-body">
                             <h2 class="h4 mb-1">Sign in</h2>
 
-
-                            <div class="d-sm-flex align-items-center py-3">
-                                <h3 class="h6 font-weight-semibold opacity-70 mb-3 mb-sm-2 mr-sm-3">With Social Account</h3>
-                                <div>
-                                    <a class="social-btn sb-google mr-2 mb-2" href="#" data-toggle="tooltip" title data-original-title="Sign in with Twitter">
-                                        <i class="fa fa-google"></i>
-                                    </a>
-                                </div>
-                            </div>
-
-
                             <hr>
                             <h3 class="h6 font-weight-semibold opacity-70 pt-4 pb-2">Username And Password</h3>
 
@@ -131,7 +120,8 @@
                                 <input type="hidden" name"txtType" value="patient">
                                 <div class="d-flex flex-wrap justify-content-between">
                                     <a class="nav-link-inline font-size-sm" style="margin-top: 10px;" href="ResetPassword">Forgot password?</a>
-                                    <label style="color:red; font-weight: bold">${LOGIN_VALID}</label>
+                                    </br>
+                                    <label style="color: rgba(255,0,0,0.8); font-weight: bold; margin-top: 10px;">${LOGIN_VALID}</label>
                                 </div>
                                 <input type="hidden" name="txtType" value="patient">
 
@@ -197,7 +187,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="reg-phone">Gender</label>
-                                    <select class="form-control" name="txtGender">
+                                    <select class="form-control" name="txtRegGender">
                                         <option>Male</option>
                                         <option>Female</option>
                                     </select>
@@ -207,6 +197,7 @@
                         </div>
                         <div class="d-flex flex-wrap justify-content-between">
 
+                            <input type="hidden" name="txtType" value="patient">
                             <label style="color:red; font-weight: bold">${REGISTER_VALID}</label>
                             <button class="btn btn-primary" type="submit">Sign Up</button>
 

@@ -11,22 +11,26 @@ package Model;
 public class Services {
 
     private int serviceId;
+    private int categoryId;
     private String image;
     private String name;
     private String detail;
     private double price;
     private double discount;
+    private int status;
 
     public Services() {
     }
 
-    public Services(int serviceId, String image, String name, String detail, double price, double discount) {
+    public Services(int serviceId, int categoryId, String image, String name, String detail, double price, double discount, int status) {
         this.serviceId = serviceId;
+        this.categoryId = categoryId;
         this.image = image;
         this.name = name;
         this.detail = detail;
         this.price = price;
         this.discount = discount;
+        this.status = status;
     }
 
     public int getServiceId() {
@@ -35,6 +39,14 @@ public class Services {
 
     public void setServiceId(int serviceId) {
         this.serviceId = serviceId;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getImage() {
@@ -75,6 +87,14 @@ public class Services {
 
     public void setDiscount(double discount) {
         this.discount = discount;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
 }

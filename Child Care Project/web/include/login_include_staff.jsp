@@ -130,7 +130,8 @@
                                 </div>
                                 <div class="d-flex flex-wrap justify-content-between">
                                     <a class="nav-link-inline font-size-sm" style="margin-top: 10px;" href="ResetPassword">Forgot password?</a>
-                                    <label style="color:red; font-weight: bold">${LOGIN_VALID}</label>
+                                    </br>
+                                    <label style="color: rgba(255,0,0,0.8); font-weight: bold; margin-top: 10px;">${LOGIN_VALID}</label>
                                 </div>
 
                                 <input type="hidden" name="txtType" value="staff">

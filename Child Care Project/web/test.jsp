@@ -1,40 +1,29 @@
 <%-- 
-    Document   : register
-    Created on : 21 Sept 2023, 13:23:56
-    Author     : GL
+    Document   : Login
+    Created on : Sep 21, 2023, 6:10:57 PM
+    Author     : duchi
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<%
-// Lấy giá trị tham số doctor từ URL
-String doctor = request.getParameter("doctor");
-%>
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
 <html>
     <head>
-        <title>Registration Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
     </head>
     <body>
-
-
-
-        ${doctor}
-        id: ${id} <br/>
-        email_current: ${email} <br/>
-        phone_current: ${phone} <br/>
-        ---------------- <br/>
-        email: ${email1} <br/>
-        phone1: ${phone1} <br/>
-        name1: ${name1} <br/>
-        -------------------- <br/>
-        tab-param: ${tab}
-        -------------------- <br/>
-        pass_old: ${password1}
-        pass_change: ${password2}
-        pass_confirm: ${password3}
+        <h1><<a href="Home">Home</a></h1>
+        <h2>Thông tin người dùng</h2>
+        <p>Username: ${username}</p>
+        <p>Name: ${name}</p>
+        <p>Email: ${email}</p>
+        <p>Phone: ${phone}</p>
+        <p>Password: ${password}</p>
+        <p>Confirm: ${confirm}</p>
+        <p>Gender: ${gender ? 'Male' : 'Female'}</p>
+        <p>Message: ${MESSAGE}</p>
+        
     </body>
+
 </html>
