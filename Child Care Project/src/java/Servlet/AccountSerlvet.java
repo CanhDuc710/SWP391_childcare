@@ -58,11 +58,11 @@ public class AccountSerlvet extends HttpServlet {
 
         if (account != null) {
             request.setAttribute("LOGIN_ACCOUNT", account);
-            RequestDispatcher rd = request.getRequestDispatcher("Account.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
             rd.forward(request, response);
         } else {
             request.setAttribute("LOGIN_VALID", "Please Login First");
-            RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("Login_inner.jsp");
             rd.forward(request, response);
         }
 

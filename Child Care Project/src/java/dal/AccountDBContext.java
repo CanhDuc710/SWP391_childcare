@@ -4,8 +4,7 @@
  */
 package dal;
 
-import Model.Feature;
-import Model.Account;
+import Model.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,14 +43,13 @@ public class AccountDBContext extends DBHelper {
     public ArrayList<Role> getRoles(String username) {
         ArrayList<Role> roles = new ArrayList<>();
         try {
-            String sql = "select name from role where username = ?";
+            String sql = "select name from role";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, username);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Role r = new Role();
                 String name = rs.getString(1);
-                r.setName(name);
+                r.setRoleName(name);
                 roles.add(r);
             }
             return roles;
@@ -61,28 +59,5 @@ public class AccountDBContext extends DBHelper {
         return roles;
     }
 
-    public ArrayList<Feature> getFeatures(String username) {
-        ArrayList<Feature> features = new ArrayList<>();
-        try {
-            String sql = "ar.username, f.name as roleName, f.url from "
-                    + "Account_Role ar inner join role_feature rf on ar.roleid = rf.roleid "
-                    + "inner join feature f on f.id = rf.featureid"
-                    + "where ar.username = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, username);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Feature f = new Feature();
-                String name = rs.getString(2);
-                String url = rs.getString(3);
-                f.setName(name);
-                f.setUrl(url);
-                features.add(f);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return features;
-    }
 
 }

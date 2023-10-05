@@ -4,7 +4,7 @@
  */
 package dal;
 
-import Model.Patient;
+import Model.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * @author GL
  */
 public class PatientDBContext extends DBHelper {
-    public Patient getAccount(String username, String password) {
+    public Account getAccount(String username, String password) {
         try {
             String sql = "SELECT * FROM Patient "
                     + "WHERE username = ? "
@@ -28,8 +28,8 @@ public class PatientDBContext extends DBHelper {
             ResultSet rs = stm.executeQuery();
             
             if (rs.next()) {
-                Patient patient = new Patient();
-                patient.setAccount_id(rs.getInt("patient_id"));
+                Account patient = new Account();
+                patient.setAccountId(rs.getInt("patient_id"));
                 patient.setUsername(username);
                 patient.setPassword(password);
                 patient.setEmail(rs.getString("email"));

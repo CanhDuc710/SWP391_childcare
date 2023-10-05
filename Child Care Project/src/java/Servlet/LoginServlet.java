@@ -46,12 +46,35 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("ACCOUNT");
+        String type = request.getParameter("type");
 
-        if (account == null) {
-            RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
-            rd.forward(request, response);
+        if (type == null) {
+
+            response.sendRedirect("Login?type=patient");
+            return;
+        }
+
+        if (type.equalsIgnoreCase("patient")) {
+            if (account == null) {
+                RequestDispatcher rd = request.getRequestDispatcher("Login_inner.jsp");
+                rd.forward(request, response);
+            } else {
+                response.sendRedirect("Account");
+            }
+        } else if (type.equalsIgnoreCase("staff")) {
+            if (account == null) {
+                RequestDispatcher rd = request.getRequestDispatcher("Login_inner_staff.jsp");
+                rd.forward(request, response);
+            } else {
+                response.sendRedirect("Account");
+            }
         } else {
-            response.sendRedirect("Account");
+            if (account == null) {
+                RequestDispatcher rd = request.getRequestDispatcher("Login_inner.jsp");
+                rd.forward(request, response);
+            } else {
+                response.sendRedirect("Account");
+            }
         }
 
     }
@@ -65,8 +88,10 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
         String type = request.getParameter("txtType");
-
-        if (type.equalsIgnoreCase("staff")) {
+        
+        if (type == null) {
+            
+        } else if (type.equalsIgnoreCase("staff")) {
 
             Account staff = dao.StaffLogin(username, password);
             if (staff == null) {
@@ -79,7 +104,7 @@ public class LoginServlet extends HttpServlet {
             }
 
         } else if (type.equalsIgnoreCase("patient")) {
-            
+
             Account patient = dao.PatientLogin(username, password);
             if (patient == null) {
                 request.setAttribute("LOGIN_VALID", "Login Failed. Please Check Username/Password");
