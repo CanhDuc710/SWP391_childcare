@@ -145,6 +145,14 @@ CREATE TABLE Reservation_detail (
     FOREIGN KEY (service_id) REFERENCES Service(service_id)
 );
 
+-- Tạo bảng activation
+CREATE TABLE Activation (
+    activation_id INT PRIMARY KEY,
+    [begin] DATE Null,
+    [end] DATE Null,
+    status int Null
+);
+
 -- Thêm dữ liệu vào bảng Role
 INSERT INTO [dbo].[Role] ([role_id], [role_name]) VALUES
 (1, N'patient'),
@@ -158,6 +166,7 @@ INSERT INTO PatientStatus (status_id, status_name) VALUES
 (1, N'Not Confirmed'),   -- Chưa Confirm
 (2, N'Confirmed'),        -- Đã Confirm
 (3, N'Suspended');        -- Tạm Ngừng
+GO
 
 -- Thêm dữ liệu vào bảng StaffStatus
 INSERT INTO StaffStatus (status_id, status_name) VALUES 
@@ -167,14 +176,14 @@ INSERT INTO StaffStatus (status_id, status_name) VALUES
 
 -- Thêm dữ liệu vào bảng Staff (1 nurse, 1 doctor, 1 manager)
 INSERT INTO Staff (staff_id, username, password, email, phone, name, gender, avatar, role_id, status_id) VALUES 
-(1, N'nurse1', N'nurse1password', N'nurse1@example.com', N'1111111111', N'Nurse 1', N'Female', N'nurse1.jpg', 2, 1), -- Nurse
-(2, N'doctor1', N'doctor1password', N'doctor1@example.com', N'2222222222', N'Doctor 1', N'Male', N'doctor1.jpg', 3, 1), -- Doctor
-(3, N'manager1', N'manager1password', N'manager1@example.com', N'3333333333', N'Manager 1', N'Male', N'manager1.jpg', 4, 1); -- Manager
+(1, N'nurse', N'123', N'nurse1@example.com', N'1111111111', N'Nurse 1', N'Female', N'default.jpg', 2, 1), -- Nurse
+(2, N'doctor', N'123', N'doctor1@example.com', N'2222222222', N'Doctor 1', N'Male', N'default.jpg', 3, 1), -- Doctor
+(3, N'manager', N'123', N'manager1@example.com', N'3333333333', N'Manager 1', N'Male', N'default.jpg', 4, 1); -- Manager
 
 -- Thêm dữ liệu vào bảng Patient với các trạng thái từ bảng PatientStatus
 INSERT INTO Patient (patient_id, username, password, email, phone, name, gender, avatar,role_id, status_id) VALUES 
-(1, N'patient1', N'password1', N'patient1@example.com', N'1111111111', N'Patient 1', N'Male',N'patient.jpg',1, 1), -- Active
-(2, N'patient2', N'password2', N'patient2@example.com', N'2222222222', N'Patient 2', N'Female',N'patient.jpg',1, 2), -- Inactive
-(3, N'patient3', N'password3', N'patient3@example.com', N'3333333333', N'Patient 3', N'Male',N'patient.jpg',1, 3); -- Suspended
+(1, N'p1', N'123', N'patient1@example.com', N'1111111111', N'Patient 1', N'Male',N'default.jpg',1, 1), -- Active
+(2, N'p2', N'123', N'patient2@example.com', N'2222222222', N'Patient 2', N'Female',N'default.jpg',1, 2), -- Inactive
+(3, N'p3', N'123', N'patient3@example.com', N'3333333333', N'Patient 3', N'Male',N'default.jpg',1, 3); -- Suspended
 
 

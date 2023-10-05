@@ -4,7 +4,6 @@
  */
 package Servlet;
 
-
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,8 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-
 import Model.*;
+
 /**
  *
  * @author duchi
@@ -47,7 +46,6 @@ public class HomeSerlvet extends HttpServlet {
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("ACCOUNT");
         request.setAttribute("ACCOUNT", account);
-        
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("Home.jsp");
         dispatcher.forward(request, response);

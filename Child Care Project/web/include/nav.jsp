@@ -79,7 +79,10 @@
                             </c:when>
                             <c:when test="${ACCOUNT != null}">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="Account">Account</a>
+                                    <a class="nav-link" href="Account" style="background-color: rgba(0, 255, 0, 0.5); border-radius: 5px; margin-left: 5px; padding: 15px 10px;">User: ${ACCOUNT.username}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="Logout" style="background-color: rgba(255, 0, 0, 0.5); border-radius: 5px; margin-left: 5px; padding: 15px 10px;">Logout</a>
                                 </li>
                             </c:when> 
                         </c:choose>
