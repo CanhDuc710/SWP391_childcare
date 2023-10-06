@@ -8,6 +8,10 @@
         <servlet-name>VerifyServlet</servlet-name>
         <servlet-class>Servlet.VerifyServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Test2</servlet-name>
+        <servlet-class>Servlet.Test2</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestServlet</servlet-name>
         <url-pattern>/Test</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>VerifyServlet</servlet-name>
         <url-pattern>/Verify</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Test2</servlet-name>
+        <url-pattern>/Test2</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

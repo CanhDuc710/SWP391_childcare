@@ -27,7 +27,6 @@
                                 <p class="description">${category.detail}</p>
                             </div>
                         </div>
-                            </div>
                     </c:forEach>
 
 

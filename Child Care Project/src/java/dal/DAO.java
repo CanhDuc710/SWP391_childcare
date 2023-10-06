@@ -16,6 +16,10 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 import Model.*;
+import java.nio.charset.StandardCharsets;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Base64;
 
 /**
  *
@@ -458,9 +462,83 @@ public class DAO extends DBHelper {
         }
     }
 
+    public int add_email_verify_valid(String email) {
+        int rowsAffected = 0;
+        String sql = "INSERT INTO EmailVerification ( email, beginTime, endTime, status) VALUES (?, ?, ?, ?)";
+        int id = 0;
+        try {
+            st = connection.prepareStatement(sql);
+            //begin
+            Timestamp beginTime = new Timestamp(System.currentTimeMillis());
+            //end
+            Timestamp endTime = new Timestamp(System.currentTimeMillis() + 15 * 60 * 1000);
+
+            st.setString(1, email);
+            st.setTimestamp(2, beginTime);
+            st.setTimestamp(3, endTime);
+            st.setInt(4, 1);
+
+            // Thực hiện truy vấn
+            rowsAffected = st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Xử lý lỗi nếu cần thiết
+        }
+        if (rowsAffected > 0) {
+            id = getRowCount("EmailVerification");
+            return id;
+        } else {
+            return -1;
+        }
+    }
+
+    public int getRowCount(String tableName) {
+        String sql = "SELECT COUNT(*) FROM " + tableName;
+        int count = -1;
+        try {
+            // Thực hiện truy vấn và trả về số lượng dòng
+            st = connection.prepareStatement(sql);
+            rs = st.executeQuery();
+            if (rs.next()) { // Di chuyển con trỏ đến dòng đầu tiên
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
     public String Send_Verify_Email(String email, String template) throws UnsupportedEncodingException {
         // Đọc nội dung từ file template
         String templateContent = template;
+        int id = add_email_verify_valid(email);
+        // Tạo nội dung HTML cho email
+        String originalLink = "http://localhost:8080/Child_Care_Project/Verify";
+
+        // Mã hóa email
+        String encodedEmail = Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
+        //Ma hoa ID
+        String encodedID = Base64.getUrlEncoder().encodeToString(String.valueOf(id).getBytes(StandardCharsets.UTF_8));
+
+        //Lay Account
+        Account user = null;
+        ArrayList<Account> list = get_account_list();
+        for (Account account : list) {
+            if (account.getEmail().equals(email)) {
+                user = account;
+                break; // Đã tìm thấy tài khoản, thoát khỏi vòng lặp
+            }
+        }
+        String userN = "";
+        String userP = "";
+        String link = "http://localhost:8080/Child_Care_Project/";
+        boolean send = false;
+        if (user != null) {
+            send = true;
+            userN = user.getUsername();
+            userP = user.getPhone();
+            link = originalLink + "?encodedEmail=" + encodedEmail + "&encodedID=" + encodedID;
+        }
 
         // Thông tin tài khoản email
         String username = "duchinh03061@gmail.com";
@@ -501,21 +579,37 @@ public class DAO extends DBHelper {
             // Mã hóa email
             // String encodedEmail = Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
             // Thay thế các placeholder trong template bằng dữ liệu thực tế
-            String emailContent = templateContent.replace("{{username}}", "Tên Người Dùng")
+            String emailContent = templateContent.replace("{{username}}", userN)
                     .replace("{{email}}", email)
-                    .replace("{{phone}}", "Số Điện Thoại")
-                    .replace("{{link}}", "google.com")
-                    .replace("{{link}}", "google.com");
+                    .replace("{{phone}}", userP)
+                    .replace("{{link}}", link)
+                    .replace("{{link}}", link)
+                    .replace("{{Title}}", "Please Verify Your Email After Registering.");
 
             // Thiết lập nội dung email dưới dạng HTML với encoding UTF-8
             message.setContent(emailContent, "text/html; charset=UTF-8");
 
             // Gửi email
-            Transport.send(message);
-            return "Email has been sent successfully";
+            if (send) {
+                Transport.send(message);
+                return "Email has been sent successfully";
+            } else {
+                throw new MessageRemovedException("Email khong ton tai");
+            }
+
         } catch (MessagingException e) {
             e.printStackTrace();
             return "Email sent failed: " + e.getMessage();
         }
+    }
+
+    public static void main(String[] args) {
+        DAO dao = new DAO();
+        int id = dao.add_email_verify_valid("duchinh0306@gmail.com");
+        System.out.println("id: " + id);
+        String encodedID = Base64.getUrlEncoder().encodeToString(String.valueOf(id).getBytes(StandardCharsets.UTF_8));
+        System.out.println("encode: " + encodedID);
+        String decodeID = new String(Base64.getUrlDecoder().decode(encodedID), StandardCharsets.UTF_8);
+        System.out.println("decode: " + decodeID);
     }
 }

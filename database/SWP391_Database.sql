@@ -1,6 +1,8 @@
 ﻿USE master
 GO
 
+ALTER DATABASE SWP391_Database SET SINGLE_USER WITH ROLLBACK IMMEDIATE 
+
 DROP DATABASE SWP391_Database
 GO
 
@@ -154,10 +156,11 @@ CREATE TABLE Reservation_detail (
 );
 
 -- Tạo bảng activation
-CREATE TABLE Activation (
-    activation_id INT PRIMARY KEY,
-    [begin] DATE Null,
-    [end] DATE Null,
+CREATE TABLE EmailVerification (
+    activation_id INT  IDENTITY(1,1) PRIMARY KEY,
+	email NVARCHAR(30) Null,
+    beginTime DATETIME Null,
+    endTime DATETIME Null,
     status int Null
 );
 
@@ -192,7 +195,8 @@ INSERT INTO Staff (staff_id, username, password, email, phone, name, gender, ava
 INSERT INTO Patient (patient_id, username, password, email, phone, name, gender, avatar, address,role_id, status_id) VALUES 
 (1, N'p1', N'123', N'patient1@example.com', N'1111111111', N'Patient 1', 1,N'default.jpg',N'address default', 1, 1), -- inactive
 (2, N'p2', N'123', N'patient2@example.com', N'2222222222', N'Patient 2', 0,N'default.jpg',N'address default', 1, 2), -- Active
-(3, N'p3', N'123', N'patient3@example.com', N'3333333333', N'Patient 3', 1,N'default.jpg',N'address default', 1, 3); -- Suspended
+(3, N'p3', N'123', N'patient3@example.com', N'3333333333', N'Patient 3', 1,N'default.jpg',N'address default', 1, 3), -- Suspended
+(4, N'duchinh0306', N'123', N'duchinh0306@gmail.com', N'4444444444', N'Nguyen D D Chinh', 1,N'default.jpg',N'address default', 1, 1)
 
 -- Chèn dữ liệu vào bảng category
 INSERT INTO Service_category(category_id, name, detail)
@@ -220,3 +224,6 @@ VALUES
 (8, 3, 'vaccine2.jpg', 'Childhood Vaccination', 'Routine vaccinations for children as per vaccination schedule.', 55.00, 0.00, 1),
 (9, 3, 'vaccine3.jpg', 'Travel Vaccination', 'Vaccinations required for travel to specific regions.', 70.00, 0.00, 1);
 
+GO
+ALTER DATABASE SWP391_Database SET MULTI_USER
+GO
