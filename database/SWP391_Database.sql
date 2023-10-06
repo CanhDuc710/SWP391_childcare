@@ -15,14 +15,10 @@ USE SWP391_Database;
 GO
 
 
--- Tạo bảng PatientStatus
-CREATE TABLE PatientStatus (
-    status_id INT PRIMARY KEY,
-    status_name NVARCHAR(50) NULL
-);
 
--- Tạo bảng StaffStatus
-CREATE TABLE StaffStatus (
+
+-- Tạo bảngStatus
+CREATE TABLE Status (
     status_id INT PRIMARY KEY,
     status_name NVARCHAR(50) NULL
 );
@@ -52,7 +48,7 @@ CREATE TABLE Patient (
     address NVARCHAR(100),
 	role_id INT NULL,
 	status_id INT NULL,
-    FOREIGN KEY (status_id) REFERENCES PatientStatus(status_id),
+    FOREIGN KEY (status_id) REFERENCES Status(status_id),
 	FOREIGN KEY (role_id) REFERENCES Role(role_id)
 );
 
@@ -70,7 +66,7 @@ CREATE TABLE Staff (
     role_id INT NULL,
     status_id INT NULL,
     FOREIGN KEY (role_id) REFERENCES Role(role_id),
-    FOREIGN KEY (status_id) REFERENCES StaffStatus(status_id)
+    FOREIGN KEY (status_id) REFERENCES Status(status_id)
 );
 
 -- Tạo bảng Admin
@@ -111,11 +107,13 @@ CREATE TABLE Post_category (
 CREATE TABLE Post (
     post_id INT PRIMARY KEY,
     title NVARCHAR(200) NULL,
-    author NVARCHAR(100) NULL,
-    updated_date DATE NULL,
+    short NVARCHAR(100) NULL,
+    author_id INT NULL,
+    updated_date DATETIME NULL,
     detail NVARCHAR(MAX) NULL,
     image NVARCHAR(200) NULL,
     post_category_id INT NULL,
+    FOREIGN KEY (author_id) REFERENCES Staff(staff_id),
     FOREIGN KEY (post_category_id) REFERENCES Post_category(post_category_id)
 );
 
@@ -124,8 +122,8 @@ CREATE TABLE Post (
 -- Tạo bảng Slot
 CREATE TABLE Slot (
     slot_id INT PRIMARY KEY,
-    start_time TIME NULL,
-    end_time TIME NULL
+    start_time DATETIME NULL,
+    end_time DATETIME NULL
 );
 
 -- Tạo bảng Reservation
@@ -172,15 +170,9 @@ INSERT INTO [dbo].[Role] ([role_id], [role_name]) VALUES
 (4, N'manager');
 GO
 
--- Thêm dữ liệu vào bảng PatientStatus
-INSERT INTO PatientStatus (status_id, status_name) VALUES 
-(1, N'Not Confirmed'),   -- Chưa Confirm
-(2, N'Confirmed'),        -- Đã Confirm
-(3, N'Suspended');        -- Tạm Ngừng
-GO
 
 -- Thêm dữ liệu vào bảng StaffStatus
-INSERT INTO StaffStatus (status_id, status_name) VALUES 
+INSERT INTO Status (status_id, status_name) VALUES 
 (1, N'Inactive'),       -- Hoạt động
 (2, N'Active'),     -- Không hoạt động
 (3, N'Suspended');    -- Tạm ngưng hoạt động

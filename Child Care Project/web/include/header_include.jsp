@@ -45,14 +45,19 @@
                         <li><a class="nav-link scrollto " href="#hero">Home</a></li>
                         <!--drop about-->
                         <li><a class="nav-link scrollto" href="#services">Services</a></li>
-                        <li><a class="nav-link scrollto" href="#departments">Reservation</a></li>
+                        <li><a class="nav-link scrollto" href="Reservation">Reservation</a></li>
 
                         <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down"></i></a>
                             <ul>
-                                <li><a href="#slider">Post</a></li>
-                                <li><a href="#doctors">Doctor</a></li>
-                                <li><a href="#feedback">Feedback</a></li>
+                                <li><a href="#hero">Posts</a></li>
+                                <li><a href="#featured-services">Features</a></li>
+                                <li><a href="#about">About us</a></li>
+                                <li><a href="#counts">Quality</a></li>
+
+                                <li><a href="#testimonials">Feedback</a></li>
+                                <li><a href="#doctors">Doctors</a></li>
                                 <li><a href="#contact">Contact</a></li>
+
                                 <li><a href="Test">Test</a></li>
                             </ul>
                         </li>
@@ -96,7 +101,7 @@
                     <i class="bi bi-list mobile-nav-toggle"></i>
                 </nav><!-- .navbar -->
 
-                <a href="#appointment" class="appointment-btn scrollto"><span class="d-none d-md-inline">Make an</span> Appointment</a>
+                <a href="Booking" class="appointment-btn scrollto"><span class="d-none d-md-inline">Make an</span> Appointment</a>
 
             </div>
         </header>

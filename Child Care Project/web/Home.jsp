@@ -140,7 +140,7 @@
 
 
             <!-- ======= Testimonials Section ======= -->
-            <section id="feedback" class="testimonials">
+            <section id="testimonials" class="testimonials">
                 <div class="container" data-aos="fade-up">
 
                     <div class="section-title">

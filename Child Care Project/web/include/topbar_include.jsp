@@ -39,9 +39,37 @@
                     <i class="bi bi-clock"></i> Monday - Saturday, 7:30AM to 5PM
                 </div>
                 <div class="d-flex align-items-center">
-                    <i class="bi bi-phone"></i> Call us now +83 0123 456 789
+                    <i class="bi bi-clock"></i><div id="clock" style="padding-right: 40px;"></div>
+                    <i class="bi bi-phone"></i> Call us now +84 0123 456 789
                 </div>
             </div>
         </div>
     </body>
+
+    <script>
+        function updateClock() {
+            var now = new Date();
+            var day = now.getDate();
+            var month = now.getMonth() + 1; // Tháng bắt đầu từ 0
+            var year = now.getFullYear().toString().slice(2); // Lấy 2 chữ số cuối của năm
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+
+            // Định dạng thời gian theo DD-MM-YY HH:MM:SS
+            var formattedTime = (day < 10 ? '0' : '') + day + '-' +
+                    (month < 10 ? '0' : '') + month + '-' +
+                    year + ' ' +
+                    (hours < 10 ? '0' : '') + hours + ':' +
+                    (minutes < 10 ? '0' : '') + minutes + ':' +
+                    (seconds < 10 ? '0' : '') + seconds;
+
+            // Hiển thị thời gian vào thẻ HTML có id là "clock"
+            document.getElementById('clock').textContent = formattedTime;
+        }
+
+// Gọi hàm cập nhật thời gian mỗi giây
+        setInterval(updateClock, 1000);
+    </script>
+
 </html>
