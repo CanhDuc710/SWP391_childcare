@@ -55,7 +55,7 @@
                 <div class="container">
 
                     <div class="d-flex justify-content-between align-items-center">
-                        <h2>Login & Register</h2>
+                        <h2><a href="Login" >Login And Register</a></h2>
                         <ol>
                             <li><a href="Home">Home</a></li>
                             <li>Login</li>

@@ -23,7 +23,6 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet(name = "RegisterServlet", urlPatterns = {"/Register"})
 public class RegisterServlet extends HttpServlet {
 
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -105,10 +104,30 @@ public class RegisterServlet extends HttpServlet {
             }
 
             if (check) {
-                
+
+                //boolean register = dao.PatientRegister(username, password, email, phone, name, phone, password, name, 1, 1);
+                if (true) {
+                    request.setAttribute("IMG", "assets/img/success.gif");
+                    request.setAttribute("MESSAGE", "<p style='color: green;'>Registration Successful</p>");
+                    request.setAttribute("MESSAGE2", "Click <a href='Login'>here</a> to return to the login page.");
+                    RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                    rd.forward(request, response);
+                }else{
+                    request.setAttribute("MESSAGE", "<p style='color: red;'>Registration Failed</p>");
+                    request.setAttribute("MESSAGE2", "Click <a href='Login'>here</a> to return to the login page.");
+                    RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                    rd.forward(request, response);
+                }
+
+            } else {
+                request.setAttribute("regUsername", username);
+                request.setAttribute("regName", name);
+                request.setAttribute("regEmail", email);
+                request.setAttribute("regPhone", phone);
+                RequestDispatcher rd = request.getRequestDispatcher("Login_inner.jsp");
+                rd.forward(request, response);
             }
-            RequestDispatcher rd = request.getRequestDispatcher("Login_inner.jsp");
-            rd.forward(request, response);
+
         } else if (reg_type.equalsIgnoreCase("staff")) {
 
         }

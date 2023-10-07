@@ -49,23 +49,36 @@ public class HomeSerlvet extends HttpServlet {
         DAO dao = new DAO();
         Account account = (Account) session.getAttribute("ACCOUNT");
         request.setAttribute("ACCOUNT", account);
-        
+
         //lay ra service list va set attribute
         ArrayList<Services> service_list = dao.get_service_list();
         request.setAttribute("SERVICE_LIST", service_list);
         request.setAttribute("SERVICE_COUNT", service_list.size());
-        
+
         //lay ra doctor list va set attribute
         ArrayList<Account> doctor_list = dao.get_doctor_list();
         request.setAttribute("DOCTOR_LIST", doctor_list);
-        request.setAttribute("DOCTOR_COUNT", doctor_list.size() );
-        
+        request.setAttribute("DOCTOR_COUNT", doctor_list.size());
+
         //lay ra category va set attribute
         ArrayList<ServicesCategory> category_list = dao.get_service_category_list();
         request.setAttribute("CATEGORY_LIST", category_list);
         request.setAttribute("CATEGORY_COUNT", category_list.size());
-        
-        
+
+        //kiem tra NOTIBOX và content
+        Boolean notibox = (Boolean) request.getAttribute("NOTIBOX");
+        String content = (String) request.getAttribute("NOTICONTENT");
+        request.setAttribute("NOTIBOX", notibox);
+        request.setAttribute("NOTICONTENT", content);
+
+        //First Time Welcome
+        Boolean first = (Boolean) session.getAttribute("FIRST");
+        if (first == null) {
+            request.setAttribute("NOTIBOX", true);
+            request.setAttribute("NOTICONTENT", "Welcome to SWP391 Project!");
+            session.setAttribute("FIRST", true);
+        }
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("Home.jsp");
         dispatcher.forward(request, response);
     }
@@ -73,7 +86,34 @@ public class HomeSerlvet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        DAO dao = new DAO();
+        Account account = (Account) session.getAttribute("ACCOUNT");
+        request.setAttribute("ACCOUNT", account);
+
+        //lay ra service list va set attribute
+        ArrayList<Services> service_list = dao.get_service_list();
+        request.setAttribute("SERVICE_LIST", service_list);
+        request.setAttribute("SERVICE_COUNT", service_list.size());
+
+        //lay ra doctor list va set attribute
+        ArrayList<Account> doctor_list = dao.get_doctor_list();
+        request.setAttribute("DOCTOR_LIST", doctor_list);
+        request.setAttribute("DOCTOR_COUNT", doctor_list.size());
+
+        //lay ra category va set attribute
+        ArrayList<ServicesCategory> category_list = dao.get_service_category_list();
+        request.setAttribute("CATEGORY_LIST", category_list);
+        request.setAttribute("CATEGORY_COUNT", category_list.size());
+
+        //kiem tra NOTIBOX và content
+        Boolean notibox = (Boolean) request.getAttribute("NOTIBOX");
+        String content = (String) request.getAttribute("NOTICONTENT");
+        request.setAttribute("NOTIBOX", notibox);
+        request.setAttribute("NOTICONTENT", content);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Home.jsp");
+        dispatcher.forward(request, response);
     }
 
     @Override
