@@ -103,19 +103,23 @@ public class DAO extends DBHelper {
         return null;
     }
 
-    public boolean PatientRegister(int id, String username, String password, String name, String email, String phone) {
-        String sql = "INSERT INTO Patient (account_id, username, password, email, phone, name) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+    public boolean PatientRegister(String txtUsername, String txtPassword, String txtEmail,
+            String txtPhone, String txtName, String txtGender, String txtAvatar, String txtAddress, int roleId, int statusId) {
+
+        sql = "INSERT INTO Patient (username, password, email, phone, name, gender, avatar, address, role_id, status_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             st = connection.prepareStatement(sql);
-
-            st.setInt(1, id);
-            st.setString(2, username);
-            st.setString(3, password);
-            st.setString(4, email);
-            st.setString(5, phone);
-            st.setString(6, name);
-
+            st = connection.prepareStatement(sql);
+            st.setString(1, txtUsername);
+            st.setString(2, txtPassword);
+            st.setString(3, txtEmail);
+            st.setString(4, txtPhone);
+            st.setString(5, txtName);
+            st.setString(6, txtGender);
+            st.setString(7, "default.jpg");
+            st.setString(8, "default address");
+            st.setInt(9, 1);
+            st.setInt(10, 1);
             int rowsUpdated = st.executeUpdate();
             if (rowsUpdated > 0) {
                 return true;

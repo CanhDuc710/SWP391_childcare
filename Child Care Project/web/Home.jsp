@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -67,39 +68,8 @@
             </section><!-- End Cta Section -->
 
             <!-- ======= About Us Section ======= -->
-            <section id="about" class="about">
-                <div class="container" data-aos="fade-up">
-
-                    <div class="section-title">
-                        <h2>About Us</h2>
-                        <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6" data-aos="fade-right">
-                            <img src="assets/img/about.jpg" class="img-fluid" alt="">
-                        </div>
-                        <div class="col-lg-6 pt-4 pt-lg-0 content" data-aos="fade-left">
-                            <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
-                            <p class="fst-italic">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                                magna aliqua.
-                            </p>
-                            <ul>
-                                <li><i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-                                <li><i class="bi bi-check-circle"></i> Duis aute irure dolor in reprehenderit in voluptate velit.</li>
-                                <li><i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</li>
-                            </ul>
-                            <p>
-                                Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                                culpa qui officia deserunt mollit anim id est laborum
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-            </section><!-- End About Us Section -->
+            <jsp:include page="include/about-us_include.jsp" />
+            <!-- End About Us Section -->
 
             <!-- ======= Counts Section ======= -->
             <section id="counts" class="counts">
@@ -178,92 +148,8 @@
             </section><!-- End Testimonials Section -->
 
             <!-- ======= Doctors Section ======= -->
-            <section id="doctors" class="doctors section-bg">
-                <div class="container" data-aos="fade-up">
-
-                    <div class="section-title">
-                        <h2>Doctors</h2>
-                        <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-                            <div class="member" data-aos="fade-up" data-aos-delay="100">
-                                <div class="member-img">
-                                    <img src="assets/img/doctors/doctors-1.jpg" class="img-fluid" alt="">
-                                    <div class="social">
-                                        <a href=""><i class="bi bi-twitter"></i></a>
-                                        <a href=""><i class="bi bi-facebook"></i></a>
-                                        <a href=""><i class="bi bi-instagram"></i></a>
-                                        <a href=""><i class="bi bi-linkedin"></i></a>
-                                    </div>
-                                </div>
-                                <div class="member-info">
-                                    <h4>Walter White</h4>
-                                    <span>Chief Medical Officer</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-                            <div class="member" data-aos="fade-up" data-aos-delay="200">
-                                <div class="member-img">
-                                    <img src="assets/img/doctors/doctors-2.jpg" class="img-fluid" alt="">
-                                    <div class="social">
-                                        <a href=""><i class="bi bi-twitter"></i></a>
-                                        <a href=""><i class="bi bi-facebook"></i></a>
-                                        <a href=""><i class="bi bi-instagram"></i></a>
-                                        <a href=""><i class="bi bi-linkedin"></i></a>
-                                    </div>
-                                </div>
-                                <div class="member-info">
-                                    <h4>Sarah Jhonson</h4>
-                                    <span>Anesthesiologist</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-                            <div class="member" data-aos="fade-up" data-aos-delay="300">
-                                <div class="member-img">
-                                    <img src="assets/img/doctors/doctors-3.jpg" class="img-fluid" alt="">
-                                    <div class="social">
-                                        <a href=""><i class="bi bi-twitter"></i></a>
-                                        <a href=""><i class="bi bi-facebook"></i></a>
-                                        <a href=""><i class="bi bi-instagram"></i></a>
-                                        <a href=""><i class="bi bi-linkedin"></i></a>
-                                    </div>
-                                </div>
-                                <div class="member-info">
-                                    <h4>William Anderson</h4>
-                                    <span>Cardiology</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-                            <div class="member" data-aos="fade-up" data-aos-delay="400">
-                                <div class="member-img">
-                                    <img src="assets/img/doctors/doctors-4.jpg" class="img-fluid" alt="">
-                                    <div class="social">
-                                        <a href=""><i class="bi bi-twitter"></i></a>
-                                        <a href=""><i class="bi bi-facebook"></i></a>
-                                        <a href=""><i class="bi bi-instagram"></i></a>
-                                        <a href=""><i class="bi bi-linkedin"></i></a>
-                                    </div>
-                                </div>
-                                <div class="member-info">
-                                    <h4>Amanda Jepson</h4>
-                                    <span>Neurosurgeon</span>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </section><!-- End Doctors Section -->
+            <jsp:include page="include/doctor_include.jsp" />
+            <!-- End Doctors Section -->
 
 
             <!-- ======= Contact Section ======= -->
@@ -323,6 +209,13 @@
         <!-- ======= Footer ======= -->
         <jsp:include page="include/footer_include.jsp" />
         <!-- End Footer -->
+
+        <!--notibox-->
+
+        <c:if test="${NOTIBOX}">
+            <jsp:include page="include/noti-box_include.jsp" />
+        </c:if>
+        <!--notibox end-->
 
         <div id="preloader"></div>
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

@@ -11,6 +11,37 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <style>
+            .button111 {
+                font-family: "Roboto", sans-serif;
+                font-weight: 500;
+                font-size: 14px;
+                letter-spacing: 1px;
+                display: inline-block;
+
+                border-radius: 4px;
+                transition: 0.5s;
+                line-height: 1;
+                color: #fff;
+                background: #3fbbc0;
+            }
+
+            .button222 {
+                background-color: 3fbbc0;
+                color: #fff;
+                padding: 14px 32px;
+            }
+
+            .button222:hover {
+                background-color: #65c9cd;
+                color: white;
+            }
+            .button-item .container {
+                margin-top: 60px;
+                display: flex;
+                justify-content: center;
+            }
+        </style>
     </head>
     <body>
         <section id="services" class="services services">
@@ -49,7 +80,11 @@
                     </c:forEach>
 
                 </div>
-
+                <div class="button-item active">
+                    <div class="container">
+                        <a href="#about" class="button111 button222">Read More</a>
+                    </div>
+                </div>
             </div>
         </section>
     </body>

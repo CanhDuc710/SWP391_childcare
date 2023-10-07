@@ -13,7 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1><<a href="Home">Home</a></h1>
+        <h1><a href="Home">Home</a></h1>
         <h2>Thông tin người dùng</h2>
         <p>Username: ${username}</p>
         <p>Name: ${name}</p>
@@ -23,7 +23,11 @@
         <p>Confirm: ${confirm}</p>
         <p>Gender: ${gender ? 'Male' : 'Female'}</p>
         <p>Message: ${MESSAGE}</p>
-        
+        <!--notibox-->
+        <c:if test="${NOTIBOX}">
+            <jsp:include page="include/noti-box_include.jsp" />
+        </c:if>
+        <!--notibox end-->
     </body>
 
 </html>

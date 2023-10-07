@@ -95,13 +95,18 @@ public class LoginServlet extends HttpServlet {
 
             Account staff = dao.StaffLogin(username, password);
             if (staff == null) {
+                request.setAttribute("username", request.getParameter("txtUsername"));
                 request.setAttribute("LOGIN_VALID", "Login Failed. Please Check Username/Password");
                 RequestDispatcher rd = request.getRequestDispatcher("Login_inner_staff.jsp");
                 rd.forward(request, response);
             } else {
                 if (staff.getStatusId() == 2) {
+
                     session.setAttribute("ACCOUNT", staff);
-                    response.sendRedirect("Home");
+                    request.setAttribute("NOTIBOX", true);
+                    request.setAttribute("NOTICONTENT", "Welcome, " + username);
+                    RequestDispatcher rd = request.getRequestDispatcher("Home");
+                    rd.forward(request, response);
                 } else {
                     request.setAttribute("LOGIN_VALID", "Please Contact <a href='#'> Admin</a> For More.");
                     RequestDispatcher rd = request.getRequestDispatcher("Login_inner_staff.jsp");
@@ -113,13 +118,18 @@ public class LoginServlet extends HttpServlet {
 
             Account patient = dao.PatientLogin(username, password);
             if (patient == null) {
+                request.setAttribute("username", request.getParameter("txtUsername"));
                 request.setAttribute("LOGIN_VALID", "Login Failed. Please Check Username/Password");
                 RequestDispatcher rd = request.getRequestDispatcher("Login_inner.jsp");
                 rd.forward(request, response);
             } else {
                 if (patient.getStatusId() == 2) {
                     session.setAttribute("ACCOUNT", patient);
-                    response.sendRedirect("Home");
+
+                    request.setAttribute("NOTIBOX", true);
+                    request.setAttribute("NOTICONTENT", "Welcome, " + username);
+                    RequestDispatcher rd = request.getRequestDispatcher("Home");
+                    rd.forward(request, response);
                 } else {
                     request.setAttribute("LOGIN_VALID", "Please Check Your Email For Verification Before Login. Click <a href='#'> here</a> to Re-Verify");
                     RequestDispatcher rd = request.getRequestDispatcher("Login_inner.jsp");

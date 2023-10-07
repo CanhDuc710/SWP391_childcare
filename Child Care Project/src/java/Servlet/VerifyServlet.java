@@ -55,46 +55,100 @@ public class VerifyServlet extends HttpServlet {
             throws ServletException, IOException {
         DAO dao = new DAO();
         // Lấy giá trị của tham số từ URL
-        String encodedEmail = request.getParameter("encodedEmail");
-        String encodedID = request.getParameter("encodedID");
+        try {
+            String encodedEmail = request.getParameter("encodedEmail");
+            String encodedID = request.getParameter("encodedID");
+            if (encodedEmail != null && encodedID != null) {
+                // Giải mã tham số để lấy giá trị gốc
+                String email = new String(Base64.getUrlDecoder().decode(encodedEmail), StandardCharsets.UTF_8);
+                String id = new String(Base64.getUrlDecoder().decode(encodedID), StandardCharsets.UTF_8);
 
-        // Giải mã tham số để lấy giá trị gốc
-        String email = new String(Base64.getUrlDecoder().decode(encodedEmail), StandardCharsets.UTF_8);
-        String id = new String(Base64.getUrlDecoder().decode(encodedID), StandardCharsets.UTF_8);
+                //kiem tra id 
+                boolean integer = false;
+                try {
+                    int numericId = Integer.parseInt(id);
+                    // Nếu không có lỗi, id là một số nguyên hợp lệ
+                    integer = true;
+                } catch (NumberFormatException e) {
+                    // Nếu có lỗi, id không phải là số nguyên hợp lệ
+                    integer = false;
+                }
 
-        // lay ra model email va cac tham so
-        EmailVerify object = dao.Get_Verify_Email_DateTime(email, Integer.parseInt(id));
-        int type = object.getType();
-        Timestamp end = object.getEnd();
-        int status = object.getStatus();
+                if (integer) {
+                    // lay ra model email va cac tham so
+                    EmailVerify object = dao.Get_Verify_Email_DateTime(email, Integer.parseInt(id));
+                    if (object != null) {
+                        int type = object.getType();
+                        Timestamp end = object.getEnd();
+                        int status = object.getStatus();
 
-        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+                        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 
-        if (type == 1) {// 1 is register confirmation
-            if (currentTime.before(end) && status != 0) {
-                boolean check = dao.update_emailVerify_status(email, Integer.parseInt(id));
-                if (check) {
-                    boolean check1 = dao.Change_status_account(email, 2);
-                    request.setAttribute("MESSAGE", "Verify Successfully.");
-                    request.setAttribute("MESSAGE2", "Please <a href='Login'> login</a> using username and password.");
-                    RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
-                    rd.forward(request, response);
-                } else {
-                    request.setAttribute("MESSAGE", "Verify Failed.");
-                    request.setAttribute("MESSAGE2", "Please try again.");
+                        if (type == 1) {// 1 is register confirmation
+                            if (currentTime.before(end) && status != 0) {
+                                boolean check = dao.update_emailVerify_status(email, Integer.parseInt(id));
+                                if (check) {
+                                    boolean check1 = dao.Change_status_account(email, 2);
+                                    request.setAttribute("MESSAGE", "Verify Successfully.");
+                                    request.setAttribute("MESSAGE2", "Please <a href='Login'> login</a> using username and password.");
+                                    RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                                    rd.forward(request, response);
+                                } else {
+                                    request.setAttribute("MESSAGE", "Verify Failed.");
+                                    request.setAttribute("MESSAGE2", "Please try again.");
+                                    RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                                    rd.forward(request, response);
+                                }
+                            } else {
+                                request.setAttribute("MESSAGE", "Your Verification Is Expired");
+                                request.setAttribute("MESSAGE2", "Please Re-send Or Check Again.");
+                                RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                                rd.forward(request, response);
+                            }
+                        } else if (type == 2) { // 2 is reset password
+                            if (currentTime.before(end) && status != 0) {
+                                boolean check = false;
+                                if (check) {
+
+                                    request.setAttribute("MESSAGE", "serlet dan den trang jsp reset password nhung chua hoan");
+                                    RequestDispatcher rd = request.getRequestDispatcher("test.jsp");
+                                    rd.forward(request, response);
+                                } else {
+                                    request.setAttribute("MESSAGE", "Reset password redirect Failed.");
+                                    request.setAttribute("MESSAGE2", "Please try again.");
+                                    RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                                    rd.forward(request, response);
+                                }
+                            } else {
+                                request.setAttribute("MESSAGE", "Your Reset Email Is Expired");
+                                request.setAttribute("MESSAGE2", "Please Re-send Or Check Again.");
+                                RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                                rd.forward(request, response);
+                            }
+                        }
+                    } else { //kiem tra oject email verify lay ra co null hay khong
+                        request.setAttribute("MESSAGE", "Invalid Request");
+                        request.setAttribute("MESSAGE2", "<a href='Home'> Back</a> to Homepage.");
+                        RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                        rd.forward(request, response);
+                    }
+                } else { // kiem tra decodeid co phai la integer hay khong
+                    request.setAttribute("MESSAGE", "Invalid Request");
+                    request.setAttribute("MESSAGE2", "<a href='Home'> Back</a> to Homepage.");
                     RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
                     rd.forward(request, response);
                 }
-            } else {
-                request.setAttribute("MESSAGE", "Your Verification Is Expired");
-                request.setAttribute("MESSAGE2", "Please Re-send Or Check Again.");
+            } else { //kiem tra decode email va decode id
+                request.setAttribute("MESSAGE", "Invalid Request");
+                request.setAttribute("MESSAGE2", "<a href='Home'> Back</a> to Homepage.");
                 RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
                 rd.forward(request, response);
             }
-        } else if (type == 2) { // 2 is reset password
-            if (currentTime.before(end) && status != 0) {
-
-            }
+        } catch (Exception e) {  //kiem tra xem encode email va encode id co dung base64 hay khong
+            request.setAttribute("MESSAGE", "Invalid Request");
+            request.setAttribute("MESSAGE2", "<a href='Home'> Back</a> to Homepage.");
+            RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+            rd.forward(request, response);
         }
 
     }

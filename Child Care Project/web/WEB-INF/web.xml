@@ -16,6 +16,14 @@
         <servlet-name>SendEmailServlet</servlet-name>
         <servlet-class>Servlet.SendEmailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NotiSerlvet</servlet-name>
+        <servlet-class>Servlet.NotiSerlvet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NotiServlet</servlet-name>
+        <servlet-class>Servlet.NotiServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestServlet</servlet-name>
         <url-pattern>/Test</url-pattern>
@@ -31,6 +39,14 @@
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendVerify</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NotiSerlvet</servlet-name>
+        <url-pattern>/NotiSerlvet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NotiServlet</servlet-name>
+        <url-pattern>/Noti</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
