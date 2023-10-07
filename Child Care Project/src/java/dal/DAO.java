@@ -462,9 +462,9 @@ public class DAO extends DBHelper {
         }
     }
 
-    public int add_email_verify_valid(String email) {
+    public int add_email_verify_valid(String email, int type) {
         int rowsAffected = 0;
-        String sql = "INSERT INTO EmailVerification ( email, beginTime, endTime, status) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO EmailVerification ( email, beginTime, endTime, type,  status) VALUES (?, ?, ?, ?, ?)";
         int id = 0;
         try {
             st = connection.prepareStatement(sql);
@@ -476,7 +476,8 @@ public class DAO extends DBHelper {
             st.setString(1, email);
             st.setTimestamp(2, beginTime);
             st.setTimestamp(3, endTime);
-            st.setInt(4, 1);
+            st.setInt(4, type);
+            st.setInt(5, 1);
 
             // Thực hiện truy vấn
             rowsAffected = st.executeUpdate();
@@ -508,17 +509,15 @@ public class DAO extends DBHelper {
         return count;
     }
 
-    public String Send_Verify_Email(String email, String template) throws UnsupportedEncodingException {
+    public boolean Send_Verify_Email(String email, String template, int type) throws UnsupportedEncodingException {
         // Đọc nội dung từ file template
         String templateContent = template;
-        int id = add_email_verify_valid(email);
+        int id = -1;
         // Tạo nội dung HTML cho email
         String originalLink = "http://localhost:8080/Child_Care_Project/Verify";
 
         // Mã hóa email
         String encodedEmail = Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
-        //Ma hoa ID
-        String encodedID = Base64.getUrlEncoder().encodeToString(String.valueOf(id).getBytes(StandardCharsets.UTF_8));
 
         //Lay Account
         Account user = null;
@@ -529,11 +528,19 @@ public class DAO extends DBHelper {
                 break; // Đã tìm thấy tài khoản, thoát khỏi vòng lặp
             }
         }
+        String encodedID = "";
+        if (user != null) {
+            //Ma hoa ID
+            id = add_email_verify_valid(email, type);
+            encodedID = Base64.getUrlEncoder().encodeToString(String.valueOf(id).getBytes(StandardCharsets.UTF_8));
+        }
+
         String userN = "";
         String userP = "";
         String link = "http://localhost:8080/Child_Care_Project/";
         boolean send = false;
         if (user != null) {
+
             send = true;
             userN = user.getUsername();
             userP = user.getPhone();
@@ -584,32 +591,93 @@ public class DAO extends DBHelper {
                     .replace("{{phone}}", userP)
                     .replace("{{link}}", link)
                     .replace("{{link}}", link)
-                    .replace("{{Title}}", "Please Verify Your Email After Registering.");
+                    .replace("{{Title}}", "Please Verify Your Email.");
 
             // Thiết lập nội dung email dưới dạng HTML với encoding UTF-8
             message.setContent(emailContent, "text/html; charset=UTF-8");
 
             // Gửi email
-            if (send) {
+            if (send && id != -1) {
                 Transport.send(message);
-                return "Email has been sent successfully";
+                return true;
             } else {
-                throw new MessageRemovedException("Email khong ton tai");
+                throw new MessageRemovedException("The Email Didn't Exists.");
             }
 
         } catch (MessagingException e) {
             e.printStackTrace();
-            return "Email sent failed: " + e.getMessage();
         }
+        return false;
     }
 
-    public static void main(String[] args) {
-        DAO dao = new DAO();
-        int id = dao.add_email_verify_valid("duchinh0306@gmail.com");
-        System.out.println("id: " + id);
-        String encodedID = Base64.getUrlEncoder().encodeToString(String.valueOf(id).getBytes(StandardCharsets.UTF_8));
-        System.out.println("encode: " + encodedID);
-        String decodeID = new String(Base64.getUrlDecoder().decode(encodedID), StandardCharsets.UTF_8);
-        System.out.println("decode: " + decodeID);
+    public EmailVerify Get_Verify_Email_DateTime(String email, int id) {
+        sql = "SELECT * FROM EmailVerification "
+                + "WHERE email = ? "
+                + "AND activation_id = ?";
+        EmailVerify object = null;
+        try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            st.setInt(2, id);
+
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("activation_id");
+                email = rs.getString("email");
+                Timestamp begin = rs.getTimestamp("beginTime");
+                Timestamp end = rs.getTimestamp("endTime");
+                int type = rs.getInt("type");
+                int status = rs.getInt("status");
+
+                object = new EmailVerify(id, email, begin, end, type, status);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return object;
     }
+
+    public boolean Change_status_account(String email, int status) {
+        sql = "UPDATE Patient "
+                + "SET status_id = ? WHERE email = ?";
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, status);
+            st.setString(2, email);
+
+            int rowsUpdated = st.executeUpdate();
+            if (rowsUpdated > 0) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean update_emailVerify_status(String email, int id) {
+        sql = "UPDATE EmailVerification "
+                + "SET status = 0 "
+                + "WHERE email = ? "
+                + "AND activation_id = ?";
+        try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            st.setInt(2, id);
+
+            int rowsUpdated = st.executeUpdate();
+            if (rowsUpdated > 0) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

@@ -159,6 +159,7 @@ CREATE TABLE EmailVerification (
 	email NVARCHAR(30) Null,
     beginTime DATETIME Null,
     endTime DATETIME Null,
+	type int NULL,
     status int Null
 );
 

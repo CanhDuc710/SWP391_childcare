@@ -12,6 +12,10 @@
         <servlet-name>Test2</servlet-name>
         <servlet-class>Servlet.Test2</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SendEmailServlet</servlet-name>
+        <servlet-class>Servlet.SendEmailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestServlet</servlet-name>
         <url-pattern>/Test</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>Test2</servlet-name>
         <url-pattern>/Test2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendEmailServlet</servlet-name>
+        <url-pattern>/SendVerify</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

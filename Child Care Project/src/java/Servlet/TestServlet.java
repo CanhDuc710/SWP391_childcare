@@ -51,11 +51,16 @@ public class TestServlet extends HttpServlet {
 
         // Gửi email
         DAO dao = new DAO();
-        String mess = dao.Send_Verify_Email("duchinh0306@gmail.com", emailTemplate);
+        int type = 1;
+        Boolean check = dao.Send_Verify_Email("duchinh0306@gmail.com", emailTemplate, type);
 
         // Xử lý kết quả (mess) tùy theo yêu cầu của bạn
         // Gửi kết quả về trình duyệt
-        response.getWriter().write(mess);
+        if (check) {
+            response.getWriter().write("thanh cong");
+        } else {
+            response.getWriter().write("that bai");
+        }
     }
 
     private String readTemplateFile(String filePath) throws IOException {

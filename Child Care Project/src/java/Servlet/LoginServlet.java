@@ -121,7 +121,7 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("ACCOUNT", patient);
                     response.sendRedirect("Home");
                 } else {
-                    request.setAttribute("LOGIN_VALID", "Please Verify Your Email Before Login");
+                    request.setAttribute("LOGIN_VALID", "Please Check Your Email For Verification Before Login. Click <a href='#'> here</a> to Re-Verify");
                     RequestDispatcher rd = request.getRequestDispatcher("Login_inner.jsp");
                     rd.forward(request, response);
                 }
