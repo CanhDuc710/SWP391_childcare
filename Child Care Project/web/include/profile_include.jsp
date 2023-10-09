@@ -72,6 +72,15 @@
                 margin-left: 1rem;
                 margin-right: 1rem;
             }
+
+            .btn-primary{
+                background-color: #3fbbc0;
+                border-style: none;
+            }
+
+            .btn-primary:hover{
+                background-color: #65c9cd;
+            }
         </style>
     </head>
     <body>
@@ -82,14 +91,24 @@
                     <!-- Profile picture card-->
                     <div class="card mb-4 mb-xl-0">
                         <div class="card-header">Profile Picture</div>
-                        <div class="card-body text-center">
-                            <!-- Profile picture image-->
-                            <img class="img-account-profile rounded-circle mb-2" src="images/user/${ACCOUNT.avatar}" alt="">
-                            <!-- Profile picture help block-->
-                            <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-                            <!-- Profile picture upload button-->
-                            <button class="btn btn-primary" type="button">Upload new image</button>
-                        </div>
+
+                        <!--xu ly upload avatar-->
+                        <form id="uploadAvatarForm" action="Update" method="POST" enctype="multipart/form-data" >
+                            <div class="card-body text-center">
+                                <!-- Profile picture image-->
+                                <img class="img-account-profile mb-2" style="border-radius: 10px; width: 200px; height: 200px;" src="assets/img/user/${ACCOUNT.username}/${ACCOUNT.avatar}" alt="">
+                                <!-- Profile picture help block-->
+                                <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                                <!-- Profile picture upload button-->
+                                <input type="file" class="custom-file-input" id="profileImageInput" name="fileAvatar" accept=".jpg, .jpeg, .png" required style="display: none;">
+                                <button class="btn btn-primary" type="button" onclick="document.getElementById('profileImageInput').click();">Upload</button>
+                                <input type="hidden" name="txtUpdateType" value="avatar" />
+                                <input type="hidden" name="txtUsername" value="${ACCOUNT.username}" />
+                                <input type="hidden" name="txtID" value="${ACCOUNT.accountId}" />
+                            </div>
+                        </form>
+
+
                     </div>
                 </div>
                 <div class="col-xl-8">
@@ -97,7 +116,7 @@
                     <div class="card mb-4">
                         <div class="card-header">Account Details</div>
                         <div class="card-body">
-                            <form>
+                            <form action="Update" method="POST">
                                 <!-- Form Group (username)-->
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-6">
@@ -130,13 +149,13 @@
                                 <!-- Form Row-->
                                 <div class="mb-3">
                                     <label class="small mb-1" for="inputFirstName">Full Name</label>
-                                    <input class="form-control" id="inputFirstName" type="text" value="${ACCOUNT.name}">
+                                    <input class="form-control" id="inputFirstName" type="text" name="txtName" value="${ACCOUNT.name}">
                                 </div>
                                 <!-- Form Row        -->
                                 <!-- Form Row-->
                                 <div class="mb-3">
                                     <label class="small mb-1" for="inputFirstName">Address</label>
-                                    <input class="form-control" id="inputFirstName" type="text" value="${ACCOUNT.address}">
+                                    <input class="form-control" id="inputFirstName" type="text" name="txtAddress" value="${ACCOUNT.address}">
                                 </div>
 
                                 <!-- Form Row-->
@@ -144,31 +163,55 @@
                                     <!-- Form Group (phone number)-->
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputPhone">Phone number</label>
-                                        <input class="form-control" id="inputPhone" type="text" value="${ACCOUNT.phone}">
+                                        <input class="form-control" id="inputPhone" type="text" name="txtPhone" value="${ACCOUNT.phone}">
+                                        <input type="hidden" name="txtPhone1" value="${ACCOUNT.phone}">
                                     </div>
                                     <!-- Form Group (birthday)-->
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputBirthday">Gender</label>
-                                        <%--<c:if test="${ACCOUNT.gender == 1}">--%>
-                                        <!--<input class="form-control" id="inputBirthday" type="text" name="txtGender"value="Male">-->
-                                        <%--</c:if>--%>
-                                        <%--<c:if test="${ACCOUNT.gender == 0}">--%>
-                                        <!--<input class="form-control" id="inputBirthday" type="text" name="txtGender"value="Female">-->
-                                        <%--</c:if>--%>
                                         <select class="form-control" name="txtGender" style="height: 48px;" type="text">
-                                            <option ${ACCOUNT.gender == 1 ? 'selected' : ''}>Male</option>
-                                            <option ${ACCOUNT.gender != 1 ? 'selected' : ''}>Female</option>
+                                            <option ${ACCOUNT.gender == true ? 'selected' : ''}>Male</option>
+                                            <option ${ACCOUNT.gender != true ? 'selected' : ''}>Female</option>
                                         </select>
                                     </div>
 
                                 </div>
                                 <!-- Save changes button-->
-                                <button class="btn btn-primary" type="button">Save changes</button>
+
+                                <button class="btn btn-primary nut1" style="margin-top: 15px;" type="submit">Save Changes</button>
+                                <div style="margin-top: 30px;">
+                                    ${UPDATE_VALID}
+                                </div>
+
+
+                                <!--hidden parameter-->
+                                <input type="hidden" name="txtUpdateType" value="information" />
+                                <input type="hidden" name="txtID" value="${ACCOUNT.accountId}" />
+
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </body>
+    <script>
+        document.getElementById('profileImageInput').addEventListener('change', function () {
+            var fileInput = document.getElementById('profileImageInput');
+            var file = fileInput.files[0];
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+            var maxSize = 5 * 1024 * 1024; // Dung lượng tệp tin tối đa (5MB)
+
+            if (!allowedExtensions.test(file.name) || file.size > maxSize) {
+                alert('Chỉ chấp nhận các tệp có định dạng .jpg, .jpeg hoặc .png và dung lượng không vượt quá 5MB.');
+                fileInput.value = ''; // Xóa giá trị tệp đã chọn
+                return false;
+            }
+
+            // Nếu tệp hợp lệ, gửi form
+            document.getElementById('uploadAvatarForm').submit();
+        });
+
+    </script>
 </html>

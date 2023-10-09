@@ -55,8 +55,10 @@ public class AccountSerlvet extends HttpServlet {
         HttpSession session = request.getSession();
         DAO dao = new DAO();
         Account account = (Account) session.getAttribute("ACCOUNT");
+        String update_valid = request.getParameter("UPDATE_VALID");
 
         if (account != null) {
+            request.setAttribute("UPDATE_VALID", update_valid);
             request.setAttribute("ACCOUNT", account);
             RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
             rd.forward(request, response);

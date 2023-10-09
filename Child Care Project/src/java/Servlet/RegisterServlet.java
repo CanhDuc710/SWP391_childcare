@@ -15,6 +15,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  *
@@ -105,14 +110,29 @@ public class RegisterServlet extends HttpServlet {
 
             if (check) {
 
-                //boolean register = dao.PatientRegister(username, password, email, phone, name, phone, password, name, 1, 1);
-                if (true) {
-                    request.setAttribute("IMG", "assets/img/success.gif");
+                boolean register = dao.PatientRegister(username, password, email, phone, name, gender);
+                if (register) {
+                    String realPath = getServletContext().getRealPath("/");
+                    // Tạo đường dẫn tuyệt đối đến tệp tin template
+                    String templateFilePath = realPath + "/email_verify_template.html";
+                    // Đọc nội dung từ tệp tin template
+                    StringBuilder contentBuilder = new StringBuilder();
+                    try ( InputStream inputStream = new FileInputStream(templateFilePath);  InputStreamReader inputStreamReader = new InputStreamReader(inputStream);  BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+                        String line;
+                        while ((line = bufferedReader.readLine()) != null) {
+                            contentBuilder.append(line);
+                        }
+                    }
+
+                    // Nội dung email từ tệp tin template
+                    String emailTemplate = contentBuilder.toString();
+                    dao.Send_Verify_Email(email, emailTemplate, 1);
+                    request.setAttribute("IMG", "success.gif");
                     request.setAttribute("MESSAGE", "<p style='color: green;'>Registration Successful</p>");
                     request.setAttribute("MESSAGE2", "Click <a href='Login'>here</a> to return to the login page.");
                     RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
                     rd.forward(request, response);
-                }else{
+                } else {
                     request.setAttribute("MESSAGE", "<p style='color: red;'>Registration Failed</p>");
                     request.setAttribute("MESSAGE2", "Click <a href='Login'>here</a> to return to the login page.");
                     RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
@@ -132,6 +152,17 @@ public class RegisterServlet extends HttpServlet {
 
         }
 
+    }
+
+    private String readTemplateFile(String filePath) throws IOException {
+        StringBuilder contentBuilder = new StringBuilder();
+        try ( BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                contentBuilder.append(line);
+            }
+        }
+        return contentBuilder.toString();
     }
 
     @Override

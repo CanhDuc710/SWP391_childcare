@@ -28,8 +28,14 @@ import java.util.Base64;
 public class DAO extends DBHelper {
 
     private PreparedStatement st;
+    private PreparedStatement st1;
+    private PreparedStatement st2;
     private ResultSet rs;
+    private ResultSet rs1;
+    private ResultSet rs2;
     private String sql;
+    private String sql1;
+    private String sql2;
 
     public Account PatientLogin(String txtUsername, String txtPassword) {
         Account account = new Account();
@@ -51,7 +57,7 @@ public class DAO extends DBHelper {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String name = rs.getString("name");
-                String gender = rs.getString("gender");
+                boolean gender = rs.getBoolean("gender");
                 String avatar = rs.getString("avatar");
                 String address = rs.getString("address");
                 int status = rs.getInt("status_id");
@@ -87,7 +93,7 @@ public class DAO extends DBHelper {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String name = rs.getString("name");
-                String gender = rs.getString("gender");
+                boolean gender = rs.getBoolean("gender");
                 String avatar = rs.getString("avatar");
                 String address = rs.getString("address");
                 int status = rs.getInt("status_id");
@@ -104,7 +110,7 @@ public class DAO extends DBHelper {
     }
 
     public boolean PatientRegister(String txtUsername, String txtPassword, String txtEmail,
-            String txtPhone, String txtName, String txtGender, String txtAvatar, String txtAddress, int roleId, int statusId) {
+            String txtPhone, String txtName, boolean txtGender) {
 
         sql = "INSERT INTO Patient (username, password, email, phone, name, gender, avatar, address, role_id, status_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -115,7 +121,7 @@ public class DAO extends DBHelper {
             st.setString(3, txtEmail);
             st.setString(4, txtPhone);
             st.setString(5, txtName);
-            st.setString(6, txtGender);
+            st.setBoolean(6, txtGender);
             st.setString(7, "default.jpg");
             st.setString(8, "default address");
             st.setInt(9, 1);
@@ -197,16 +203,16 @@ public class DAO extends DBHelper {
         return false;
     }
 
-    public boolean update_patient(int id, String name, String phone, String gender, String avatar) {
+    public boolean update_patient(int id, String name, String phone, boolean gender, String address) {
 
-        sql = "UPDATE Patient SET name = ?, phone = ?, gender = ?, avatar = ? WHERE patient_id = ?";
+        sql = "UPDATE Patient SET name = ?, phone = ?, gender = ?, address = ? WHERE patient_id = ?";
 
         try {
             st = connection.prepareStatement(sql);
             st.setString(1, name);
             st.setString(2, phone);
-            st.setString(3, gender);
-            st.setString(4, avatar);
+            st.setBoolean(3, gender);
+            st.setString(4, address);
             st.setInt(5, id);
 
             int row = st.executeUpdate();
@@ -221,7 +227,7 @@ public class DAO extends DBHelper {
         return false;
     }
 
-    public boolean update_staff(int id, String name, String phone, String gender, String avatar) {
+    public boolean update_staff(int id, String name, String phone, boolean gender, String avatar) {
 
         sql = "UPDATE Staff SET name = ?, phone = ?, gender = ?, avatar = ? WHERE staff_id = ?";
 
@@ -229,7 +235,7 @@ public class DAO extends DBHelper {
             st = connection.prepareStatement(sql);
             st.setString(1, name);
             st.setString(2, phone);
-            st.setString(3, gender);
+            st.setBoolean(3, gender);
             st.setString(4, avatar);
             st.setInt(5, id);
 
@@ -246,7 +252,7 @@ public class DAO extends DBHelper {
     }
 
     public Account get_patient_by_id(int id) {
-        Account patient = new Account();
+        Account account = new Account();
         sql = "SELECT * "
                 + "FROM Patient "
                 + "WHERE patient_id = ?";
@@ -257,20 +263,20 @@ public class DAO extends DBHelper {
             rs = st.executeQuery();
 
             while (rs.next()) {
-                int account_id = rs.getInt("staff_id");
+                int account_id = rs.getInt("patient_id");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String name = rs.getString("name");
-                String gender = rs.getString("gender");
+                boolean gender = rs.getBoolean("gender");
                 String avatar = rs.getString("avatar");
                 String address = rs.getString("address");
                 int status = rs.getInt("status_id");
                 int role = rs.getInt("role_id");
 
-                Account account = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
-                return patient;
+                account = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
+                return account;
             }
 
         } catch (SQLException e) {
@@ -283,7 +289,7 @@ public class DAO extends DBHelper {
         Account staff = new Account();
         sql = "SELECT * "
                 + "FROM Staff "
-                + "WHERE patient_id = ?";
+                + "WHERE staff_id = ?";
 
         try {
             st = connection.prepareStatement(sql);
@@ -297,13 +303,13 @@ public class DAO extends DBHelper {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String name = rs.getString("name");
-                String gender = rs.getString("gender");
+                boolean gender = rs.getBoolean("gender");
                 String avatar = rs.getString("avatar");
                 String address = rs.getString("address");
                 int status = rs.getInt("status_id");
                 int role = rs.getInt("role_id");
 
-                Account account = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
+                staff = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
                 return staff;
             }
 
@@ -311,10 +317,6 @@ public class DAO extends DBHelper {
         }
 
         return null;
-    }
-
-    public boolean checkExistEmail(String email) {
-        return false;
     }
 
     public ArrayList<Account> get_account_list() {
@@ -335,7 +337,7 @@ public class DAO extends DBHelper {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String name = rs.getString("name");
-                String gender = rs.getString("gender");
+                boolean gender = rs.getBoolean("gender");
                 String avatar = rs.getString("avatar");
                 String address = rs.getString("address");
                 int status = rs.getInt("status_id");
@@ -395,7 +397,7 @@ public class DAO extends DBHelper {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String name = rs.getString("name");
-                String gender = rs.getString("gender");
+                boolean gender = rs.getBoolean("gender");
                 String avatar = rs.getString("avatar");
                 String address = rs.getString("address");
                 int status = rs.getInt("status_id");
@@ -448,7 +450,7 @@ public class DAO extends DBHelper {
             st.setString(3, patient.getEmail());
             st.setString(4, patient.getPhone());
             st.setString(5, patient.getName());
-            st.setString(6, patient.getGender());
+            st.setBoolean(6, patient.getGender());
             st.setString(7, patient.getAvatar());
             st.setString(8, "default address");
             st.setInt(9, 1); // role_id luôn = 1 cho bệnh nhân
@@ -684,4 +686,56 @@ public class DAO extends DBHelper {
         return false;
     }
 
+    public boolean update_patient_avatar(String username, String avatar) {
+        sql = "UPDATE Patient "
+                + "SET avatar = ? "
+                + "WHERE username = ?";
+        try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, avatar);
+            st.setString(2, username);
+
+            int rowsUpdated = st.executeUpdate();
+            if (rowsUpdated > 0) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean reset_password(String email, String password) {
+        sql1 = "UPDATE Patient "
+                + "SET password = ? "
+                + "WHERE email = ? ";
+        sql2 = "UPDATE Patient "
+                + "SET password = ? "
+                + "WHERE email = ? ";
+        try {
+            st1 = connection.prepareStatement(sql1);
+            st1.setString(1, password);
+            st1.setString(2, email);
+            st2 = connection.prepareStatement(sql2);
+            st2.setString(1, password);
+            st2.setString(2, email);
+
+            int rowsUpdated1 = st1.executeUpdate();
+            int rowsUpdated2 = st2.executeUpdate();
+            if (rowsUpdated1 > 0 || rowsUpdated2 > 0) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        DAO dao = new DAO();
+        boolean check = dao.reset_password("duchinh0306@gmail.com", "1");
+        System.out.println(check);
+    }
 }

@@ -1,59 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-    <servlet>
-        <servlet-name>TestServlet</servlet-name>
-        <servlet-class>Servlet.TestServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>VerifyServlet</servlet-name>
-        <servlet-class>Servlet.VerifyServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Test2</servlet-name>
-        <servlet-class>Servlet.Test2</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SendEmailServlet</servlet-name>
-        <servlet-class>Servlet.SendEmailServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>NotiSerlvet</servlet-name>
-        <servlet-class>Servlet.NotiSerlvet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>NotiServlet</servlet-name>
-        <servlet-class>Servlet.NotiServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TestServlet</servlet-name>
-        <url-pattern>/Test</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>VerifyServlet</servlet-name>
-        <url-pattern>/Verify</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Test2</servlet-name>
-        <url-pattern>/Test2</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SendEmailServlet</servlet-name>
-        <url-pattern>/SendVerify</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>NotiSerlvet</servlet-name>
-        <url-pattern>/NotiSerlvet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>NotiServlet</servlet-name>
-        <url-pattern>/Noti</url-pattern>
-    </servlet-mapping>
+    
     <session-config>
         <session-timeout>
-            15
+            30
         </session-timeout>
     </session-config>
+    
     <welcome-file-list>
         <welcome-file>Home</welcome-file>
     </welcome-file-list>
+    
 </web-app>

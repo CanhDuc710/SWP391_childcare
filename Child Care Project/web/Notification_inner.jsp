@@ -74,7 +74,7 @@
             <section class="inner-page">
                 <div class="container">
                     <div class="image">
-                        <img alt="noti image" style="" src="${IMG}" /> 
+                        <img alt="noti image" style="width: 200px; margin-bottom: 30px;" src="assets/img/${IMG}" /> 
                     </div>
                     <div class="content">
                         <h1>${MESSAGE}</h1>

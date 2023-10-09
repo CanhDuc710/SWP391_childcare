@@ -4,156 +4,176 @@
  */
 package Servlet;
 
+import Model.Account;
 import dal.DAO;
 import dal.VALID;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import Model.*;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
  * @author duchi
  */
+@WebServlet(name = "UpdateServlet", urlPatterns = {"/Update"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 5, // 5MB
+        maxRequestSize = 1024 * 1024 * 50)
 public class UpdateServlet extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet UpdateServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet UpdateServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.setAttribute("IMG", "error.gif");
+        request.setAttribute("MESSAGE", "Invalid Request");
+        request.setAttribute("MESSAGE2", "<a href='Home'> Back</a> to Homepage.");
+        RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+        rd.forward(request, response);
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
+    private static final String user_avatar_folder = "user\\";
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAO dao = new DAO();
         VALID valid = new VALID();
         HttpSession session = request.getSession();
-
-        String action = request.getParameter("action");
-
-        //update information
-        if (action.equalsIgnoreCase("save changes")) {
-            Account update = new Account();
-            int id = Integer.parseInt(request.getParameter("txtID"));
-            String first_email = request.getParameter("email_first");
-            String first_phone = request.getParameter("phone_first");
-
-            String name = request.getParameter("txtUpdateName");
-            String phone = request.getParameter("txtUpdatePhone");
-
-            boolean check = true;
-            //kiem tra mail exist
-            //kiem tra phone exist,length,format
-            if (!first_phone.equals(phone)) {
-                if (valid.valid_phone(phone)) {
-                    check = false;
-                    request.setAttribute("EMAIL_SEND", "Phone invalid. please try again.");
+        PrintWriter out = response.getWriter();
+        
+        String updateType = request.getParameter("txtUpdateType");
+        
+        if (updateType != null) {
+            if (updateType.equalsIgnoreCase("avatar")) {
+                
+                int id = Integer.parseInt(request.getParameter("txtID"));
+                String username = request.getParameter("txtUsername");
+                
+                String savePath = "C:\\Users\\duchi\\Desktop\\SWP391_childcare\\Child Care Project\\web\\assets\\img\\" + File.separator + user_avatar_folder + username; //specify your path here
+                File fileSaveDir = new File(savePath);
+                if (!fileSaveDir.exists()) {
+                    fileSaveDir.mkdir();
                 }
-            }
+                Part part = request.getPart("fileAvatar");
+                String timeStamp = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
+                String fileName = "user-avatar-" + request.getParameter("txtUsername") + "_" + timeStamp + ".jpg";
+                part.write(savePath + File.separator + fileName);
+                boolean update = dao.update_patient_avatar(username, fileName);
+                if (update) {
+                    Account account = dao.get_patient_by_id(id);
+                    session.setAttribute("ACCOUNT", account);
+                    
+                    try {
+                        Thread.sleep(1500);
+                    } catch (Exception e) {
+                    }
+                    
+                    response.sendRedirect("Account");
 
-//            if (check) {
-//                boolean updateCheck = dao.update_patient(id, name, email, phone);
-//                if (updateCheck) {
-//
-//                    request.setAttribute("EMAIL_SEND", "Updated Successfully.");
-//                } else {
-//                    request.setAttribute("EMAIL_SEND", "Updated Failed. Please try again.");
-//                }
-//            }
-
-            update = dao.get_patient_by_id(id);
-            session.setAttribute("ACCOUNT", update);
-            request.setAttribute("LOGIN_ACCOUNT", update);
-
-            RequestDispatcher rd = request.getRequestDispatcher("Account.jsp");
-            rd.forward(request, response);
-
-        }
-
-        //change password
-        if (action.equalsIgnoreCase("changePassword")) {
-            int id = Integer.parseInt(request.getParameter("txtID"));
-            String old = request.getParameter("old_password");
-            String change = request.getParameter("change_password");
-            String confirm = request.getParameter("confirm_password");
-
-            Account patient = dao.get_patient_by_id(id);
-
-            if (patient.getPassword().equals(old)) {
-                if (valid.valid_password(change)) {
-                    if (change.equals(confirm)) {
-                        boolean check = dao.change_patient_password(id, change);
-
-                        if (check) {
-                            request.setAttribute("CHANGE_MESSAGE", "Updated Successfully.");
+//                    request.setAttribute("UPDATE_VALID", "Updated Successfully");
+//                    RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
+//                    rd.forward(request, response);
+                } else {
+                    Account account = dao.get_patient_by_id(id);
+                    request.setAttribute("ACCOUNT", account);
+                    RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
+                    rd.forward(request, response);
+                }
+                
+            } else if (updateType.equalsIgnoreCase("information")) {
+                int id = Integer.parseInt(request.getParameter("txtID"));
+                String phone = request.getParameter("txtPhone");
+                String name = request.getParameter("txtName");
+                String firstPhone = request.getParameter("txtPhone1");
+                String address = request.getParameter("txtAddress");
+                
+                boolean gender = false;
+                String txtGender = request.getParameter("txtGender");
+                if (txtGender != null && txtGender.equals("Male")) {
+                    gender = true;
+                } else if (txtGender != null && txtGender.equals("Female")) {
+                    gender = false;
+                }
+                
+                boolean check = false;
+                
+                if (firstPhone.equalsIgnoreCase(phone)) {
+                    check = true;
+                } else {
+                    if (valid.valid_phone(phone)) {
+                        if (!valid.exist_phone(phone)) {
+                            check = true;
                         } else {
-                            request.setAttribute("CHANGE_MESSAGE", "Update failed.");
+                            request.setAttribute("UPDATE_VALID", "Phone number is existed.");
                         }
-
                     } else {
-                        request.setAttribute("CHANGE_MESSAGE", "Confirm password not matched.");
+                        request.setAttribute("UPDATE_VALID", "Phone number is wrong format.");
+                    }
+                }
+                
+                if (check) {
+                    boolean update = dao.update_patient(id, name, phone, gender, address);
+                    if (update) {
+                        Account account = dao.get_patient_by_id(id);
+                        session.setAttribute("ACCOUNT", account);
+                        
+                        request.setAttribute("UPDATE_VALID", "Updated Successfully");
+                        RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
+                        rd.forward(request, response);
                     }
                 } else {
-                    request.setAttribute("CHANGE_MESSAGE", "Password must be 6-30 alphanumberic.");
+                    Account account = dao.get_patient_by_id(id);
+                    request.setAttribute("ACCOUNT", account);
+                    RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
+                    rd.forward(request, response);
                 }
+                
+            } else if (updateType.equalsIgnoreCase("password")) {
+//              update password
             } else {
-                request.setAttribute("CHANGE_MESSAGE", "Old password is not correct.");
+                request.setAttribute("IMG", "error.gif");
+                request.setAttribute("MESSAGE", "Invalid Request");
+                request.setAttribute("MESSAGE2", "<a href='Home'> Back</a> to Homepage.");
+                RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                rd.forward(request, response);
             }
-            ;
-            request.setAttribute("LOGIN_ACCOUNT", patient);
-            request.setAttribute("password1", old);
-            request.setAttribute("password2", change);
-            request.setAttribute("password3", confirm);
-            request.getRequestDispatcher("Account.jsp").forward(request, response);
+        } else {
+            request.setAttribute("IMG", "error.gif");
+            request.setAttribute("MESSAGE", "Invalid Request");
+            request.setAttribute("MESSAGE2", "<a href='Home'> Back</a> to Homepage.");
+            RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+            rd.forward(request, response);
         }
-
+        
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+    
+    private String extractFileName(Part part) {
+        String contentDisp = part.getHeader("content-disposition");
+        String[] items = contentDisp.split(";");
+        for (String s : items) {
+            if (s.trim().startsWith("filename")) {
+                return s.substring(s.indexOf("=") + 2, s.length() - 1);
+            }
+        }
+        return "";
+    }
+    
     @Override
     public String getServletInfo() {
         return "Short description";

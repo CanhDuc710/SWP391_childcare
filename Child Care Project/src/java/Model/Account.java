@@ -16,7 +16,7 @@ public class Account {
     private String email;
     private String phone;
     private String name;
-    private String gender;
+    private boolean gender;
     private String avatar;
     private String address;
     private int roleId;
@@ -26,7 +26,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(int accountId, String username, String password, String email, String phone, String name, String gender, String avatar, String address, int roleId, int statusId) {
+    public Account(int accountId, String username, String password, String email, String phone, String name, boolean gender, String avatar, String address, int roleId, int statusId) {
         this.accountId = accountId;
         this.username = username;
         this.password = password;
@@ -88,11 +88,11 @@ public class Account {
         this.name = name;
     }
 
-    public String getGender() {
+    public boolean getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
 

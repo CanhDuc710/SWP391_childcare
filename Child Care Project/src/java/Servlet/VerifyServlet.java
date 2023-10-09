@@ -10,6 +10,7 @@ import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,8 +32,9 @@ import javax.mail.internet.MimeMessage;
  *
  * @author duchi
  */
+@WebServlet(name = "VerifyServlet", urlPatterns = {"/Verify"})
 public class VerifyServlet extends HttpServlet {
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -49,7 +51,7 @@ public class VerifyServlet extends HttpServlet {
             out.println("</html>");
         }
     }
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -73,7 +75,7 @@ public class VerifyServlet extends HttpServlet {
                     // Nếu có lỗi, id không phải là số nguyên hợp lệ
                     integer = false;
                 }
-
+                
                 if (integer) {
                     // lay ra model email va cac tham so
                     EmailVerify object = dao.Get_Verify_Email_DateTime(email, Integer.parseInt(id));
@@ -81,87 +83,87 @@ public class VerifyServlet extends HttpServlet {
                         int type = object.getType();
                         Timestamp end = object.getEnd();
                         int status = object.getStatus();
-
+                        
                         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-
+                        
                         if (type == 1) {// 1 is register confirmation
                             if (currentTime.before(end) && status != 0) {
                                 boolean check = dao.update_emailVerify_status(email, Integer.parseInt(id));
                                 if (check) {
                                     boolean check1 = dao.Change_status_account(email, 2);
-                                    request.setAttribute("MESSAGE", "Verify Successfully.");
+                                    request.setAttribute("IMG", "success.gif");
+                                    request.setAttribute("MESSAGE", "<p style='color: green;'>Verify Successful</p>");
                                     request.setAttribute("MESSAGE2", "Please <a href='Login'> login</a> using username and password.");
                                     RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
                                     rd.forward(request, response);
                                 } else {
+                                    request.setAttribute("IMG", "error.gif");
                                     request.setAttribute("MESSAGE", "Verify Failed.");
                                     request.setAttribute("MESSAGE2", "Please try again.");
                                     RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
                                     rd.forward(request, response);
                                 }
                             } else {
-                                request.setAttribute("MESSAGE", "Your Verification Is Expired");
+                                request.setAttribute("IMG", "warning.gif");
+                                request.setAttribute("MESSAGE", "<p style='color: yellow;'>Your Verification Is Expired</p>");
                                 request.setAttribute("MESSAGE2", "Please Re-send Or Check Again.");
                                 RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
                                 rd.forward(request, response);
                             }
                         } else if (type == 2) { // 2 is reset password
                             if (currentTime.before(end) && status != 0) {
-                                boolean check = false;
-                                if (check) {
-
-                                    request.setAttribute("MESSAGE", "serlet dan den trang jsp reset password nhung chua hoan");
-                                    RequestDispatcher rd = request.getRequestDispatcher("test.jsp");
-                                    rd.forward(request, response);
-                                } else {
-                                    request.setAttribute("MESSAGE", "Reset password redirect Failed.");
-                                    request.setAttribute("MESSAGE2", "Please try again.");
-                                    RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
-                                    rd.forward(request, response);
-                                }
+                                //chuyen huong den trang cho phep nguoi dung dat lai mat khau
+                                request.setAttribute("EMAIL", email);
+                                RequestDispatcher rd = request.getRequestDispatcher("ResetPassword_inner.jsp");
+                                rd.forward(request, response);
                             } else {
-                                request.setAttribute("MESSAGE", "Your Reset Email Is Expired");
+                                request.setAttribute("IMG", "warning.gif");
+                                request.setAttribute("MESSAGE", "<p style='color: yellow;'>Your Verification Is Expired</p>");
                                 request.setAttribute("MESSAGE2", "Please Re-send Or Check Again.");
                                 RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
                                 rd.forward(request, response);
                             }
                         }
                     } else { //kiem tra oject email verify lay ra co null hay khong
+                        request.setAttribute("IMG", "error.gif");
                         request.setAttribute("MESSAGE", "Invalid Request");
                         request.setAttribute("MESSAGE2", "<a href='Home'> Back</a> to Homepage.");
                         RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
                         rd.forward(request, response);
                     }
                 } else { // kiem tra decodeid co phai la integer hay khong
+                    request.setAttribute("IMG", "error.gif");
                     request.setAttribute("MESSAGE", "Invalid Request");
                     request.setAttribute("MESSAGE2", "<a href='Home'> Back</a> to Homepage.");
                     RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
                     rd.forward(request, response);
                 }
             } else { //kiem tra decode email va decode id
+                request.setAttribute("IMG", "error.gif");
                 request.setAttribute("MESSAGE", "Invalid Request");
                 request.setAttribute("MESSAGE2", "<a href='Home'> Back</a> to Homepage.");
                 RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
                 rd.forward(request, response);
             }
         } catch (Exception e) {  //kiem tra xem encode email va encode id co dung base64 hay khong
+            request.setAttribute("IMG", "error.gif");
             request.setAttribute("MESSAGE", "Invalid Request");
             request.setAttribute("MESSAGE2", "<a href='Home'> Back</a> to Homepage.");
             RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
             rd.forward(request, response);
         }
-
+        
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
     }
-
+    
     @Override
     public String getServletInfo() {
         return "Short description";
     }
-
+    
 }

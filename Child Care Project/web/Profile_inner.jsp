@@ -8,7 +8,7 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>Inner Page - Medicio Bootstrap Template</title>
+        <title>Account</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
@@ -58,10 +58,10 @@
                 <div class="container">
 
                     <div class="d-flex justify-content-between align-items-center">
-                        <h2>Inner Page</h2>
+                        <h2><a href="Login" >Profile</a></h2>
                         <ol>
-                            <li><a href="index.html">Home</a></li>
-                            <li>Inner Page</li>
+                            <li><a href="Home">Home</a></li>
+                            <li>Login</li>
                         </ol>
                     </div>
 
