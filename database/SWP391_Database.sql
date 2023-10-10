@@ -96,6 +96,7 @@ CREATE TABLE Service (
 	status_id INT NULL
     FOREIGN KEY (category_id) REFERENCES Service_category(category_id)
 );
+
 -- Tạo bảng Post_category
 CREATE TABLE Post_category (
     post_category_id INT PRIMARY KEY,
@@ -107,7 +108,6 @@ CREATE TABLE Post_category (
 CREATE TABLE Post (
     post_id INT IDENTITY(1,1) PRIMARY KEY,
     title NVARCHAR(200) NULL,
-    short NVARCHAR(100) NULL,
     author_id INT NULL,
     updated_date DATETIME NULL,
     detail NVARCHAR(MAX) NULL,
@@ -128,7 +128,7 @@ CREATE TABLE Slot (
 
 -- Tạo bảng Reservation
 CREATE TABLE Reservation (
-    reservation_id INT IDENTITY(1,1) PRIMARY KEY,
+    reservation_id INT PRIMARY KEY,
     slot_id INT NULL,
     patient_id INT NULL,
     staff_id INT NULL,
@@ -143,7 +143,7 @@ CREATE TABLE Reservation (
 
 -- Tạo bảng Reservation_detail
 CREATE TABLE Reservation_detail (
-    reservation_detail_id INT IDENTITY(1,1) PRIMARY KEY,
+    reservation_detail_id INT PRIMARY KEY,
     reservation_id INT NULL,
     service_id INT NULL,
     quantity INT NULL,
@@ -162,6 +162,20 @@ CREATE TABLE EmailVerification (
 	type int NULL,
     status int Null
 );
+
+-- Tạo bảng Feedback
+CREATE TABLE Feedback (
+    feedback_id INT IDENTITY(1,1) PRIMARY KEY,
+	service_id INT NULL,
+	patient_id INT NULL,
+    rate INT NULL,
+	title NVARCHAR(255) NULL,
+	detail NVARCHAR(MAX) NULL,
+	update_date DATETIME NULL,
+	FOREIGN KEY (service_id) REFERENCES Service(service_id),
+	FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)
+);
+
 
 -- Thêm dữ liệu vào bảng Role
 INSERT INTO [dbo].[Role] ([role_name]) VALUES
@@ -188,8 +202,8 @@ INSERT INTO Staff ( username, password, email, phone, name, gender, avatar, addr
 INSERT INTO Patient (username, password, email, phone, name, gender, avatar, address,role_id, status_id) VALUES 
 ( N'p1', N'123', N'patient1@example.com', N'1111111111', N'Patient 1', 1,N'default.jpg',N'address default', 1, 1), -- inactive
 ( N'p2', N'123', N'patient2@example.com', N'2222222222', N'Patient 2', 0,N'default.jpg',N'address default', 1, 2), -- Active
-( N'p3', N'123', N'patient3@example.com', N'3333333333', N'Patient 3', 1,N'default.jpg',N'address default', 1, 3), -- Suspended
-( N'duchinh0306', N'123', N'duchinh0306@gmail.com', N'4444444444', N'Nguyen D D Chinh', 1,N'default.jpg',N'address default', 1, 1)
+( N'p3', N'123', N'patient3@example.com', N'3333333333', N'Patient 3', 1,N'default.jpg',N'address default', 1, 3) -- Suspended
+
 
 -- Chèn dữ liệu vào bảng category
 INSERT INTO Service_category( name, detail)
@@ -216,6 +230,26 @@ VALUES
 (3, 'vaccine1.jpg', 'Flu Vaccination', 'Annual flu vaccination to prevent influenza.', 40.00, 0.00, 0),
 (3, 'vaccine2.jpg', 'Childhood Vaccination', 'Routine vaccinations for children as per vaccination schedule.', 55.00, 0.00, 1),
 (3, 'vaccine3.jpg', 'Travel Vaccination', 'Vaccinations required for travel to specific regions.', 70.00, 0.00, 1);
+
+
+-- Thêm feedback 
+INSERT INTO Feedback (service_id, patient_id, rate, title, detail, update_date)
+VALUES
+-- Dịch vụ từ ID 1 đến 3 (Health Consultation)
+(1, 1, 5, 'Excellent Service', 'The health checkup was thorough and professional.','10-10-23'),
+(2, 1, 4, 'Good Diet Advice', 'The diet advice was helpful and personalized.','10-10-23'),
+(3, 1, 3, 'Average Fitness Program', 'The fitness program was okay, could be more tailored to my needs.','10-10-23'),
+
+-- Dịch vụ từ ID 4 đến 6 (Medical Examination)
+(4, 1, 5, 'Comprehensive Medical Examination', 'The medical examination covered all aspects of my health.','10-10-23'),
+(5, 1, 4, 'Accurate Blood Tests', 'The blood tests were accurate and results were delivered promptly.','10-10-23'),
+(6, 1, 3, 'X-ray Service', 'The X-ray service was satisfactory, no issues reported.','10-10-23'),
+
+-- Dịch vụ từ ID 7 đến 9 (Vaccination)
+(7, 1, 5, 'Flu Vaccination', 'The flu vaccination was administered efficiently.','10-10-23'),
+(8, 1, 4, 'Childhood Vaccination', 'My child received the vaccinations as scheduled, no complaints.','10-10-23'),
+(9, 1, 3, 'Travel Vaccination', 'The travel vaccinations were done adequately, but the waiting time was long.','10-10-23');
+GO
 
 GO
 ALTER DATABASE SWP391_Database SET MULTI_USER

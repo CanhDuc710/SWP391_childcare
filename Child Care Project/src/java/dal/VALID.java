@@ -56,7 +56,7 @@ public class VALID {
 
     public boolean valid_password(String password) {
 
-        String regex = "^(?=.*[0-9])(?=.*[a-zA-Z]).{6,15}$";
+        String regex = "^(?=.*[0-9])(?=.*[a-zA-Z]).{6,20}$";
         return password.matches(regex);
     }
 

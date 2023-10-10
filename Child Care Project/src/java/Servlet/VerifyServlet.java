@@ -112,8 +112,9 @@ public class VerifyServlet extends HttpServlet {
                             }
                         } else if (type == 2) { // 2 is reset password
                             if (currentTime.before(end) && status != 0) {
-                                //chuyen huong den trang cho phep nguoi dung dat lai mat khau
-                                request.setAttribute("EMAIL", email);
+                                
+                                request.setAttribute("ID", id);
+                                request.setAttribute("USER_EMAIL", email);
                                 RequestDispatcher rd = request.getRequestDispatcher("ResetPassword_inner.jsp");
                                 rd.forward(request, response);
                             } else {

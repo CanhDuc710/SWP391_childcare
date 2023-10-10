@@ -5,6 +5,7 @@
 package Servlet;
 
 import Model.Account;
+import Model.EmailVerify;
 import dal.DAO;
 import dal.VALID;
 import jakarta.servlet.RequestDispatcher;
@@ -36,7 +37,7 @@ import java.util.Date;
         maxFileSize = 1024 * 1024 * 5, // 5MB
         maxRequestSize = 1024 * 1024 * 50)
 public class UpdateServlet extends HttpServlet {
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -46,9 +47,9 @@ public class UpdateServlet extends HttpServlet {
         RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
         rd.forward(request, response);
     }
-    
+
     private static final String user_avatar_folder = "user\\";
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,15 +57,15 @@ public class UpdateServlet extends HttpServlet {
         VALID valid = new VALID();
         HttpSession session = request.getSession();
         PrintWriter out = response.getWriter();
-        
+
         String updateType = request.getParameter("txtUpdateType");
-        
+
         if (updateType != null) {
             if (updateType.equalsIgnoreCase("avatar")) {
-                
+
                 int id = Integer.parseInt(request.getParameter("txtID"));
                 String username = request.getParameter("txtUsername");
-                
+
                 String savePath = "C:\\Users\\duchi\\Desktop\\SWP391_childcare\\Child Care Project\\web\\assets\\img\\" + File.separator + user_avatar_folder + username; //specify your path here
                 File fileSaveDir = new File(savePath);
                 if (!fileSaveDir.exists()) {
@@ -78,12 +79,12 @@ public class UpdateServlet extends HttpServlet {
                 if (update) {
                     Account account = dao.get_patient_by_id(id);
                     session.setAttribute("ACCOUNT", account);
-                    
+
                     try {
                         Thread.sleep(1500);
                     } catch (Exception e) {
                     }
-                    
+
                     response.sendRedirect("Account");
 
 //                    request.setAttribute("UPDATE_VALID", "Updated Successfully");
@@ -95,14 +96,14 @@ public class UpdateServlet extends HttpServlet {
                     RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
                     rd.forward(request, response);
                 }
-                
+
             } else if (updateType.equalsIgnoreCase("information")) {
                 int id = Integer.parseInt(request.getParameter("txtID"));
                 String phone = request.getParameter("txtPhone");
                 String name = request.getParameter("txtName");
                 String firstPhone = request.getParameter("txtPhone1");
                 String address = request.getParameter("txtAddress");
-                
+
                 boolean gender = false;
                 String txtGender = request.getParameter("txtGender");
                 if (txtGender != null && txtGender.equals("Male")) {
@@ -110,9 +111,9 @@ public class UpdateServlet extends HttpServlet {
                 } else if (txtGender != null && txtGender.equals("Female")) {
                     gender = false;
                 }
-                
+
                 boolean check = false;
-                
+
                 if (firstPhone.equalsIgnoreCase(phone)) {
                     check = true;
                 } else {
@@ -126,13 +127,13 @@ public class UpdateServlet extends HttpServlet {
                         request.setAttribute("UPDATE_VALID", "Phone number is wrong format.");
                     }
                 }
-                
+
                 if (check) {
                     boolean update = dao.update_patient(id, name, phone, gender, address);
                     if (update) {
                         Account account = dao.get_patient_by_id(id);
                         session.setAttribute("ACCOUNT", account);
-                        
+
                         request.setAttribute("UPDATE_VALID", "Updated Successfully");
                         RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
                         rd.forward(request, response);
@@ -143,9 +144,54 @@ public class UpdateServlet extends HttpServlet {
                     RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
                     rd.forward(request, response);
                 }
-                
+
             } else if (updateType.equalsIgnoreCase("password")) {
-//              update password
+
+                String password = request.getParameter("txtPassword");
+                String confirm = request.getParameter("txtConfirm");
+                String resetEmail = request.getParameter("txtEmail");
+                String id = request.getParameter("txtID");
+
+                boolean change = false;
+                if (password.equals(confirm)) {
+                    if (valid.valid_password(password)) {
+                        EmailVerify check = dao.Get_Verify_Email_DateTime(resetEmail, Integer.parseInt(id));
+                        if (check != null && check.getStatus() != 0) {
+                            boolean ok = dao.reset_password(resetEmail, password);
+                            if (ok) {
+                                dao.update_emailVerify_status(resetEmail, Integer.parseInt(id));
+                                request.setAttribute("IMG", "success.gif");
+                                request.setAttribute("MESSAGE", "Done");
+                                request.setAttribute("MESSAGE2", "<a href='Login'> Back</a> to Login.");
+                                RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                                rd.forward(request, response);
+                            } else {
+                                request.setAttribute("IMG", "error.gif");
+                                request.setAttribute("MESSAGE", "Failed. Please Try Again");
+                                request.setAttribute("MESSAGE2", "<a href='Login'> Back</a> to Login.");
+                                RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                                rd.forward(request, response);
+                            }
+                        } else {
+                            request.setAttribute("IMG", "error.gif");
+                            request.setAttribute("MESSAGE", "Failed. Please Try Again");
+                            request.setAttribute("MESSAGE2", "<a href='Login'> Back</a> to Login.");
+                            RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                            rd.forward(request, response);
+                        }
+                    } else {
+                        request.setAttribute("USER_EMAIL", resetEmail);
+                        request.setAttribute("MESSAGE", "Invalid Password Format: both letter and number (6-20)");
+                        RequestDispatcher rd = request.getRequestDispatcher("include/reset_password_include.jsp");
+                        rd.forward(request, response);
+                    }
+                } else {
+                    request.setAttribute("USER_EMAIL", resetEmail);
+                    request.setAttribute("MESSAGE", "Passwords do not match");
+                    RequestDispatcher rd = request.getRequestDispatcher("include/reset_password_include.jsp");
+                    rd.forward(request, response);
+                }
+
             } else {
                 request.setAttribute("IMG", "error.gif");
                 request.setAttribute("MESSAGE", "Invalid Request");
@@ -160,9 +206,9 @@ public class UpdateServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
             rd.forward(request, response);
         }
-        
+
     }
-    
+
     private String extractFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
         String[] items = contentDisp.split(";");
@@ -173,7 +219,7 @@ public class UpdateServlet extends HttpServlet {
         }
         return "";
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";

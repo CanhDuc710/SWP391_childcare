@@ -159,31 +159,9 @@ public class DAO extends DBHelper {
         return false;
     }
 
-    public boolean change_patient_password(int id, String password) {
+    public boolean update_password(int id, String password) {
 
         sql = "UPDATE Patient "
-                + "SET password = ? "
-                + "WHERE patient_id = ?";
-
-        try {
-            st = connection.prepareStatement(sql);
-            st.setString(1, password);
-            st.setInt(2, id);
-            int row = st.executeUpdate();
-
-            if (row > 0) {
-                return true;
-            }
-
-        } catch (SQLException e) {
-        }
-
-        return false;
-    }
-
-    public boolean change_staff_password(int id, String password) {
-
-        sql = "UPDATE Staff "
                 + "SET password = ? "
                 + "WHERE patient_id = ?";
 
@@ -260,6 +238,40 @@ public class DAO extends DBHelper {
         try {
             st = connection.prepareStatement(sql);
             st.setInt(1, id);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                int account_id = rs.getInt("patient_id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String name = rs.getString("name");
+                boolean gender = rs.getBoolean("gender");
+                String avatar = rs.getString("avatar");
+                String address = rs.getString("address");
+                int status = rs.getInt("status_id");
+                int role = rs.getInt("role_id");
+
+                account = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
+                return account;
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return null;
+    }
+
+    public Account get_patient_by_email(String Enteremail) {
+        Account account = new Account();
+        sql = "SELECT * "
+                + "FROM Patient "
+                + "WHERE email = ?";
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, Enteremail);
             rs = st.executeQuery();
 
             while (rs.next()) {
@@ -516,103 +528,205 @@ public class DAO extends DBHelper {
     }
 
     public boolean Send_Verify_Email(String email, String template, int type) throws UnsupportedEncodingException {
-        // Đọc nội dung từ file template
-        String templateContent = template;
-        int id = -1;
-        // Tạo nội dung HTML cho email
-        String originalLink = "http://localhost:8080/Child_Care_Project/Verify";
 
-        // Mã hóa email
-        String encodedEmail = Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
-
-        //Lay Account
-        Account user = null;
-        ArrayList<Account> list = get_account_list();
-        for (Account account : list) {
-            if (account.getEmail().equals(email)) {
-                user = account;
-                break; // Đã tìm thấy tài khoản, thoát khỏi vòng lặp
-            }
-        }
-        String encodedID = "";
-        if (user != null) {
-            //Ma hoa ID
-            id = add_email_verify_valid(email, type);
-            encodedID = Base64.getUrlEncoder().encodeToString(String.valueOf(id).getBytes(StandardCharsets.UTF_8));
-        }
-
-        String userN = "";
-        String userP = "";
-        String link = "http://localhost:8080/Child_Care_Project/";
-        boolean send = false;
-        if (user != null) {
-
-            send = true;
-            userN = user.getUsername();
-            userP = user.getPhone();
-            link = originalLink + "?encodedEmail=" + encodedEmail + "&encodedID=" + encodedID;
-        }
-
-        // Thông tin tài khoản email
-        String username = "duchinh03061@gmail.com";
-        String password = "ygdiuklubcwheyur";
-
-        // Cấu hình SMTP server và thông tin cổng
-        String host = "smtp.gmail.com";
-        int port = 587;
-
-        // Cấu hình các thuộc tính kết nối
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", port);
-
-        // Tạo đối tượng Session để xác thực truy cập SMTP server
-        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
-            }
-        });
-
-        try {
-            // Tạo đối tượng MimeMessage
-            MimeMessage message = new MimeMessage(session);
-
-            // Thiết lập thông tin người gửi
-            message.setFrom(new InternetAddress(username));
-
-            // Thiết lập thông tin người nhận
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-
-            // Thiết lập tiêu đề email
-            message.setSubject("Verification Email FROM SWP391 Project");
+        if (type == 1) {
+            // Đọc nội dung từ file template
+            String templateContent = template;
+            int id = -1;
+            // Tạo nội dung HTML cho email
+            String originalLink = "http://localhost:8080/Child_Care_Project/Verify";
 
             // Mã hóa email
-            // String encodedEmail = Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
-            // Thay thế các placeholder trong template bằng dữ liệu thực tế
-            String emailContent = templateContent.replace("{{username}}", userN)
-                    .replace("{{email}}", email)
-                    .replace("{{phone}}", userP)
-                    .replace("{{link}}", link)
-                    .replace("{{link}}", link)
-                    .replace("{{Title}}", "Please Verify Your Email.");
+            String encodedEmail = Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
 
-            // Thiết lập nội dung email dưới dạng HTML với encoding UTF-8
-            message.setContent(emailContent, "text/html; charset=UTF-8");
-
-            // Gửi email
-            if (send && id != -1) {
-                Transport.send(message);
-                return true;
-            } else {
-                throw new MessageRemovedException("The Email Didn't Exists.");
+            //Lay Account
+            Account user = null;
+            ArrayList<Account> list = get_account_list();
+            for (Account account : list) {
+                if (account.getEmail().equals(email)) {
+                    user = account;
+                    break; // Đã tìm thấy tài khoản, thoát khỏi vòng lặp
+                }
+            }
+            String encodedID = "";
+            if (user != null) {
+                //Ma hoa ID
+                id = add_email_verify_valid(email, type);
+                encodedID = Base64.getUrlEncoder().encodeToString(String.valueOf(id).getBytes(StandardCharsets.UTF_8));
             }
 
-        } catch (MessagingException e) {
-            e.printStackTrace();
+            String userN = "";
+            String userP = "";
+            String link = "http://localhost:8080/Child_Care_Project/";
+            boolean send = false;
+            if (user != null) {
+
+                send = true;
+                userN = user.getUsername();
+                userP = user.getPhone();
+                link = originalLink + "?encodedEmail=" + encodedEmail + "&encodedID=" + encodedID;
+            }
+
+            // Thông tin tài khoản email
+            String username = "duchinh0306drive@gmail.com";
+            // old:duchinh03061 String password = "ygdiuklubcwheyur";
+            String password = "wcjtcfowhrwqzhto";
+            // Cấu hình SMTP server và thông tin cổng
+            String host = "smtp.gmail.com";
+            int port = 587;
+
+            // Cấu hình các thuộc tính kết nối
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", host);
+            props.put("mail.smtp.port", port);
+
+            // Tạo đối tượng Session để xác thực truy cập SMTP server
+            Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            try {
+                // Tạo đối tượng MimeMessage
+                MimeMessage message = new MimeMessage(session);
+
+                // Thiết lập thông tin người gửi
+                message.setFrom(new InternetAddress(username));
+
+                // Thiết lập thông tin người nhận
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+
+                // Thiết lập tiêu đề email
+                message.setSubject("[SWP391] Confirm your account on SWP391");
+
+                // Mã hóa email
+                // String encodedEmail = Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
+                // Thay thế các placeholder trong template bằng dữ liệu thực tế
+                String emailContent = templateContent.replace("{{username}}", userN)
+                        .replace("{{email}}", email)
+                        .replace("{{link}}", link)
+                        .replace("{{link}}", link)
+                        .replace("{{Title}}", "Please Verify Your Email.");
+
+                // Thiết lập nội dung email dưới dạng HTML với encoding UTF-8
+                message.setContent(emailContent, "text/html; charset=UTF-8");
+
+                // Gửi email
+                if (send && id != -1) {
+                    Transport.send(message);
+                    return true;
+                } else {
+                    throw new MessageRemovedException("The Email Didn't Exists.");
+                }
+
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        } else if (type == 2) {
+            // Đọc nội dung từ file template
+            String templateContent = template;
+            int id = -1;
+            // Tạo nội dung HTML cho email
+            String originalLink = "http://localhost:8080/Child_Care_Project/Verify";
+
+            // Mã hóa email
+            String encodedEmail = Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
+
+            //Lay Account
+            Account user = null;
+            ArrayList<Account> list = get_account_list();
+            for (Account account : list) {
+                if (account.getEmail().equals(email)) {
+                    user = account;
+                    break; // Đã tìm thấy tài khoản, thoát khỏi vòng lặp
+                }
+            }
+            String encodedID = "";
+            if (user != null) {
+                //Ma hoa ID
+                id = add_email_verify_valid(email, type);
+                encodedID = Base64.getUrlEncoder().encodeToString(String.valueOf(id).getBytes(StandardCharsets.UTF_8));
+            }
+
+            String userN = "";
+            String userP = "";
+            String link = "http://localhost:8080/Child_Care_Project/";
+            boolean send = false;
+            if (user != null) {
+
+                send = true;
+                userN = user.getUsername();
+                userP = user.getPhone();
+                link = originalLink + "?encodedEmail=" + encodedEmail + "&encodedID=" + encodedID;
+            }
+
+            // Thông tin tài khoản email
+            String username = "duchinh03061@gmail.com";
+            String password = "ygdiuklubcwheyur";
+
+            // Cấu hình SMTP server và thông tin cổng
+            String host = "smtp.gmail.com";
+            int port = 587;
+
+            // Cấu hình các thuộc tính kết nối
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", host);
+            props.put("mail.smtp.port", port);
+
+            // Tạo đối tượng Session để xác thực truy cập SMTP server
+            Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            try {
+                // Tạo đối tượng MimeMessage
+                MimeMessage message = new MimeMessage(session);
+
+                // Thiết lập thông tin người gửi
+                message.setFrom(new InternetAddress(username));
+
+                // Thiết lập thông tin người nhận
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+
+                // Thiết lập tiêu đề email
+                message.setSubject("[SWP391] Please reset your password");
+
+                // Mã hóa email
+                // String encodedEmail = Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
+                // Thay thế các placeholder trong template bằng dữ liệu thực tế
+                String emailContent = templateContent.replace("{{username}}", userN)
+                        .replace("{{email}}", email)
+                        .replace("{{link}}", link)
+                        .replace("{{link}}", link)
+                        .replace("{{Title}}", "Email For Reset Password.");
+
+                // Thiết lập nội dung email dưới dạng HTML với encoding UTF-8
+                message.setContent(emailContent, "text/html; charset=UTF-8");
+
+                // Gửi email
+                if (send && id != -1) {
+                    Transport.send(message);
+                    return true;
+                } else {
+                    throw new MessageRemovedException("The Email Didn't Exists.");
+                }
+
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        } else {
+
         }
+
         return false;
     }
 
@@ -731,6 +845,56 @@ public class DAO extends DBHelper {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public ArrayList<Feedback> get_feedback_list() {
+        ArrayList<Feedback> list = new ArrayList<>();
+
+        sql = "SELECT * FROM Feedback";
+
+        try {
+            st = connection.prepareCall(sql);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                int feedbackId = rs.getInt("feedback_id");
+                int serviceId = rs.getInt("service_id");
+                int patientId = rs.getInt("patient_id");
+                int rate = rs.getInt("rate");
+                String title = rs.getString("title");
+                String detail = rs.getString("detail");
+                Timestamp update = rs.getTimestamp("update_date");
+
+                Feedback feedback = new Feedback(feedbackId, serviceId, patientId, rate, title, detail, update);
+                list.add(feedback);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public ArrayList<AverageRate> get_average_rate_list() {
+        ArrayList<AverageRate> list = new ArrayList<>();
+
+        sql = "SELECT service_id, AVG(rate) AS averageRate FROM Feedback GROUP BY service_id";
+
+        try {
+            st = connection.prepareCall(sql);
+            rs = st.executeQuery();
+
+            int serviceId = rs.getInt("service_id");
+            double averageRate = rs.getDouble("averageRate");
+
+            AverageRate avgRate = new AverageRate(serviceId, averageRate);
+            list.add(avgRate);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 
     public static void main(String[] args) {
