@@ -66,7 +66,7 @@ public class UpdateServlet extends HttpServlet {
                 int id = Integer.parseInt(request.getParameter("txtID"));
                 String username = request.getParameter("txtUsername");
 
-                String savePath = "C:\\Users\\duchi\\Desktop\\SWP391_childcare\\Child Care Project\\web\\assets\\img\\" + File.separator + user_avatar_folder + username; //specify your path here
+                String savePath = "C:\\Users\\BlackZ36\\Desktop\\SWP391_childcare\\Child Care Project\\web\\assets\\img\\" + File.separator + user_avatar_folder + username; //specify your path here
                 File fileSaveDir = new File(savePath);
                 if (!fileSaveDir.exists()) {
                     fileSaveDir.mkdir();
@@ -81,15 +81,12 @@ public class UpdateServlet extends HttpServlet {
                     session.setAttribute("ACCOUNT", account);
 
                     try {
-                        Thread.sleep(1500);
+                        Thread.sleep(3500);
                     } catch (Exception e) {
                     }
 
                     response.sendRedirect("Account");
 
-//                    request.setAttribute("UPDATE_VALID", "Updated Successfully");
-//                    RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
-//                    rd.forward(request, response);
                 } else {
                     Account account = dao.get_patient_by_id(id);
                     request.setAttribute("ACCOUNT", account);

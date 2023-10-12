@@ -131,6 +131,7 @@ public class LoginServlet extends HttpServlet {
                     RequestDispatcher rd = request.getRequestDispatcher("Home");
                     rd.forward(request, response);
                 } else {
+                    request.setAttribute("username", request.getParameter("txtUsername"));
                     request.setAttribute("LOGIN_VALID", "Please Check Your Email Before Login. Click <a href='SendEmail'>Here</a> to send again.");
                     RequestDispatcher rd = request.getRequestDispatcher("Login_inner.jsp");
                     rd.forward(request, response);

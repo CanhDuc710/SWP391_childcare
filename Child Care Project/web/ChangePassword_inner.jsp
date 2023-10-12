@@ -1,3 +1,6 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +8,7 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>Staff Login</title>
+        <title>Inner Page - Medicio Bootstrap Template</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
@@ -41,6 +44,7 @@
     <body>
 
 
+        <!-- ======= Header ======= -->
         <!-- ======= Top Bar ======= -->
         <jsp:include page="include/topbar_include.jsp" />
 
@@ -55,7 +59,7 @@
                 <div class="container">
 
                     <div class="d-flex justify-content-between align-items-center">
-                        <h2>Staff Login</h2>
+                        <h2><a href="ChangePassword" >Change Password</a></h2>
                         <ol>
                             <li><a href="Home">Home</a></li>
                             <li>Login</li>
@@ -67,17 +71,21 @@
 
             <section class="inner-page">
                 <div class="container">
-                    <p>
-                        <jsp:include page="include/login_include_staff.jsp" />
-                    </p>
+                    <jsp:include page="include/change_password_include.jsp" />
                 </div>
             </section>
 
         </main><!-- End #main -->
 
         <!-- ======= Footer ======= -->
-        <jsp:include page="include/footer_include.jsp" />
+        <jsp:include page="include/footer_include.jsp"/> 
         <!-- End Footer -->
+        <!--notibox-->
+        <c:if test="${NOTIBOX}">
+            <jsp:include page="include/noti-box_include.jsp" />
+        </c:if>
+        <!--notibox end-->
+
 
         <div id="preloader"></div>
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

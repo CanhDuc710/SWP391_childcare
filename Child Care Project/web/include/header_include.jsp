@@ -86,8 +86,8 @@
                                                                                 <li><a href="#">Deep Drop Down 5</a></li>
                                                                             </ul>
                                                                         </li>-->
-                                        <li><a href="#">Change Password</a></li>
-                                        <li><a href="#">My Reservations</a></li>
+                                        <li><a href="ChangePassword">Change Password</a></li>
+                                        <li><a href="Reservation">My Reservations</a></li>
                                         <li><a href="Logout" style="color: red;">Logout</a></li>
                                     </ul>
                                 </li>
