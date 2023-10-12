@@ -230,6 +230,7 @@
 
         <!-- Template Main JS File -->
         <script src="assets/js/main.js"></script>
+        <script src="1script/reload.js"></script>
 
     </body>
 
