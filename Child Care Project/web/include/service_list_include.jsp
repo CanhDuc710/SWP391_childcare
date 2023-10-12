@@ -129,8 +129,14 @@
             }
 
             .product-list .price {
+                color: black ;
+                font-size: 13px;
+                text-decoration: line-through;
+            }
+            
+            .product-list .price-sale {
                 color: #3fbbc0 ;
-                font-size: 15px;
+                font-size: 18px;
             }
 
             .product-list .detail {
@@ -269,34 +275,32 @@
                     <div class="panel-body">
                         <form role="form product-form">
                             <div class="form-group">
-                                <label>Rate</label>
-                                <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
-                                    <option>Wallmart</option>
-                                    <option>Catseye</option>
-                                    <option>Moonsoon</option>
-                                    <option>Textmart</option>
+                                <label>Category</label>
+                                <select id="categorySelect" class="form-control">
+
+                                    <c:forEach var="category" items="${SERVICE_CATEGORY_LIST}">
+                                        <option>${category.name}</option>
+                                    </c:forEach>
+                                        
                                 </select>
-                                <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">Wallmart</span></span>
                             </div>
                             <div class="form-group">
-                                <label>Color</label>
-                                <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
-                                    <option>White</option>
-                                    <option>Black</option>
-                                    <option>Red</option>
-                                    <option>Green</option>
+                                <label>Price</label>
+                                <select id="categorySelect" class="form-control">
+                                    <option>a</option>
+                                    <option>b</option>
+                                    <option>c</option>
+                                    <option>d</option>
                                 </select>
-                                <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">White</span></span>
                             </div>
                             <div class="form-group">
-                                <label>Type</label>
-                                <select class="form-control hasCustomSelect" style="-webkit-appearance: menulist-button; width: 231px; position: absolute; opacity: 0; height: 34px; font-size: 12px;">
-                                    <option>Small</option>
-                                    <option>Medium</option>
-                                    <option>Large</option>
-                                    <option>Extra Large</option>
+                                <label>Rating</label>
+                                <select id="categorySelect" class="form-control">
+                                    <option>a</option>
+                                    <option>b</option>
+                                    <option>c</option>
+                                    <option>d</option>
                                 </select>
-                                <span class="customSelect form-control" style="display: inline-block;"><span class="customSelectInner" style="width: 209px; display: inline-block;">Small</span></span>
                             </div>
                             <button class="btn btn-primary" type="submit">Filter</button>
                         </form>
@@ -340,7 +344,8 @@
                                         </a>
                                     </h3>
                                     <p class="detail">${service.detail}</p>
-                                    <p class="price">$${service.price}</p>
+                                    <p class="price">Price: $${service.price}</p>
+                                    <p class="price-sale"">Price: $${service.price - service.price*service.discount/100}  (${service.discount}%) </p>
                                 </div>
                             </section>
                         </div>
@@ -352,4 +357,5 @@
             </div>
         </div>
     </body>
+
 </html>

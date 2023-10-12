@@ -60,11 +60,6 @@
                         </div>
                     </c:forEach>
                 </div>
-                <div class="button-item active">
-                    <div class="container">
-                        <a href="#about" class="button111 button222">Read More</a>
-                    </div>
-                </div>
             </div>
         </section>
     </body>

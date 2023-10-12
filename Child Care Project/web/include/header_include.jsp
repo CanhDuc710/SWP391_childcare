@@ -42,7 +42,7 @@
 
                 <nav id="navbar" class="navbar order-last order-lg-0">
                     <ul>
-                        <li><a class="nav-link scrollto " href="#hero">Home</a></li>
+                        <li><a class="nav-link scrollto " href="Home">Home</a></li>
                         <!--drop about-->
                         <li><a class="nav-link scrollto" href="Services?show=1">Services</a></li>
                         <li><a class="nav-link scrollto" href="Reservation">Reservation</a></li>

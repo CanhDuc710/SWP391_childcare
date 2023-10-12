@@ -82,7 +82,7 @@
                                 <i class="fas fa-user-md"></i>
                                 <span data-purecounter-start="0" data-purecounter-end="${DOCTOR_COUNT}" data-purecounter-duration="1" class="purecounter"></span>
 
-                                <p><strong>Doctors</strong> dang hoat dong</p>
+                                <p><strong>Doctors</strong> is activating</p>
                                 <a href="Doctor">Find out more &raquo;</a>
                             </div>
                         </div>
@@ -91,8 +91,8 @@
                             <div class="count-box">
                                 <i class="far fa-hospital"></i>
                                 <span data-purecounter-start="0" data-purecounter-end="${SERVICE_COUNT}" data-purecounter-duration="1" class="purecounter"></span>
-                                <p><strong>dich vu</strong> dang hoat dong</p>
-                                <a href="Service">Find out more &raquo;</a>
+                                <p><strong>Services</strong> is activating</p>
+                                <a href="Services">Find out more &raquo;</a>
                             </div>
                         </div>
 
@@ -110,7 +110,7 @@
 
 
             <!-- ======= Testimonials Section ======= -->
-            <section id="testimonials" class="testimonials">
+<!--            <section id="testimonials" class="testimonials">
                 <div class="container" data-aos="fade-up">
 
                     <div class="section-title">
@@ -135,7 +135,7 @@
                                         <h4>${service.serviceId}</h4>
                                     </div>
                                 </div>
-                                <!-- End testimonial item -->
+                                 End testimonial item 
                             </c:forEach>
 
                         </div>
@@ -145,10 +145,10 @@
                     </div>
 
                 </div>
-            </section><!-- End Testimonials Section -->
+            </section> End Testimonials Section -->
 
             <!-- ======= Doctors Section ======= -->
-            <jsp:include page="include/doctor_include.jsp" />
+            <%--<jsp:include page="include/doctor_include.jsp" />--%>
             <!-- End Doctors Section -->
 
 
