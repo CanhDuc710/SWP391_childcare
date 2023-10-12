@@ -42,7 +42,7 @@
 
                 <nav id="navbar" class="navbar order-last order-lg-0">
                     <ul>
-                        <li><a class="nav-link scrollto " href="#hero">Home</a></li>
+                        <li><a class="nav-link scrollto " href="Home">Home</a></li>
                         <!--drop about-->
                         <li><a class="nav-link scrollto" href="Services?show=1">Services</a></li>
                         <li><a class="nav-link scrollto" href="Reservation">Reservation</a></li>
@@ -86,8 +86,8 @@
                                                                                 <li><a href="#">Deep Drop Down 5</a></li>
                                                                             </ul>
                                                                         </li>-->
-                                        <li><a href="#">Change Password</a></li>
-                                        <li><a href="#">My Reservations</a></li>
+                                        <li><a href="ChangePassword">Change Password</a></li>
+                                        <li><a href="Reservation">My Reservations</a></li>
                                         <li><a href="Logout" style="color: red;">Logout</a></li>
                                     </ul>
                                 </li>

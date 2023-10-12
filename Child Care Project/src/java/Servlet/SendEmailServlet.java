@@ -58,10 +58,11 @@ public class SendEmailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String type = request.getParameter("sendType");
-        if (type.equalsIgnoreCase("passwordchange")) {
+        if (type != null && type.equalsIgnoreCase("passwordchange")) {
             RequestDispatcher rd = request.getRequestDispatcher("EnterEmail_password_inner.jsp");
             rd.forward(request, response);
         } else {
+            request.setAttribute("username", request.getParameter("txtUsername"));
             RequestDispatcher rd = request.getRequestDispatcher("EnterEmail_inner.jsp");
             rd.forward(request, response);
         }

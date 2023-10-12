@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStream;
@@ -87,25 +88,25 @@ public class RegisterServlet extends HttpServlet {
                                         check = true;
                                         request.setAttribute("REGISTER_VALID", "moi thong tin da ok");
                                     } else {
-                                        request.setAttribute("REGISTER_VALID", "mat khau khong khop");
+                                        request.setAttribute("REGISTER_VALID", "Both password are not the same.");
                                     }
                                 } else {
-                                    request.setAttribute("REGISTER_VALID", "mat khau khong dung dinh dang");
+                                    request.setAttribute("REGISTER_VALID", "Invalid password format. (6-20 alphanumerics letter.)");
                                 }
                             } else {
-                                request.setAttribute("REGISTER_VALID", "so dien thoai bi turng lap");
+                                request.setAttribute("REGISTER_VALID", "Your entered phone is existed.");
                             }
                         } else {
-                            request.setAttribute("REGISTER_VALID", "so dien thoai khong dung dinh dang");
+                            request.setAttribute("REGISTER_VALID", "Your entered phone is invalid format.(10 numbers)");
                         }
                     } else {
-                        request.setAttribute("REGISTER_VALID", "email da ton tai");
+                        request.setAttribute("REGISTER_VALID", "Your entered email is existed.");
                     }
                 } else {
-                    request.setAttribute("REGISTER_VALID", "username khong dung dinh dang");
+                    request.setAttribute("REGISTER_VALID", "Invalid username format.");
                 }
             } else {
-                request.setAttribute("REGISTER_VALID", "username da ton tai");
+                request.setAttribute("REGISTER_VALID", "Your entered username is existed.");
             }
 
             if (check) {
@@ -127,8 +128,9 @@ public class RegisterServlet extends HttpServlet {
                     // Nội dung email từ tệp tin template
                     String emailTemplate = contentBuilder.toString();
                     dao.Send_Verify_Email(email, emailTemplate, 1);
+
                     request.setAttribute("IMG", "success.gif");
-                    request.setAttribute("MESSAGE", "<p style='color: green;'>Registration Successful</p>");
+                    request.setAttribute("MESSAGE", "<p style='color: green;'>Registration Successfully</p>");
                     request.setAttribute("MESSAGE2", "Click <a href='Login'>here</a> to return to the login page.");
                     RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
                     rd.forward(request, response);

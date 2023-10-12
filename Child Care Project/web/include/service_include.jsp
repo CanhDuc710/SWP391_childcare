@@ -49,7 +49,7 @@
 
                 <div class="section-title">
                     <h2>Services</h2>
-                    <p>danh muc dich cu cua chung toi.</p>
+                    <p>Our Current Services</p>
                 </div>
 
                 <div class="row">
@@ -82,7 +82,7 @@
                 </div>
                 <div class="button-item active">
                     <div class="container">
-                        <a href="#about" class="button111 button222">Read More</a>
+                        <a href="Services" class="button111 button222">Read More</a>
                     </div>
                 </div>
             </div>
