@@ -885,11 +885,14 @@ public class DAO extends DBHelper {
             st = connection.prepareCall(sql);
             rs = st.executeQuery();
 
-            int serviceId = rs.getInt("service_id");
-            double averageRate = rs.getDouble("averageRate");
+            while (rs.next()) {
+                int serviceId = rs.getInt("service_id");
+                double averageRate = rs.getDouble("averageRate");
 
-            AverageRate avgRate = new AverageRate(serviceId, averageRate);
-            list.add(avgRate);
+                AverageRate avgRate = new AverageRate(serviceId, averageRate);
+                list.add(avgRate);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -899,7 +902,9 @@ public class DAO extends DBHelper {
 
     public static void main(String[] args) {
         DAO dao = new DAO();
-        boolean check = dao.reset_password("duchinh0306@gmail.com", "1");
-        System.out.println(check);
+        ArrayList<AverageRate> list = dao.get_average_rate_list();
+        for (AverageRate rateA : list) {
+            rateA.toString();
+        }
     }
 }

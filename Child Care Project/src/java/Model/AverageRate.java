@@ -37,4 +37,9 @@ public class AverageRate {
         this.averageRate = averageRate;
     }
 
+    @Override
+    public String toString() {
+        return "AverageRate{" + "serviceId=" + serviceId + ", averageRate=" + averageRate + '}';
+    }
+
 }

@@ -47,12 +47,8 @@ public class ServicesServlet extends HttpServlet {
 
         // Lấy tham số từ URL
         String showParam = request.getParameter("show");
-        if (showParam != null && showParam.equals("1")) {
-            request.setAttribute("SHOW", "1");
-        } else if (showParam != null && showParam.equalsIgnoreCase("2")) {
+        if (showParam != null && showParam.equals("0")) {
             request.setAttribute("SHOW", "0");
-        } else {
-            request.setAttribute("SHOW", "1");
         }
 
         //get services list

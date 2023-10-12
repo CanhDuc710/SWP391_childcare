@@ -5,7 +5,9 @@
 --%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -133,7 +135,7 @@
                 font-size: 13px;
                 text-decoration: line-through;
             }
-            
+
             .product-list .price-sale {
                 color: #3fbbc0 ;
                 font-size: 18px;
@@ -216,6 +218,10 @@
                 font-weight: 300;
             }
 
+            .rate{
+                margin-top: 30px;
+            }
+
 
         </style>
     </head>
@@ -236,7 +242,7 @@
 
 
                             <c:choose>
-                                <c:when test="${SHOW == 1}">
+                                <c:when test="${SHOW == 0}">
                                     <li>
                                         <a href="Services?show=1" class="active"><i class="fa fa-angle-right"></i> All </a>
                                     </li>
@@ -257,17 +263,7 @@
                         </ul>
                     </div>
                 </section>
-                <section class="panel">
-                    <header class="panel-heading">
-                        Price Range
-                    </header>
-                    <div class="panel-body sliders">
-                        <div id="slider-range" class="slider"></div>
-                        <div class="slider-info">
-                            <span id="slider-range-amount"></span>
-                        </div>
-                    </div>
-                </section>
+
                 <section class="panel">
                     <header class="panel-heading">
                         Filter
@@ -277,26 +273,25 @@
                             <div class="form-group">
                                 <label>Category</label>
                                 <select id="categorySelect" class="form-control">
-
+                                    <option>None</option>
                                     <c:forEach var="category" items="${SERVICE_CATEGORY_LIST}">
                                         <option>${category.name}</option>
                                     </c:forEach>
-                                        
+
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Price</label>
                                 <select id="categorySelect" class="form-control">
-                                    <option>a</option>
-                                    <option>b</option>
-                                    <option>c</option>
-                                    <option>d</option>
+                                    <option>None</option>
+                                    <option>Price-low to high</option>
+                                    <option>Price-high to low</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Rating</label>
                                 <select id="categorySelect" class="form-control">
-                                    <option>a</option>
+                                    <option>None</option>
                                     <option>b</option>
                                     <option>c</option>
                                     <option>d</option>
@@ -345,7 +340,42 @@
                                     </h3>
                                     <p class="detail">${service.detail}</p>
                                     <p class="price">Price: $${service.price}</p>
-                                    <p class="price-sale"">Price: $${service.price - service.price*service.discount/100}  (${service.discount}%) </p>
+                                    <p class="price-sale"">Price: $${service.price - service.price*service.discount/100}
+                                        <a style="font-size: 15px; color: red;">(${service.discount}%)</a>
+                                    </p> 
+
+                                    <c:forEach var="rate" items="${AVERAGE_RATE}">
+                                        <c:if test="${rate.serviceId eq service.serviceId}">
+                                            <c:set var="starsToShow" value="${rate.averageRate}" />
+                                            <c:choose>
+                                                <c:when test="${starsToShow > 5}">
+                                                    <c:set var="starsToShow" value="5" />
+                                                </c:when>
+                                                <c:when test="${starsToShow < 0}">
+                                                    <c:set var="starsToShow" value="0" />
+                                                </c:when>
+                                            </c:choose>
+
+                                            <!-- Số sao được hiển thị -->
+                                            <c:forEach begin="1" end="${fn:substringBefore(starsToShow, '.')}">
+                                                <i class="rate fa fa-star" aria-hidden="true"></i>
+                                            </c:forEach>
+
+                                            <!-- Nếu có phần thập phân, hiển thị nửa sao -->
+                                            <c:choose>
+                                                <c:when test="${fn:substringAfter(starsToShow, '.') == '5'}">
+                                                    <i class="rate fa fa-star-half-stroke" aria-hidden="true"></i>
+                                                </c:when>
+                                            </c:choose>
+
+                                            <!-- Hiển thị số sao trống còn lại -->
+                                            <c:forEach begin="1" end="${5 - fn:substringBefore(starsToShow, '.') - (fn:substringAfter(starsToShow, '.') == '5' ? 1 : 0)}">
+                                                <i class="rate fa fa-star-o" aria-hidden="true"></i>
+                                            </c:forEach>
+                                        </c:if>
+                                    </c:forEach>
+
+
                                 </div>
                             </section>
                         </div>

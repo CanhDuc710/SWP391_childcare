@@ -168,7 +168,7 @@ CREATE TABLE Feedback (
     feedback_id INT IDENTITY(1,1) PRIMARY KEY,
 	service_id INT NULL,
 	patient_id INT NULL,
-    rate INT NULL,
+    rate decimal(2,1) NULL,
 	title NVARCHAR(255) NULL,
 	detail NVARCHAR(MAX) NULL,
 	update_date DATETIME NULL,
@@ -217,19 +217,19 @@ VALUES
 INSERT INTO service ( category_id, image, name, detail, price, discount, status_id )
 VALUES
 -- Dịch vụ cho Health Consultation (category_id = 1)
-( 1, 'health_consultation.jpg', 'Health Checkup', 'Regular health checkup and consultation.', 100.00, 0.00,1),
-( 1, 'diet_advice.jpg', 'Diet Advice', 'Nutritional consultation and personalized diet planning.', 80.00, 0.00,0),
-( 1, 'fitness_program.jpg', 'Fitness Program', 'Customized fitness program and exercise routines.', 120.00, 0.00,1),
+( 1, 'default.jpg', 'Health Checkup', 'Regular health checkup and consultation.', 100.00, 10,1),
+( 1, 'default.jpg', 'Diet Advice', 'Nutritional consultation and personalized diet planning.', 80.00, 10,0),
+( 1, 'default.jpg', 'Fitness Program', 'Customized fitness program and exercise routines.', 120.00, 15,1),
 
 -- Dịch vụ cho Medical Examination (category_id = 2)
-(2, 'medical_exam.jpg', 'General Medical Examination', 'Comprehensive medical examination for overall health assessment.', 150.00, 0.00,1),
-(2, 'blood_test.jpg', 'Blood Tests', 'Various blood tests to assess specific health parameters.', 60.00, 0.00,1),
-(2, 'x_ray.jpg', 'X-ray Services', 'X-ray imaging for diagnostic purposes.', 90.00, 0.00, 0),
+(2, 'default.jpg', 'General Medical Examination', 'Comprehensive medical examination for overall health assessment.', 150.00, 15,1),
+(2, 'default.jpg', 'Blood Tests', 'Various blood tests to assess specific health parameters.', 60.00, 15,1),
+(2, 'default.jpg', 'X-ray Services', 'X-ray imaging for diagnostic purposes.', 90.00, 20, 0),
 
 -- Dịch vụ cho Vaccination (category_id = 3)
-(3, 'vaccine1.jpg', 'Flu Vaccination', 'Annual flu vaccination to prevent influenza.', 40.00, 0.00, 0),
-(3, 'vaccine2.jpg', 'Childhood Vaccination', 'Routine vaccinations for children as per vaccination schedule.', 55.00, 0.00, 1),
-(3, 'vaccine3.jpg', 'Travel Vaccination', 'Vaccinations required for travel to specific regions.', 70.00, 0.00, 1);
+(3, 'default.jpg', 'Flu Vaccination', 'Annual flu vaccination to prevent influenza.', 40.00, 20, 0),
+(3, 'default.jpg', 'Childhood Vaccination', 'Routine vaccinations for children as per vaccination schedule.', 55.00, 25, 1),
+(3, 'default.jpg', 'Travel Vaccination', 'Vaccinations required for travel to specific regions.', 70.00, 25, 1);
 
 
 -- Thêm feedback 
@@ -238,7 +238,11 @@ VALUES
 -- Dịch vụ từ ID 1 đến 3 (Health Consultation)
 (1, 1, 5, 'Excellent Service', 'The health checkup was thorough and professional.','10-10-23'),
 (2, 1, 4, 'Good Diet Advice', 'The diet advice was helpful and personalized.','10-10-23'),
-(3, 1, 3, 'Average Fitness Program', 'The fitness program was okay, could be more tailored to my needs.','10-10-23'),
+(3, 1, 4, 'Average Fitness Program', 'The fitness program was okay 1.','10-10-23'),
+(3, 1, 3, 'Average Fitness Program', 'The fitness program was okay 2','10-10-23'),
+(3, 1, 2, 'Average Fitness Program', 'The fitness program was okay 3','10-10-23'),
+(3, 1, 1, 'Average Fitness Program', 'The fitness program was okay 4','10-10-23'),
+
 
 -- Dịch vụ từ ID 4 đến 6 (Medical Examination)
 (4, 1, 5, 'Comprehensive Medical Examination', 'The medical examination covered all aspects of my health.','10-10-23'),
