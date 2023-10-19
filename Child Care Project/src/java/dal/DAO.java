@@ -900,11 +900,229 @@ public class DAO extends DBHelper {
         return list;
     }
 
-    public static void main(String[] args) {
-        DAO dao = new DAO();
-        ArrayList<AverageRate> list = dao.get_average_rate_list();
-        for (AverageRate rateA : list) {
-            rateA.toString();
+    //admin servlet
+    public Admin AdminLogin(String txtUsername, String txtPassword) {
+        Admin admin = new Admin();
+        sql = "SELECT * "
+                + "FROM Admin "
+                + "WHERE username = ? "
+                + "AND password = ?";
+        try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, txtUsername);
+            st.setString(2, txtPassword);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                int account_id = rs.getInt("admin_id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+
+                admin = new Admin(account_id, username, password);
+                return admin;
+            }
+
+        } catch (SQLException e) {
         }
+
+        return null;
+    }
+
+    public ArrayList<Account> admin_get_patients() {
+        ArrayList<Account> list = new ArrayList<>();
+        String sql = "SELECT  * "
+                + "FROM Patient";
+        try {
+            st = connection.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+
+                int account_id = rs.getInt("patient_id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String name = rs.getString("name");
+                boolean gender = rs.getBoolean("gender");
+                String avatar = rs.getString("avatar");
+                String address = rs.getString("address");
+                int status = rs.getInt("status_id");
+                int role = rs.getInt("role_id");
+
+                Account account = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
+                list.add(account);
+            }
+        } catch (SQLException e) {
+
+        }
+        return list;
+    }
+
+    public ArrayList<Account> admin_get_staffs() {
+        ArrayList<Account> list = new ArrayList<>();
+        String sql = "SELECT  * "
+                + "FROM Staff";
+        try {
+            st = connection.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+
+                int account_id = rs.getInt("staff_id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String name = rs.getString("name");
+                boolean gender = rs.getBoolean("gender");
+                String avatar = rs.getString("avatar");
+                String address = rs.getString("address");
+                int status = rs.getInt("status_id");
+                int role = rs.getInt("role_id");
+
+                Account account = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
+                list.add(account);
+            }
+        } catch (SQLException e) {
+
+        }
+        return list;
+    }
+
+    public boolean admin_patient_register(String txtUsername, String txtPassword, String txtEmail,
+            String txtPhone, String txtName, boolean txtGender) {
+        sql = "INSERT INTO Patient (username, password, email, phone, name, gender, avatar, address, role_id, status_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            st = connection.prepareStatement(sql);
+            st = connection.prepareStatement(sql);
+            st.setString(1, txtUsername);
+            st.setString(2, txtPassword);
+            st.setString(3, txtEmail);
+            st.setString(4, txtPhone);
+            st.setString(5, txtName);
+            st.setBoolean(6, txtGender);
+            st.setString(7, "default.jpg");
+            st.setString(8, "default address");
+            st.setInt(9, 1);
+            st.setInt(10, 2);
+            int rowsUpdated = st.executeUpdate();
+            if (rowsUpdated > 0) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return false;
+    }
+
+    public boolean admin_staff_register(String txtUsername, String txtPassword, String txtEmail,
+            String txtPhone, String txtName, boolean txtGender, int txtRole) {
+        sql = "INSERT INTO Staff (username, password, email, phone, name, gender, avatar, address, role_id, status_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            st = connection.prepareStatement(sql);
+            st = connection.prepareStatement(sql);
+            st.setString(1, txtUsername);
+            st.setString(2, txtPassword);
+            st.setString(3, txtEmail);
+            st.setString(4, txtPhone);
+            st.setString(5, txtName);
+            st.setBoolean(6, txtGender);
+            st.setString(7, "default.jpg");
+            st.setString(8, "default address");
+            st.setInt(9, txtRole);
+            st.setInt(10, 2);
+            int rowsUpdated = st.executeUpdate();
+            if (rowsUpdated > 0) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return false;
+    }
+
+    public boolean admin_delete_patient(int patient_id) {
+        String sql = "DELETE FROM Patient WHERE patient_id = ?";
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, patient_id);
+            int rowsDeleted = st.executeUpdate();
+            if (rowsDeleted > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý lỗi nếu cần
+        }
+        return false;
+    }
+    
+    public boolean admin_delete_staff(int staff_id) {
+        String sql = "DELETE FROM Staff  WHERE staff_id = ?";
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, staff_id);
+            int rowsDeleted = st.executeUpdate();
+            if (rowsDeleted > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý lỗi nếu cần
+        }
+        return false;
+    }
+
+    public boolean admin_update_patient(int patientId ,String txtUsername, String txtPassword, String txtEmail,
+            String txtPhone, String txtName,String txtAddress, boolean txtGender, int status) {
+        String sql = "UPDATE Patient SET username = ?, password = ?, email = ?, phone = ?, name = ?, gender = ?, status_id = ?, address = ? WHERE patient_id = ?";
+        try {
+            st = connection.prepareStatement(sql);
+
+            st.setString(1, txtUsername);
+            st.setString(2, txtPassword);
+            st.setString(3, txtEmail);
+            st.setString(4, txtPhone);
+            st.setString(5, txtName);
+            st.setBoolean(6, txtGender);
+            st.setInt(7, status);
+            st.setString(8, txtAddress);
+            st.setInt(9, patientId);
+
+            int rowsDeleted = st.executeUpdate();
+            if (rowsDeleted > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý lỗi nếu cần
+        }
+        return false;
+    }
+    
+    
+    public boolean admin_update_staff(int id ,String txtUsername, String txtPassword, String txtEmail,
+            String txtPhone, String txtName,String txtAddress, boolean txtGender, int status, int role) {
+        String sql = "UPDATE Staff SET username = ?, password = ?, email = ?, phone = ?, name = ?, gender = ?, status_id = ?, address = ?, role_id = ? WHERE staff_id = ?";
+        try {
+            st = connection.prepareStatement(sql);
+
+            st.setString(1, txtUsername);
+            st.setString(2, txtPassword);
+            st.setString(3, txtEmail);
+            st.setString(4, txtPhone);
+            st.setString(5, txtName);
+            st.setBoolean(6, txtGender);
+            st.setInt(7, status);
+            st.setString(8, txtAddress);
+            st.setInt(9, role);
+            st.setInt(10, id);
+
+            int rowsDeleted = st.executeUpdate();
+            if (rowsDeleted > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý lỗi nếu cần
+        }
+        return false;
     }
 }

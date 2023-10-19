@@ -176,6 +176,22 @@ CREATE TABLE Feedback (
 	FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)
 );
 
+-- Tạo bảng Key
+CREATE TABLE [Key] (
+    [key_id] INT PRIMARY KEY,
+	[key] NVARCHAR(100)
+
+);
+
+-- Thêm dữ liệu vào bảng key
+INSERT INTO [dbo].[Key] ([key_id],[key]) VALUES
+(1,'nguyenduyduchinhprojectkey');
+GO
+
+-- Thêm dữ liệu vào bảng admin
+INSERT INTO [dbo].[Admin] (username,password) VALUES
+('admin','admin');
+GO
 
 -- Thêm dữ liệu vào bảng Role
 INSERT INTO [dbo].[Role] ([role_name]) VALUES

@@ -228,11 +228,14 @@
     <body>
         <div class="container bootdey">
             <div class="col-md-3">
-                <section class="panel">
-                    <div class="panel-body">
-                        <input type="text" placeholder="Keyword Search" class="form-control" />
-                    </div>
-                </section>
+                <form method="POST" action="Services">
+                    <section class="panel">
+                        <div class="panel-body d-flex justify-content-between align-items-center">
+                            <input type="text" placeholder="Input keyword" name="search" class="form-control" />
+                            <button class="btn btn-primary" style="margin-left: 10px;" type="submit">Search</button>
+                        </div>
+                    </section>
+                </form>
                 <section class="panel">
                     <header class="panel-heading">
                         Category
@@ -244,7 +247,7 @@
                             <c:choose>
                                 <c:when test="${SHOW == 0}">
                                     <li>
-                                        <a href="Services?show=1" class="active"><i class="fa fa-angle-right"></i> All </a>
+                                        <a href="Services?show=0" class="active"><i class="fa fa-angle-right"></i> All </a>
                                     </li>
                                 </c:when>
                                 <c:otherwise>
@@ -256,7 +259,7 @@
 
                             <c:forEach var="category" items="${SERVICE_CATEGORY_LIST}">
                                 <li>
-                                    <a href="Services"><i class="fa fa-angle-right"></i> ${category.name} </a>
+                                    <a href="Services?show=${category.categoryId}"><i class="fa fa-angle-right"></i> ${category.name} </a>
                                 </li>
                             </c:forEach>
 
@@ -269,34 +272,17 @@
                         Filter
                     </header>
                     <div class="panel-body">
-                        <form role="form product-form">
-                            <div class="form-group">
-                                <label>Category</label>
-                                <select id="categorySelect" class="form-control">
-                                    <option>None</option>
-                                    <c:forEach var="category" items="${SERVICE_CATEGORY_LIST}">
-                                        <option>${category.name}</option>
-                                    </c:forEach>
+                        <form role="form product-form" method="POST" action="Services">
 
-                                </select>
-                            </div>
                             <div class="form-group">
-                                <label>Price</label>
-                                <select id="categorySelect" class="form-control">
+                                <label>Filter</label>
+                                <select id="categorySelect" class="form-control" name="filter" >
                                     <option>None</option>
-                                    <option>Price-low to high</option>
-                                    <option>Price-high to low</option>
+                                    <option>Price: Low To High</option>
+                                    <option>Price: High To Low</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label>Rating</label>
-                                <select id="categorySelect" class="form-control">
-                                    <option>None</option>
-                                    <option>b</option>
-                                    <option>c</option>
-                                    <option>d</option>
-                                </select>
-                            </div>
+
                             <button class="btn btn-primary" type="submit">Filter</button>
                         </form>
                     </div>

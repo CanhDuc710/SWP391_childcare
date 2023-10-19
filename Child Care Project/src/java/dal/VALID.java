@@ -8,10 +8,7 @@ import java.util.*;
 import Model.*;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author duchi
- */
+
 public class VALID {
 
     public boolean exist_email(String email) {
