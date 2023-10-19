@@ -124,6 +124,7 @@
                                 <div class="" style="text-align: center;">
                                     <button class="btn btn-primary" type="submit">Change Password</button>
                                 </div>
+                                <input type="hidden" name="txtRole" value="${ACCOUNT.roleId}" />
                             </form>
 
 

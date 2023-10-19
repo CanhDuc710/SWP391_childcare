@@ -49,7 +49,15 @@ public class HomeSerlvet extends HttpServlet {
         DAO dao = new DAO();
         Account account = (Account) session.getAttribute("ACCOUNT");
         request.setAttribute("ACCOUNT", account);
-
+        
+        //lay ra post list
+        ArrayList<Post> post_list = dao.get_post_list();
+        request.setAttribute("POST_LIST", post_list);
+        
+        //lay ra staff list
+        ArrayList<Account> staff_list = dao.get_staff_list();
+        request.setAttribute("STAFF_LIST", staff_list);
+        
         //lay ra service list va set attribute
         ArrayList<Services> service_list = dao.get_service_list();
         request.setAttribute("SERVICE_LIST", service_list);

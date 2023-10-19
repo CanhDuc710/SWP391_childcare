@@ -55,6 +55,7 @@ public class ChangePasswordServlet extends HttpServlet {
         String oldPassword = request.getParameter("txtOld");
         String newPassword = request.getParameter("txtNew");
         String confirmPassword = request.getParameter("txtConfirm");
+        int role = Integer.parseInt(request.getParameter("txtRole"));
 
         boolean change = false;
         if (oldPassword.equals(account.getPassword())) {
@@ -78,21 +79,41 @@ public class ChangePasswordServlet extends HttpServlet {
             rd.forward(request, response);
         }
 
-        if (change) {
-            boolean changed = dao.update_password( account.getAccountId() , newPassword);
-            if (changed) {
-                session.removeAttribute("ACCOUNT");
-                request.setAttribute("IMG", "success.gif");
-                request.setAttribute("MESSAGE", "Done");
-                request.setAttribute("MESSAGE2", "<a href='Login'> Back</a> to Login.");
-                RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
-                rd.forward(request, response);
-            } else {
-                request.setAttribute("IMG", "error.gif");
-                request.setAttribute("MESSAGE", "Failed. Please Try Again");
-                request.setAttribute("MESSAGE2", "<a href='Login'> Back</a> to Login.");
-                RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
-                rd.forward(request, response);
+        if (role == 1) {
+            if (change) {
+                boolean changed = dao.update_patient_password(account.getAccountId(), newPassword);
+                if (changed) {
+                    session.removeAttribute("ACCOUNT");
+                    request.setAttribute("IMG", "success.gif");
+                    request.setAttribute("MESSAGE", "Done");
+                    request.setAttribute("MESSAGE2", "<a href='Login'> Back</a> to Login.");
+                    RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                    rd.forward(request, response);
+                } else {
+                    request.setAttribute("IMG", "error.gif");
+                    request.setAttribute("MESSAGE", "Failed. Please Try Again");
+                    request.setAttribute("MESSAGE2", "<a href='Login'> Back</a> to Login.");
+                    RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                    rd.forward(request, response);
+                }
+            }
+        } else {
+            if (change) {
+                boolean changed = dao.update_staff_password(account.getAccountId(), newPassword);
+                if (changed) {
+                    session.removeAttribute("ACCOUNT");
+                    request.setAttribute("IMG", "success.gif");
+                    request.setAttribute("MESSAGE", "Done");
+                    request.setAttribute("MESSAGE2", "<a href='Login'> Back</a> to Login.");
+                    RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                    rd.forward(request, response);
+                } else {
+                    request.setAttribute("IMG", "error.gif");
+                    request.setAttribute("MESSAGE", "Failed. Please Try Again");
+                    request.setAttribute("MESSAGE2", "<a href='Login'> Back</a> to Login.");
+                    RequestDispatcher rd = request.getRequestDispatcher("Notification_inner.jsp");
+                    rd.forward(request, response);
+                }
             }
         }
 

@@ -105,6 +105,7 @@
                                 <input type="hidden" name="txtUpdateType" value="avatar" />
                                 <input type="hidden" name="txtUsername" value="${ACCOUNT.username}" />
                                 <input type="hidden" name="txtID" value="${ACCOUNT.accountId}" />
+                                <input type="hidden" name="txtRole" value="${ACCOUNT.roleId}" />
                             </div>
                         </form>
 
@@ -187,6 +188,7 @@
                                 <!--hidden parameter-->
                                 <input type="hidden" name="txtUpdateType" value="information" />
                                 <input type="hidden" name="txtID" value="${ACCOUNT.accountId}" />
+                                <input type="hidden" name="txtRole" value="${ACCOUNT.roleId}" />
 
                             </form>
                         </div>

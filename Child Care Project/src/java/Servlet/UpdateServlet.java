@@ -65,6 +65,7 @@ public class UpdateServlet extends HttpServlet {
 
                 int id = Integer.parseInt(request.getParameter("txtID"));
                 String username = request.getParameter("txtUsername");
+                int role = Integer.parseInt(request.getParameter("txtRole"));
 
                 String savePath = "C:\\Users\\BlackZ36\\Desktop\\SWP391_childcare\\Child Care Project\\web\\assets\\img\\" + File.separator + user_avatar_folder + username; //specify your path here
                 File fileSaveDir = new File(savePath);
@@ -75,23 +76,44 @@ public class UpdateServlet extends HttpServlet {
                 String timeStamp = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
                 String fileName = "user-avatar-" + request.getParameter("txtUsername") + "_" + timeStamp + ".jpg";
                 part.write(savePath + File.separator + fileName);
-                boolean update = dao.update_patient_avatar(username, fileName);
-                if (update) {
-                    Account account = dao.get_patient_by_id(id);
-                    session.setAttribute("ACCOUNT", account);
+                if (role == 1) {
+                    boolean update = dao.update_patient_avatar(username, fileName);
+                    if (update) {
+                        Account account = dao.get_patient_by_id(id);
+                        session.setAttribute("ACCOUNT", account);
 
-                    try {
-                        Thread.sleep(3500);
-                    } catch (Exception e) {
+                        try {
+                            Thread.sleep(3500);
+                        } catch (Exception e) {
+                        }
+
+                        response.sendRedirect("Account");
+
+                    } else {
+                        Account account = dao.get_patient_by_id(id);
+                        request.setAttribute("ACCOUNT", account);
+                        RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
+                        rd.forward(request, response);
                     }
-
-                    response.sendRedirect("Account");
-
                 } else {
-                    Account account = dao.get_patient_by_id(id);
-                    request.setAttribute("ACCOUNT", account);
-                    RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
-                    rd.forward(request, response);
+                    boolean update = dao.update_staff_avatar(username, fileName);
+                    if (update) {
+                        Account account = dao.get_staff_by_id(id);
+                        session.setAttribute("ACCOUNT", account);
+
+                        try {
+                            Thread.sleep(3500);
+                        } catch (Exception e) {
+                        }
+
+                        response.sendRedirect("Account");
+
+                    } else {
+                        Account account = dao.get_staff_by_id(id);
+                        request.setAttribute("ACCOUNT", account);
+                        RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
+                        rd.forward(request, response);
+                    }
                 }
 
             } else if (updateType.equalsIgnoreCase("information")) {
@@ -100,6 +122,7 @@ public class UpdateServlet extends HttpServlet {
                 String name = request.getParameter("txtName");
                 String firstPhone = request.getParameter("txtPhone1");
                 String address = request.getParameter("txtAddress");
+                int role = Integer.parseInt(request.getParameter("txtRole"));
 
                 boolean gender = false;
                 String txtGender = request.getParameter("txtGender");
@@ -125,23 +148,41 @@ public class UpdateServlet extends HttpServlet {
                     }
                 }
 
-                if (check) {
-                    boolean update = dao.update_patient(id, name, phone, gender, address);
-                    if (update) {
-                        Account account = dao.get_patient_by_id(id);
-                        session.setAttribute("ACCOUNT", account);
+                if (role == 1) {
+                    if (check) {
+                        boolean update = dao.update_patient(id, name, phone, gender, address);
+                        if (update) {
+                            Account account = dao.get_patient_by_id(id);
+                            session.setAttribute("ACCOUNT", account);
 
-                        request.setAttribute("UPDATE_VALID", "Updated Successfully");
+                            request.setAttribute("UPDATE_VALID", "Updated Successfully");
+                            RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
+                            rd.forward(request, response);
+                        }
+                    } else {
+                        Account account = dao.get_patient_by_id(id);
+                        request.setAttribute("ACCOUNT", account);
                         RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
                         rd.forward(request, response);
                     }
                 } else {
-                    Account account = dao.get_patient_by_id(id);
-                    request.setAttribute("ACCOUNT", account);
-                    RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
-                    rd.forward(request, response);
-                }
+                    if (check) {
+                        boolean update = dao.update_staff(id, name, phone, gender, address);
+                        if (update) {
+                            Account account = dao.get_staff_by_id(id);
+                            session.setAttribute("ACCOUNT", account);
 
+                            request.setAttribute("UPDATE_VALID", "Updated Successfully");
+                            RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
+                            rd.forward(request, response);
+                        }
+                    } else {
+                        Account account = dao.get_staff_by_id(id);
+                        request.setAttribute("ACCOUNT", account);
+                        RequestDispatcher rd = request.getRequestDispatcher("Profile_inner.jsp");
+                        rd.forward(request, response);
+                    }
+                }
             } else if (updateType.equalsIgnoreCase("password")) {
 
                 String password = request.getParameter("txtPassword");

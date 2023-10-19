@@ -24,26 +24,33 @@
                 <li class="nav-heading">Management</li>
 
                 <li class="nav-item">
+                    <a class="nav-link collapsed" href="Dashboard">
+                        <i class="bi bi-bar-chart-line"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
                     <a class="nav-link collapsed" href="Patient">
                         <i class="bi bi-person"></i>
                         <span>Patient</span>
                     </a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="Staff">
                         <i class="bi bi-person"></i>
                         <span>Staff</span>
                     </a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="">
                         <i class="bi bi-card-list"></i>
                         <span>Service</span>
                     </a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="">
                         <i class="bi bi-card-list"></i>
@@ -64,7 +71,7 @@
                         <span>Feedback</span>
                     </a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="pages-blank.jsp">
                         <i class="bi bi-file-earmark"></i>

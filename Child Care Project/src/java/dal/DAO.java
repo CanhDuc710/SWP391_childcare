@@ -159,11 +159,32 @@ public class DAO extends DBHelper {
         return false;
     }
 
-    public boolean update_password(int id, String password) {
+    public boolean update_patient_password(int id, String password) {
 
         sql = "UPDATE Patient "
                 + "SET password = ? "
                 + "WHERE patient_id = ?";
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, password);
+            st.setInt(2, id);
+            int row = st.executeUpdate();
+
+            if (row > 0) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return false;
+    }
+    public boolean update_staff_password(int id, String password) {
+
+        sql = "UPDATE Staff "
+                + "SET password = ? "
+                + "WHERE staff_id = ?";
 
         try {
             st = connection.prepareStatement(sql);
@@ -205,16 +226,16 @@ public class DAO extends DBHelper {
         return false;
     }
 
-    public boolean update_staff(int id, String name, String phone, boolean gender, String avatar) {
+    public boolean update_staff(int id, String name, String phone, boolean gender, String address) {
 
-        sql = "UPDATE Staff SET name = ?, phone = ?, gender = ?, avatar = ? WHERE staff_id = ?";
+        sql = "UPDATE Staff SET name = ?, phone = ?, gender = ?, address = ? WHERE staff_id = ?";
 
         try {
             st = connection.prepareStatement(sql);
             st.setString(1, name);
             st.setString(2, phone);
             st.setBoolean(3, gender);
-            st.setString(4, avatar);
+            st.setString(4, address);
             st.setInt(5, id);
 
             int row = st.executeUpdate();
@@ -819,6 +840,26 @@ public class DAO extends DBHelper {
         }
         return false;
     }
+    
+    public boolean update_staff_avatar(String username, String avatar) {
+        sql = "UPDATE Staff "
+                + "SET avatar = ? "
+                + "WHERE username = ?";
+        try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, avatar);
+            st.setString(2, username);
+
+            int rowsUpdated = st.executeUpdate();
+            if (rowsUpdated > 0) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public boolean reset_password(String email, String password) {
         sql1 = "UPDATE Patient "
@@ -899,7 +940,62 @@ public class DAO extends DBHelper {
 
         return list;
     }
+    
+    public ArrayList<Post> get_post_list(){
+        ArrayList<Post> list = new ArrayList<>();
+        String sql = "SELECT  * From Post";
+        try {
+            st = connection.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
 
+                int post_id = rs.getInt("post_id");
+                int category = rs.getInt("post_category_id");
+                String title = rs.getString("title");
+                int author_id = rs.getInt("author_id");
+                Timestamp date = rs.getTimestamp("updated_date");
+                String detail = rs.getString("detail");
+                String image = rs.getString("image");
+
+                Post post = new Post(post_id, category, title, author_id, date, detail, image);
+                list.add(post);
+            }
+        } catch (SQLException e) {
+
+        }
+        return list;
+    }
+    
+    public ArrayList<Account> get_staff_list(){
+        ArrayList<Account> list = new ArrayList<>();
+        String sql = "SELECT * "
+                + "FROM Staff";
+        try {
+            st = connection.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+
+                int account_id = rs.getInt("staff_id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String name = rs.getString("name");
+                boolean gender = rs.getBoolean("gender");
+                String avatar = rs.getString("avatar");
+                String address = rs.getString("address");
+                int status = rs.getInt("status_id");
+                int role = rs.getInt("role_id");
+
+                Account account = new Account(account_id, username, password, email, phone, name, gender, avatar, address, role, status);
+                list.add(account);
+            }
+        } catch (SQLException e) {
+
+        }
+        return list;
+    }
+    
     //admin servlet
     public Admin AdminLogin(String txtUsername, String txtPassword) {
         Admin admin = new Admin();

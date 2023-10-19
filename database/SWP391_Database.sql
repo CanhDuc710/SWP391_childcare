@@ -97,12 +97,7 @@ CREATE TABLE Service (
     FOREIGN KEY (category_id) REFERENCES Service_category(category_id)
 );
 
--- Tạo bảng Post_category
-CREATE TABLE Post_category (
-    post_category_id INT PRIMARY KEY,
-    category NVARCHAR(50) NULL,
-    detail NVARCHAR(MAX) NULL
-);
+
 
 -- Tạo bảng Post
 CREATE TABLE Post (
@@ -114,7 +109,7 @@ CREATE TABLE Post (
     image NVARCHAR(200) NULL,
     post_category_id INT NULL,
     FOREIGN KEY (author_id) REFERENCES Staff(staff_id),
-    FOREIGN KEY (post_category_id) REFERENCES Post_category(post_category_id)
+    FOREIGN KEY (post_category_id) REFERENCES Service_category(category_id)
 );
 
 
@@ -202,6 +197,9 @@ INSERT INTO [dbo].[Role] ([role_name]) VALUES
 GO
 
 
+
+
+
 -- Thêm dữ liệu vào bảng StaffStatus
 INSERT INTO Status (status_name) VALUES 
 (N'Inactive'),       -- Hoạt động
@@ -213,6 +211,8 @@ INSERT INTO Staff ( username, password, email, phone, name, gender, avatar, addr
 (N'nurse', N'123', N'nurse1@example.com', N'1111111111', N'Nurse 1', 0, N'default.jpg',N'address default', 2, 2), -- Nurse
 (N'doctor', N'123', N'doctor1@example.com', N'2222222222', N'Doctor 1', 1, N'default.jpg',N'address default', 3, 2), -- Doctor
 (N'manager', N'123', N'manager1@example.com', N'3333333333', N'Manager 1', 1, N'default.jpg',N'address default', 4, 2); -- Manager
+
+
 
 -- Thêm dữ liệu vào bảng Patient với các trạng thái từ bảng PatientStatus
 INSERT INTO Patient (username, password, email, phone, name, gender, avatar, address,role_id, status_id) VALUES 
@@ -270,6 +270,15 @@ VALUES
 (8, 1, 4, 'Childhood Vaccination', 'My child received the vaccinations as scheduled, no complaints.','10-10-23'),
 (9, 1, 3, 'Travel Vaccination', 'The travel vaccinations were done adequately, but the waiting time was long.','10-10-23');
 GO
+
+-- Thêm dữ liệu vào bảng Post trong một lần INSERT
+INSERT INTO Post (title, author_id, updated_date, detail, image, post_category_id)
+VALUES 
+('Health Consultation', 2, GETDATE(), N'Health Consultation Detail', 'health_consultation.jpg', 1),
+('Medical Examination', 2, GETDATE(), N'Medical Examination Detail', 'medical_examination.jpg', 2),
+('Vaccination', 2, GETDATE(), N'Vaccination Detail', 'vaccination.jpg', 3);
+
+
 
 GO
 ALTER DATABASE SWP391_Database SET MULTI_USER

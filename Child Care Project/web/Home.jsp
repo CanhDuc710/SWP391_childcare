@@ -61,14 +61,14 @@
                     <div class="text-center">
                         <h3>In an emergency? Need help now?</h3>
                         <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <a class="cta-btn scrollto" href="#appointment">Make an Make an Appointment</a>
+                        <a class="cta-btn scrollto" href="Booking">Make an Make an Appointment</a>
                     </div>
 
                 </div>
             </section><!-- End Cta Section -->
 
             <!-- ======= About Us Section ======= -->
-            <jsp:include page="include/about-us_include.jsp" />
+            <%--<jsp:include page="include/about-us_include.jsp" />--%>
             <!-- End About Us Section -->
 
             <!-- ======= Counts Section ======= -->
@@ -110,42 +110,46 @@
 
 
             <!-- ======= Testimonials Section ======= -->
-<!--            <section id="testimonials" class="testimonials">
+            <section id="testimonials" class="testimonials">
                 <div class="container" data-aos="fade-up">
 
                     <div class="section-title">
-                        <h2>Testimonials</h2>
-                        <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+                        <h2>Post</h2>
                     </div>
 
                     <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
-
                         <div class="swiper-wrapper">
 
-                            <c:forEach var="service" items="${SERVICE_LIST}">
-                                <div class="swiper-slide">
-                                    <div class="testimonial-item">
-                                        <p>
-                                            <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                                            ${service.detail}
-                                            <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                                        </p>
-                                        <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
-                                        <h3>${service.name}</h3>
-                                        <h4>${service.serviceId}</h4>
+                            <c:forEach var="post" items="${POST_LIST}" varStatus="loop">
+                                <c:if test="${loop.index < 3}">
+                                    <div class="swiper-slide-1" style="width: 500px;">
+                                        <div class="testimonial-item">
+                                            <p>
+                                                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                                ${post.detail}
+                                                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                                            </p>
+                                            <c:forEach var="staff" items="${STAFF_LIST}">
+                                                <c:if test="${staff.accountId eq post.authorId}">
+                                                    <img src="assets/img/user/${staff.username}/${staff.avatar}" class="testimonial-img" alt="">
+                                                </c:if>
+                                            </c:forEach>
+                                            
+                                            <h3>${post.title}</h3>
+                                            <h4>Author: ${post.authorId}</h4>
+                                            <h4>Last Modified: ${post.updateDate}</h4>
+                                        </div>
                                     </div>
-                                </div>
-                                 End testimonial item 
+                                </c:if>
                             </c:forEach>
 
                         </div>
-
                         <div class="swiper-pagination"></div>
-
                     </div>
 
                 </div>
-            </section> End Testimonials Section -->
+            </section>
+            <!--End Testimonials Section--> 
 
             <!-- ======= Doctors Section ======= -->
             <%--<jsp:include page="include/doctor_include.jsp" />--%>

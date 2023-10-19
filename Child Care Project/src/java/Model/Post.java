@@ -72,8 +72,12 @@ public class Post {
         this.authorId = authorId;
     }
 
-    public Timestamp getUpdateDate() {
-        return updateDate;
+    public Date getUpdateDate() {
+        // Chuyển đổi Timestamp thành Date
+        Date date = new Date(updateDate.getTime());
+
+        // Trả về Date (chỉ chứa ngày, không chứa giờ, phút, giây và mili giây)
+        return date;
     }
 
     public void setUpdateDate(Timestamp updateDate) {
