@@ -127,7 +127,7 @@ public class RegisterServlet extends HttpServlet {
 
                     // Nội dung email từ tệp tin template
                     String emailTemplate = contentBuilder.toString();
-                    dao.Send_Verify_Email(email, emailTemplate, 1);
+                    dao.Send_Verify_Email(email, emailTemplate, 1, "");
 
                     request.setAttribute("IMG", "success.gif");
                     request.setAttribute("MESSAGE", "<p style='color: green;'>Registration Successfully</p>");

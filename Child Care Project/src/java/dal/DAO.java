@@ -180,6 +180,7 @@ public class DAO extends DBHelper {
 
         return false;
     }
+
     public boolean update_staff_password(int id, String password) {
 
         sql = "UPDATE Staff "
@@ -548,7 +549,7 @@ public class DAO extends DBHelper {
         return count;
     }
 
-    public boolean Send_Verify_Email(String email, String template, int type) throws UnsupportedEncodingException {
+    public boolean Send_Verify_Email(String email, String template, int type, String messageSend) throws UnsupportedEncodingException {
 
         if (type == 1) {
             // Đọc nội dung từ file template
@@ -629,6 +630,7 @@ public class DAO extends DBHelper {
                 // Thay thế các placeholder trong template bằng dữ liệu thực tế
                 String emailContent = templateContent.replace("{{username}}", userN)
                         .replace("{{email}}", email)
+                        .replace("{{message}}", messageSend)
                         .replace("{{link}}", link)
                         .replace("{{link}}", link)
                         .replace("{{Title}}", "Please Verify Your Email.");
@@ -686,8 +688,8 @@ public class DAO extends DBHelper {
             }
 
             // Thông tin tài khoản email
-            String username = "duchinh03061@gmail.com";
-            String password = "ygdiuklubcwheyur";
+            String username = "duchinh0306drive@gmail.com";
+            String password = "wcjtcfowhrwqzhto";
 
             // Cấu hình SMTP server và thông tin cổng
             String host = "smtp.gmail.com";
@@ -726,6 +728,7 @@ public class DAO extends DBHelper {
                 // Thay thế các placeholder trong template bằng dữ liệu thực tế
                 String emailContent = templateContent.replace("{{username}}", userN)
                         .replace("{{email}}", email)
+                        .replace("{{message}}", messageSend)
                         .replace("{{link}}", link)
                         .replace("{{link}}", link)
                         .replace("{{Title}}", "Email For Reset Password.");
@@ -745,7 +748,103 @@ public class DAO extends DBHelper {
                 e.printStackTrace();
             }
         } else {
+            // Đọc nội dung từ file template
+            String templateContent = template;
+            int id = -1;
+            // Tạo nội dung HTML cho email
+            String originalLink = "http://localhost:8080/Child_Care_Project/Login?type=staff";
 
+            // Mã hóa email
+            String encodedEmail = Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
+
+            //Lay Account
+            Account user = null;
+            ArrayList<Account> list = get_account_list();
+            for (Account account : list) {
+                if (account.getEmail().equals(email)) {
+                    user = account;
+                    break; // Đã tìm thấy tài khoản, thoát khỏi vòng lặp
+                }
+            }
+            String encodedID = "";
+            if (user != null) {
+                //Ma hoa ID
+                id = add_email_verify_valid(email, type);
+                encodedID = Base64.getUrlEncoder().encodeToString(String.valueOf(id).getBytes(StandardCharsets.UTF_8));
+            }
+
+            String userN = "";
+            String userP = "";
+            String link = "http://localhost:8080/Child_Care_Project/";
+            boolean send = false;
+            if (user != null) {
+
+                send = true;
+                userN = user.getUsername();
+                userP = user.getPhone();
+                link = originalLink;
+            }
+
+            // Thông tin tài khoản email
+            String username = "duchinh0306drive@gmail.com";
+            String password = "wcjtcfowhrwqzhto";
+
+            // Cấu hình SMTP server và thông tin cổng
+            String host = "smtp.gmail.com";
+            int port = 587;
+
+            // Cấu hình các thuộc tính kết nối
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", host);
+            props.put("mail.smtp.port", port);
+
+            // Tạo đối tượng Session để xác thực truy cập SMTP server
+            Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            try {
+                // Tạo đối tượng MimeMessage
+                MimeMessage message = new MimeMessage(session);
+
+                // Thiết lập thông tin người gửi
+                message.setFrom(new InternetAddress(username));
+
+                // Thiết lập thông tin người nhận
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+
+                // Thiết lập tiêu đề email
+                message.setSubject("[SWP391] Please Check Your New Account Information");
+
+                // Mã hóa email
+                // String encodedEmail = Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
+                // Thay thế các placeholder trong template bằng dữ liệu thực tế
+                String emailContent = templateContent.replace("{{username}}", userN)
+                        .replace("{{email}}", email)
+                        .replace("{{message}}", messageSend)
+                        .replace("{{link}}", link)
+                        .replace("{{link}}", link)
+                        .replace("{{Title}}", "Email For Staff Registration.");
+
+                // Thiết lập nội dung email dưới dạng HTML với encoding UTF-8
+                message.setContent(emailContent, "text/html; charset=UTF-8");
+
+                // Gửi email
+                if (send && id != -1) {
+                    Transport.send(message);
+                    return true;
+                } else {
+                    throw new MessageRemovedException("The Email Didn't Exists.");
+                }
+
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
         }
 
         return false;
@@ -840,7 +939,7 @@ public class DAO extends DBHelper {
         }
         return false;
     }
-    
+
     public boolean update_staff_avatar(String username, String avatar) {
         sql = "UPDATE Staff "
                 + "SET avatar = ? "
@@ -940,8 +1039,8 @@ public class DAO extends DBHelper {
 
         return list;
     }
-    
-    public ArrayList<Post> get_post_list(){
+
+    public ArrayList<Post> get_post_list() {
         ArrayList<Post> list = new ArrayList<>();
         String sql = "SELECT  * From Post";
         try {
@@ -965,8 +1064,8 @@ public class DAO extends DBHelper {
         }
         return list;
     }
-    
-    public ArrayList<Account> get_staff_list(){
+
+    public ArrayList<Account> get_staff_list() {
         ArrayList<Account> list = new ArrayList<>();
         String sql = "SELECT * "
                 + "FROM Staff";
@@ -995,7 +1094,7 @@ public class DAO extends DBHelper {
         }
         return list;
     }
-    
+
     //admin servlet
     public Admin AdminLogin(String txtUsername, String txtPassword) {
         Admin admin = new Admin();
@@ -1099,7 +1198,7 @@ public class DAO extends DBHelper {
             st.setString(7, "default.jpg");
             st.setString(8, "default address");
             st.setInt(9, 1);
-            st.setInt(10, 2);
+            st.setInt(10, 1);
             int rowsUpdated = st.executeUpdate();
             if (rowsUpdated > 0) {
                 return true;
@@ -1152,7 +1251,7 @@ public class DAO extends DBHelper {
         }
         return false;
     }
-    
+
     public boolean admin_delete_staff(int staff_id) {
         String sql = "DELETE FROM Staff  WHERE staff_id = ?";
         try {
@@ -1168,8 +1267,8 @@ public class DAO extends DBHelper {
         return false;
     }
 
-    public boolean admin_update_patient(int patientId ,String txtUsername, String txtPassword, String txtEmail,
-            String txtPhone, String txtName,String txtAddress, boolean txtGender, int status) {
+    public boolean admin_update_patient(int patientId, String txtUsername, String txtPassword, String txtEmail,
+            String txtPhone, String txtName, String txtAddress, boolean txtGender, int status) {
         String sql = "UPDATE Patient SET username = ?, password = ?, email = ?, phone = ?, name = ?, gender = ?, status_id = ?, address = ? WHERE patient_id = ?";
         try {
             st = connection.prepareStatement(sql);
@@ -1193,10 +1292,9 @@ public class DAO extends DBHelper {
         }
         return false;
     }
-    
-    
-    public boolean admin_update_staff(int id ,String txtUsername, String txtPassword, String txtEmail,
-            String txtPhone, String txtName,String txtAddress, boolean txtGender, int status, int role) {
+
+    public boolean admin_update_staff(int id, String txtUsername, String txtPassword, String txtEmail,
+            String txtPhone, String txtName, String txtAddress, boolean txtGender, int status, int role) {
         String sql = "UPDATE Staff SET username = ?, password = ?, email = ?, phone = ?, name = ?, gender = ?, status_id = ?, address = ?, role_id = ? WHERE staff_id = ?";
         try {
             st = connection.prepareStatement(sql);

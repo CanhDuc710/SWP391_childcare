@@ -208,9 +208,15 @@ INSERT INTO Status (status_name) VALUES
 
 -- Thêm dữ liệu vào bảng Staff (1 nurse, 1 doctor, 1 manager)
 INSERT INTO Staff ( username, password, email, phone, name, gender, avatar, address, role_id, status_id) VALUES 
-(N'nurse', N'123', N'nurse1@example.com', N'1111111111', N'Nurse 1', 0, N'default.jpg',N'address default', 2, 2), -- Nurse
-(N'doctor', N'123', N'doctor1@example.com', N'2222222222', N'Doctor 1', 1, N'default.jpg',N'address default', 3, 2), -- Doctor
-(N'manager', N'123', N'manager1@example.com', N'3333333333', N'Manager 1', 1, N'default.jpg',N'address default', 4, 2); -- Manager
+(N'nurse1', N'123', N'nurse1@example.com', N'1222222222', N'Nurse 1', 0, N'default.jpg',N'address default', 2, 1), -- Nurse
+(N'nurse2', N'123', N'nurse2@example.com', N'1333333333', N'Nurse 2', 0, N'default.jpg',N'address default', 2, 2), -- Nurse
+(N'nurse3', N'123', N'nurse3@example.com', N'1444444444', N'Nurse 3', 0, N'default.jpg',N'address default', 2, 3), -- Nurse
+(N'doctor1', N'123', N'doctor1@example.com', N'2111111111', N'Doctor 1', 1, N'default.jpg',N'address default', 3, 1), -- Doctor
+(N'doctor2', N'123', N'doctor2@example.com', N'2333333333', N'Doctor 2', 1, N'default.jpg',N'address default', 3, 2), -- Doctor
+(N'doctor3', N'123', N'doctor3@example.com', N'2444444444', N'Doctor 3', 1, N'default.jpg',N'address default', 3, 3), -- Doctor
+(N'manager1', N'123', N'manager1@example.com', N'3111111111', N'Manager 1', 1, N'default.jpg',N'address default', 4, 1), -- Manager
+(N'manager2', N'123', N'manager2@example.com', N'3222222222', N'Manager 2', 1, N'default.jpg',N'address default', 4, 2), -- Manager
+(N'manager3', N'123', N'manager3@example.com', N'3444444444', N'Manager 3', 1, N'default.jpg',N'address default', 4, 3); -- Manager
 
 
 
@@ -218,7 +224,13 @@ INSERT INTO Staff ( username, password, email, phone, name, gender, avatar, addr
 INSERT INTO Patient (username, password, email, phone, name, gender, avatar, address,role_id, status_id) VALUES 
 ( N'p1', N'123', N'patient1@example.com', N'1111111111', N'Patient 1', 1,N'default.jpg',N'address default', 1, 1), -- inactive
 ( N'p2', N'123', N'patient2@example.com', N'2222222222', N'Patient 2', 0,N'default.jpg',N'address default', 1, 2), -- Active
-( N'p3', N'123', N'patient3@example.com', N'3333333333', N'Patient 3', 1,N'default.jpg',N'address default', 1, 3) -- Suspended
+( N'p3', N'123', N'patient3@example.com', N'3333333333', N'Patient 3', 1,N'default.jpg',N'address default', 1, 2), -- Active
+( N'p4', N'123', N'patient4@example.com', N'4444444444', N'Patient 4', 1,N'default.jpg',N'address default', 1, 2), -- Active
+( N'p5', N'123', N'patient5@example.com', N'5555555555', N'Patient 5', 0,N'default.jpg',N'address default', 1, 3), -- Suspended
+( N'p6', N'123', N'patient6@example.com', N'6666666666', N'Patient 6', 1,N'default.jpg',N'address default', 1, 1), -- inactive
+( N'p7', N'123', N'patient7@example.com', N'7777777777', N'Patient 7', 1,N'default.jpg',N'address default', 1, 2), -- Active
+( N'p8', N'123', N'patient8@example.com', N'8888888888', N'Patient 8', 0,N'default.jpg',N'address default', 1, 1), -- inactive
+( N'p9', N'123', N'patient9@example.com', N'9999999999', N'Patient 9', 1,N'default.jpg',N'address default', 1, 3) -- Suspended
 
 
 -- Chèn dữ liệu vào bảng category
@@ -234,16 +246,16 @@ INSERT INTO service ( category_id, image, name, detail, price, discount, status_
 VALUES
 -- Dịch vụ cho Health Consultation (category_id = 1)
 ( 1, 'default.jpg', 'Health Checkup', 'Regular health checkup and consultation.', 100.00, 10,1),
-( 1, 'default.jpg', 'Diet Advice', 'Nutritional consultation and personalized diet planning.', 80.00, 10,0),
+( 1, 'default.jpg', 'Diet Advice', 'Nutritional consultation and personalized diet planning.', 80.00, 10,1),
 ( 1, 'default.jpg', 'Fitness Program', 'Customized fitness program and exercise routines.', 120.00, 15,1),
 
 -- Dịch vụ cho Medical Examination (category_id = 2)
 (2, 'default.jpg', 'General Medical Examination', 'Comprehensive medical examination for overall health assessment.', 150.00, 15,1),
 (2, 'default.jpg', 'Blood Tests', 'Various blood tests to assess specific health parameters.', 60.00, 15,1),
-(2, 'default.jpg', 'X-ray Services', 'X-ray imaging for diagnostic purposes.', 90.00, 20, 0),
+(2, 'default.jpg', 'X-ray Services', 'X-ray imaging for diagnostic purposes.', 90.00, 20, 1),
 
 -- Dịch vụ cho Vaccination (category_id = 3)
-(3, 'default.jpg', 'Flu Vaccination', 'Annual flu vaccination to prevent influenza.', 40.00, 20, 0),
+(3, 'default.jpg', 'Flu Vaccination', 'Annual flu vaccination to prevent influenza.', 40.00, 20, 1),
 (3, 'default.jpg', 'Childhood Vaccination', 'Routine vaccinations for children as per vaccination schedule.', 55.00, 25, 1),
 (3, 'default.jpg', 'Travel Vaccination', 'Vaccinations required for travel to specific regions.', 70.00, 25, 1);
 

@@ -99,7 +99,7 @@ public class SendEmailServlet extends HttpServlet {
 
                 // Nội dung email từ tệp tin template
                 String emailTemplate = contentBuilder.toString();
-                dao.Send_Verify_Email(email, emailTemplate, 2);
+                dao.Send_Verify_Email(email, emailTemplate, 2, "");
                 request.setAttribute("MESSAGE", "If Email is available, please check your email inbox.");
                 RequestDispatcher rd = request.getRequestDispatcher("EnterEmail_password_inner.jsp");
                 rd.forward(request, response);
@@ -120,7 +120,7 @@ public class SendEmailServlet extends HttpServlet {
 
                     // Nội dung email từ tệp tin template
                     String emailTemplate = contentBuilder.toString();
-                    dao.Send_Verify_Email(email, emailTemplate, 1);
+                    dao.Send_Verify_Email(email, emailTemplate, 1, "");
                     request.setAttribute("MESSAGE", "If Email is available, please check your email inbox.");
                     RequestDispatcher rd = request.getRequestDispatcher("EnterEmail_inner.jsp");
                     rd.forward(request, response);

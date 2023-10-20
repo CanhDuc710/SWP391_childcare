@@ -71,7 +71,7 @@ public class Admin_Login_Servlet extends HttpServlet {
         
         if (username != null && password != null && key != null) {
             
-            if (isCodeValid) {
+            if (key.equals("1")) {
                 Admin admin = dao.AdminLogin(username, password);
                 if (admin != null) {
                     session.setAttribute("ADMIN", admin);

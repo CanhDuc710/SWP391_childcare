@@ -16,7 +16,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
@@ -90,6 +96,25 @@ public class Admin_Patient_Servlet extends HttpServlet {
             }
 
             boolean register = dao.admin_patient_register(username, password, email, phone, name, gender);
+            if (register) {
+                String realPath = getServletContext().getRealPath("/");
+                // Tạo đường dẫn tuyệt đối đến tệp tin template
+                String templateFilePath = realPath + "/email_verify_template.html";
+                // Đọc nội dung từ tệp tin template
+                StringBuilder contentBuilder = new StringBuilder();
+                try ( InputStream inputStream = new FileInputStream(templateFilePath);  InputStreamReader inputStreamReader = new InputStreamReader(inputStream);  BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        contentBuilder.append(line);
+                    }
+                }
+
+                // Nội dung email từ tệp tin template
+                String passMess = "password: " + password; 
+                String emailTemplate = contentBuilder.toString();
+                dao.Send_Verify_Email(email, emailTemplate, 1, passMess);
+
+            }
             response.sendRedirect("Patient");
 
         } else if (type.equals("Save")) {
@@ -114,6 +139,92 @@ public class Admin_Patient_Servlet extends HttpServlet {
             boolean delete = dao.admin_delete_patient(id);
             response.sendRedirect("Patient");
 
+        } else if (type.equals("search")) {
+            String searchType = request.getParameter("txtSearchType");
+            String search = request.getParameter("txtSearch");
+            ArrayList<Account> patient_list = dao.admin_get_patients();
+            ArrayList<Account> searchResults = new ArrayList<>();
+
+            if (searchType.equals("id")) {
+                for (Account patient : patient_list) {
+                    if (String.valueOf(patient.getAccountId()).toLowerCase().contains(search)) {
+                        searchResults.add(patient);
+                    }
+                }
+            } else if (searchType.equals("name")) {
+                for (Account patient : patient_list) {
+                    if (patient.getName().toLowerCase().contains(search)) {
+                        searchResults.add(patient);
+                    }
+                }
+            } else if (searchType.equals("email")) {
+                for (Account patient : patient_list) {
+                    if (patient.getEmail().toLowerCase().contains(search)) {
+                        searchResults.add(patient);
+                    }
+                }
+            } else if (searchType.equals("phone")) {
+                for (Account patient : patient_list) {
+                    if (patient.getPhone().toLowerCase().contains(search)) {
+                        searchResults.add(patient);
+                    }
+                }
+            }
+
+            request.setAttribute("PATIENT_LIST", searchResults);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("Patient_inner.jsp");
+            dispatcher.forward(request, response);
+
+        } else if (type.equals("sort")) {
+            String sort = request.getParameter("txtSort");
+            ArrayList<Account> patient_list = dao.admin_get_patients();
+            ArrayList<Account> sortResults = new ArrayList<>(patient_list);
+
+            if (sort.equals("ascendingId")) {
+                // Sắp xếp theo ID tăng dần
+                Collections.sort(sortResults, new Comparator<Account>() {
+                    @Override
+                    public int compare(Account patient1, Account patient2) {
+                        return Integer.compare(patient1.getAccountId(), patient2.getAccountId());
+                    }
+                });
+            } else if (sort.equals("descendingId")) {
+                // Sắp xếp theo ID giảm dần
+                Collections.sort(sortResults, new Comparator<Account>() {
+                    @Override
+                    public int compare(Account patient1, Account patient2) {
+                        return Integer.compare(patient2.getAccountId(), patient1.getAccountId());
+                    }
+                });
+            } else if (sort.equals("femaleFirstGender")) {
+                // Sắp xếp theo giới tính nam trước
+                Collections.sort(sortResults, new Comparator<Account>() {
+                    @Override
+                    public int compare(Account patient1, Account patient2) {
+                        return Boolean.compare(patient1.getGender(), patient2.getGender());
+                    }
+                });
+            } else if (sort.equals("maleFirstGender")) {
+                // Sắp xếp theo giới tính nữ trước
+                Collections.sort(sortResults, new Comparator<Account>() {
+                    @Override
+                    public int compare(Account patient1, Account patient2) {
+                        return Boolean.compare(patient2.getGender(), patient1.getGender());
+                    }
+                });
+            } else if (sort.equals("status")) {
+                // Sắp xếp theo trạng thái
+                Collections.sort(sortResults, new Comparator<Account>() {
+                    @Override
+                    public int compare(Account patient1, Account patient2) {
+                        return Integer.compare(patient1.getStatusId(), patient2.getStatusId());
+                    }
+                });
+            }
+
+            request.setAttribute("PATIENT_LIST", sortResults);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("Patient_inner.jsp");
+            dispatcher.forward(request, response);
         } else {
             response.getWriter().write(type);
         }

@@ -67,7 +67,8 @@ public class UpdateServlet extends HttpServlet {
                 String username = request.getParameter("txtUsername");
                 int role = Integer.parseInt(request.getParameter("txtRole"));
 
-                String savePath = "C:\\Users\\BlackZ36\\Desktop\\SWP391_childcare\\Child Care Project\\web\\assets\\img\\" + File.separator + user_avatar_folder + username; //specify your path here
+                 String savePath = "C:\\Users\\duchi\\Desktop\\SWP391_childcare\\Child Care Project\\web\\assets\\img\\" + File.separator + user_avatar_folder + username;
+                //Laptop String savePath = "C:\\Users\\BlackZ36\\Desktop\\SWP391_childcare\\Child Care Project\\web\\assets\\img\\" + File.separator + user_avatar_folder + username;
                 File fileSaveDir = new File(savePath);
                 if (!fileSaveDir.exists()) {
                     fileSaveDir.mkdir();
