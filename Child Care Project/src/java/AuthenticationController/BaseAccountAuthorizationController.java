@@ -6,6 +6,7 @@ package AuthenticationController;
 
 import Model.Account;
 import Model.Feature;
+import dal.FeatureDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,11 +21,13 @@ import java.util.ArrayList;
 public abstract class BaseAccountAuthorizationController extends BaseStaffAuthenticationController{
     
     private boolean isAuthorized(HttpServletRequest request, Account acc) {
+        
         String accessURL = request.getServletPath();
-//        ArrayList<Feature> features = adb.getFeatures(Account.getUsername());
-//        for (Feature f : features) {
-//            if(f.getUrl().equals(accessURL)) return true;
-//        }
+        FeatureDBContext fdb = new FeatureDBContext();
+        ArrayList<Feature> features = fdb.get(acc.getUsername(), acc.getPassword());
+        for (Feature f : features) {
+            if(f.getUrl().equals(accessURL)) return true;
+        }
         return false;
     }
     
