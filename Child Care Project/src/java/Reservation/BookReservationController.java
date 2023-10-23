@@ -23,7 +23,7 @@ import java.util.ArrayList;
  *
  * @author GL
  */
-@WebServlet(name = "BookReservation", urlPatterns = {"/Reservation/Booking"})
+@WebServlet(name = "BookReservation", urlPatterns = {"/Booking"})
 public class BookReservationController extends BaseAccountAuthenticationController{
 
     @Override
@@ -40,7 +40,7 @@ public class BookReservationController extends BaseAccountAuthenticationControll
         
         request.setAttribute("slots", rdb.getSlots());
         
-        request.getRequestDispatcher("../BookReservation.jsp").forward(request, response);
+        request.getRequestDispatcher("../Booking_inner.jsp").forward(request, response);
         
     }
 
