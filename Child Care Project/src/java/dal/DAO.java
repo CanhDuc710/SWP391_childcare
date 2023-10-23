@@ -1095,6 +1095,35 @@ public class DAO extends DBHelper {
         return list;
     }
 
+    public Services get_service_by_id(int txtId) {
+        String sql = "SELECT * FROM Service WHERE service_id = ? AND status_id = 1";
+        Services service = new Services();
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, txtId);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("service_id");
+                int cate = rs.getInt("category_id");
+                String image = rs.getString("image");
+                String name = rs.getString("name");
+                String detail = rs.getString("detail");
+                double price = rs.getDouble("price");
+                double discount = rs.getDouble("discount");
+                int status = rs.getInt("status_id");
+
+                service = new Services(id, cate, image, name, detail, price, discount, status);
+            }
+
+        } catch (SQLException e) {
+
+        }
+
+        return service;
+    }
+
     //admin servlet
     public Admin AdminLogin(String txtUsername, String txtPassword) {
         Admin admin = new Admin();
