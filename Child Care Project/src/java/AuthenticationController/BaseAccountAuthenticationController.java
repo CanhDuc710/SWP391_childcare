@@ -18,6 +18,14 @@ import java.io.IOException;
 public abstract class BaseAccountAuthenticationController extends HttpServlet{
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
     public Account isAuthenticated(HttpServletRequest request) {
+        if (request.getSession().getAttribute("ADMIN")!= null) {
+            Admin admin = (Admin) request.getSession().getAttribute("ADMIN");
+            Account acc = new Account();
+            acc.setAccountId(admin.getAdminId());
+            acc.setUsername(admin.getUsername());
+            acc.setPassword(admin.getPassword());
+            return acc;
+        }
         if (request.getSession().getAttribute("ACCOUNT")!= null) {
             Account acc = (Account) request.getSession().getAttribute("ACCOUNT");
             return acc;

@@ -300,7 +300,7 @@ select r.reservation_id, s.staff_id, s.name, s.gender from Reservation r, Staff 
 select f.staff_id, f.name from Staff f inner join Role r on f.role_id = r.role_id where r.role_name = 'doctor'
 
 --Get available reservations
-select r.reservation_id, r.slot_id, s.staff_id, s.name, r.patient_id from Reservation r inner join Staff s on r.staff_id = s.staff_id where r.patient_id is null and r.date >= CAST(GETDATE() AS Date)
+select r.reservation_id, r.slot_id, s.staff_id, s.name, r.patient_id, r.[date] from Reservation r inner join Staff s on r.staff_id = s.staff_id where r.patient_id is null and r.date >= CAST(GETDATE() AS Date)
 
 --Check accessible link from account with username and password
 (select f.feature_id, f.name, f.url from Staff s inner join RoleFeature rf on s.role_id = rf.role_id inner join Feature f on rf.feature_id = f.feature_id where username = 'p1' and [password] = '123')
@@ -312,5 +312,7 @@ select * from Patient
 --Recheck availability of the selected reservation
 select * from Reservation where reservation_id = 1 and patient_id = null
 
-
+select * from Reservation
 go
+
+select * from Patient

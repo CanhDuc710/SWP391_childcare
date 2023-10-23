@@ -3,7 +3,6 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -57,7 +56,7 @@
             <!-- ======= Breadcrumbs Section ======= -->
             <section class="breadcrumbs">
                 <div class="container">
-
+                    <div class="inside">
                     <div class="d-flex justify-content-between align-items-center">
                         <h2><a href="Login" >Login And Register</a></h2>
                         <ol>
@@ -70,9 +69,11 @@
             </section><!-- End Breadcrumbs Section -->
 
             <section class="inner-page">
-                <div class="container">
+                <div class="container" >
                     <p>
-                        Example inner page template
+                        <p> 
+                        <jsp:include page="include/CreateReservation.jsp" />
+                    </p>
                     </p>
                 </div>
             </section>
@@ -103,7 +104,7 @@
         <!-- Template Main JS File -->
         <script src="assets/js/main.js"></script>
         <script src="1script/reload.js"></script>
-
+        
     </body>
 
 </html>

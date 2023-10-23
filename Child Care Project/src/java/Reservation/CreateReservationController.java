@@ -41,10 +41,12 @@ public class CreateReservationController extends BaseAccountAuthenticationContro
         String selectedDoctor = request.getParameter("doctor");
         int doctorId = Integer.parseInt(selectedDoctor);
                 
-        String[] selectedSlots = request.getParameterValues("slots");
+        String[] selectedSlots = request.getParameterValues("selectedslots");
         
         ReservationDBContext rdb = new ReservationDBContext();
         rdb.create(doctorId, selectedSlots, from, to);
+        
+        response.sendRedirect("../");
     }
     
 }

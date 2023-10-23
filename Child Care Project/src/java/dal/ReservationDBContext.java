@@ -57,13 +57,28 @@ public class ReservationDBContext extends DBHelper {
     public ArrayList<Reservation> getAvailable() {
         ArrayList<Reservation> available = new ArrayList<>();
         try {
-            String sql = "select r.reservation_id, r.slot_id, s.staff_id, s.name, r.patient_id "
+            String sql = "select r.reservation_id, r.slot_id, s.staff_id, s.name, r.patient_id, r.[date] "
                     + "from Reservation r inner join Staff s on r.staff_id = s.staff_id "
                     + "where r.patient_id is null and r.date >= CAST(GETDATE() AS Date)";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
+                int reserId = rs.getInt(1);
+                int slotId = rs.getInt(2);
+                int doctorId = rs.getInt(3);
+                String doctorName = rs.getString(4);
+                Date date = rs.getDate(6);
                 
+                Reservation reser = new Reservation();
+                reser.setReservationId(reserId);
+                reser.setSlotId(slotId);
+                Account doctor = new Account();
+                doctor.setAccountId(doctorId);
+                doctor.setName(doctorName);
+                reser.setDoctorAcc(doctor);
+                reser.setDate(date);
+                
+                available.add(reser);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ReservationDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,6 +113,7 @@ public class ReservationDBContext extends DBHelper {
 
     public void create(int doctorId, String[] slotIds, Date from, Date to) {
         try {
+            connection.setAutoCommit(false);
             String insertSQL = "INSERT INTO Reservation (slot_id, staff_id, date) VALUES (?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
             Date currentDate = from;
@@ -106,12 +122,18 @@ public class ReservationDBContext extends DBHelper {
                     preparedStatement.setInt(1, Integer.parseInt(slot));
                     preparedStatement.setInt(2, doctorId);
                     preparedStatement.setDate(3, currentDate);
-                    preparedStatement.addBatch();
+                    preparedStatement.executeUpdate();
                 }
                 currentDate.setTime(currentDate.getTime() + 24 * 60 * 60 * 1000);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ReservationDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(ReservationDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }
