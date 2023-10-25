@@ -11,11 +11,12 @@ import java.sql.Date;
  * @author GL
  */
 public class Reservation {
+
     private int reservationId;
     private int slotId;
     private Account patientAcc;
     private Account doctorAcc;
-    private String status;
+    private int status;
     private Date date;
     private int total;
 
@@ -23,56 +24,56 @@ public class Reservation {
         return reservationId;
     }
 
-    public int getSlotId() {
-        return slotId;
-    }
-
-    public Account getPatientAcc() {
-        return patientAcc;
-    }
-
-    public Account getDoctorAcc() {
-        return doctorAcc;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
     public void setReservationId(int reservationId) {
         this.reservationId = reservationId;
+    }
+
+    public int getSlotId() {
+        return slotId;
     }
 
     public void setSlotId(int slotId) {
         this.slotId = slotId;
     }
 
+    public Account getPatientAcc() {
+        return patientAcc;
+    }
+
     public void setPatientAcc(Account patientAcc) {
         this.patientAcc = patientAcc;
+    }
+
+    public Account getDoctorAcc() {
+        return doctorAcc;
     }
 
     public void setDoctorAcc(Account doctorAcc) {
         this.doctorAcc = doctorAcc;
     }
 
-    public void setStatus(String status) {
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
     }
 
+    public int getTotal() {
+        return total;
+    }
+
     public void setTotal(int total) {
         this.total = total;
     }
-    
+
 }

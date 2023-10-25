@@ -48,15 +48,9 @@
 
                         <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down"></i></a>
                             <ul>
-                                <li><a href="#hero">Posts</a></li>
-                                <li><a href="#featured-services">Features</a></li>
-                                <li><a href="#about">About us</a></li>
-                                <li><a href="#counts">Quality</a></li>
-
-                                <li><a href="#testimonials">Feedback</a></li>
-                                <li><a href="#doctors">Doctors</a></li>
+                                <li><a href="#testimonials">Posts</a></li>
+                                <li><a href=Doctors">Doctors</a></li>
                                 <li><a href="#contact">Contact</a></li>
-
                                 <li><a href="Test">Test</a></li>
                             </ul>
                         </li>
@@ -75,18 +69,17 @@
                                 <c:when test="${ACCOUNT != null}">
                                 <li class="dropdown"><a href="Account"><span>Account</span> <i class="bi bi-chevron-down"></i></a>
                                     <ul>
-                                        <li><a href="Account">User Profile</a></li>
-                                        <!--                                <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-                                                                            <ul>
-                                                                                <li><a href="#">Deep Drop Down 1</a></li>
-                                                                                <li><a href="#">Deep Drop Down 2</a></li>
-                                                                                <li><a href="#">Deep Drop Down 3</a></li>
-                                                                                <li><a href="#">Deep Drop Down 4</a></li>
-                                                                                <li><a href="#">Deep Drop Down 5</a></li>
-                                                                            </ul>
-                                                                        </li>-->
+                                        <li><a href="Account">My Profile</a></li>
+                                        <li><a href="MyChildren">My Children's Information</a></li>
+                                        <li class="dropdown"><a href="#"><span>My Reservations</span> <i class="bi bi-chevron-right"></i></a>
+                                            <ul>
+                                                <li><a href="MyReservation">All</a></li>
+                                                <li><a href="MyReservation?statusId=1" style="color: darkgoldenrod">Pending</a></li>
+                                                <li><a href="MyReservation?statusId=2" style="color: green">Finished</a></li>
+                                                <li><a href="MyReservation?statusId=3" style="color: red">Cancelled</a></li>
+                                            </ul>
+                                        </li>
                                         <li><a href="ChangePassword">Change Password</a></li>
-                                        <li><a href="Reservation">My Reservations</a></li>
                                         <li><a href="Logout" style="color: red;">Logout</a></li>
                                     </ul>
                                 </li>

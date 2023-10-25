@@ -68,7 +68,7 @@
                                     <div class="icon"><i class="fas fa-thermometer"></i></div>
                                     </c:when>
                                 </c:choose>
-                            <h4 class="title"><a href="">${service.name}</a></h4>
+                            <h4 class="title"><a href="ServiceDetail?serviceID=${service.serviceId}">${service.name}</a></h4>
                                 <c:forEach var="category" items="${CATEGORY_LIST}">
                                     <c:if test="${category.categoryId eq service.categoryId}" >
                                     <h6>${category.name}</h6>

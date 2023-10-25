@@ -1124,6 +1124,91 @@ public class DAO extends DBHelper {
         return service;
     }
 
+    public ArrayList<Children> get_children_by_parentID(int id) {
+        ArrayList<Children> list = new ArrayList<>();
+        sql = "SELECT * FROM Children WHERE parent_id = ?";
+
+        try {
+            st = connection.prepareCall(sql);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                int childrenId = rs.getInt("children_id");
+                int parentId = rs.getInt("parent_id");
+                String name = rs.getString("name");
+                boolean gender = rs.getBoolean("gender");
+                Date dob = rs.getDate("dob");
+                int relation = rs.getInt("Relation");
+
+                Children child = new Children(childrenId, parentId, name, gender, dob, relation);
+                list.add(child);
+
+            }
+        } catch (Exception e) {
+        }
+
+        return list;
+    }
+
+    public ArrayList<Reservation2> get_reservation_by_patientId(int id) {
+        sql = "SELECT * FROM Reservation WHERE patient_id = ?";
+        ArrayList<Reservation2> list = new ArrayList<>();
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                int reservationId = rs.getInt("reservation_id");
+                int slotId = rs.getInt("slot_id");
+                int patientId = rs.getInt("patient_id");
+                int childId = rs.getInt("children_id");
+                int staffId = rs.getInt("staff_id");
+                int statusId = rs.getInt("status_id");
+                Date bookDate = rs.getDate("book_date");
+                Date date = rs.getDate("date");
+                double total = rs.getDouble("total");
+
+                Reservation2 rs = new Reservation2(reservationId, slotId, patientId, childId, staffId, statusId, bookDate, date, total);
+                list.add(rs);
+
+            }
+
+        } catch (Exception ex) {
+
+        }
+        return list;
+    }
+
+    public ArrayList<ReservationDetail2> get_reservation_detail_by_id(int id) {
+        sql = "SELECT * FROM Reservation_detail WHERE reservation_id = ?";
+        ArrayList<ReservationDetail2> list = new ArrayList<>();
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+
+            while (rs.next()) {
+
+                int detail_id = rs.getInt("reservation_detail_id");
+                int reservation_id = rs.getInt("reservation_id");
+                int service_id = rs.getInt("service_id");
+                double price = rs.getDouble("price");
+
+                ReservationDetail2 rs = new ReservationDetail2(detail_id, reservation_id, service_id, price);
+
+                list.add(rs);
+
+            }
+
+        } catch (Exception ex) {
+
+        }
+        return list;
+
+    }
+
     //admin servlet
     public Admin AdminLogin(String txtUsername, String txtPassword) {
         Admin admin = new Admin();

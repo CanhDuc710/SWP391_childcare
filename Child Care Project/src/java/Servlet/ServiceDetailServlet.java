@@ -4,9 +4,7 @@
  */
 package Servlet;
 
-import Model.AverageRate;
-import Model.Services;
-import Model.ServicesCategory;
+import Model.*;
 import dal.DAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -16,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 /**
@@ -46,8 +45,10 @@ public class ServiceDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAO dao = new DAO();
+        HttpSession session = request.getSession();
         Services service = new Services();
         String productId = request.getParameter("serviceID");
+        
 
         if (productId == null) {
             response.sendRedirect("Services");
@@ -59,8 +60,12 @@ public class ServiceDetailServlet extends HttpServlet {
                 ArrayList<AverageRate> average_rate = dao.get_average_rate_list();
                 ArrayList<ServicesCategory> category = dao.get_service_category_list();
                 ArrayList<Services> service_list = dao.get_service_list();
+                ArrayList<Account> account_list = dao.admin_get_patients();
+                ArrayList<Feedback> feedback_list = dao.get_feedback_list();
                 
                 
+                request.setAttribute("FEEDBACK_LIST", feedback_list);
+                request.setAttribute("ACCOUNT_LIST", account_list);
                 request.setAttribute("AVERAGE_RATE", average_rate);
                 request.setAttribute("CATEGORY", category);
                 request.setAttribute("SERVICE", service);

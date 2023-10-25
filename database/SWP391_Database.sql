@@ -23,11 +23,6 @@ CREATE TABLE Status (
     status_name NVARCHAR(50) NULL
 );
 
--- Tạo bảng ReservationStatus
-CREATE TABLE ReservationStatus (
-    status_id INT IDENTITY(1,1) PRIMARY KEY,
-    status_name NVARCHAR(50) NULL
-);
 
 -- Tạo bảng Role
 CREATE TABLE Role (
@@ -68,6 +63,18 @@ CREATE TABLE Patient (
     FOREIGN KEY (status_id) REFERENCES Status(status_id),
 	FOREIGN KEY (role_id) REFERENCES Role(role_id)
 );
+
+-- Tạo bảng Children
+CREATE TABLE Children(
+	children_id INT IDENTITY(1,1) PRIMARY KEY,
+	parent_id INT,
+	name NVARCHAR(100) NULL,
+	gender BIT NULL,
+	dob DATE NULL,
+	Relation INT NULL,
+	FOREIGN KEY (parent_id) REFERENCES Patient(patient_id)
+);
+
 
 -- Tạo bảng Staff
 CREATE TABLE Staff (
@@ -148,26 +155,27 @@ CREATE TABLE Reservation (
     reservation_id INT IDENTITY(1,1) PRIMARY KEY,
     slot_id INT NULL,
     patient_id INT NULL,
+    children_id INT NULL,
     staff_id INT NULL,
     status_id INT NULL,
+	book_date Date NULL,
     date DATE NULL,
     total DECIMAL(10, 2) NULL,
     FOREIGN KEY (slot_id) REFERENCES Slot(slot_id),
     FOREIGN KEY (patient_id) REFERENCES Patient(patient_id),
+    FOREIGN KEY (children_id) REFERENCES Children(children_id), -- Liên kết với thông tin trẻ em
     FOREIGN KEY (staff_id) REFERENCES Staff(staff_id),
-    FOREIGN KEY (status_id) REFERENCES ReservationStatus(status_id)
+    FOREIGN KEY (status_id) REFERENCES Status(status_id)
 );
 
 -- Tạo bảng Reservation_detail
 CREATE TABLE Reservation_detail (
-    reservation_detail_id INT PRIMARY KEY,
+    reservation_detail_id INT IDENTITY(1,1) PRIMARY KEY,
     reservation_id INT NULL,
     service_id INT NULL,
-    quantity INT NULL,
-    person_amount INT NULL,
-    total DECIMAL(10, 2) NULL,
+    price DECIMAL(10, 2) NULL,
     FOREIGN KEY (reservation_id) REFERENCES Reservation(reservation_id),
-    FOREIGN KEY (service_id) REFERENCES Service(service_id)
+    FOREIGN KEY (service_id) REFERENCES Service(service_id),
 );
 
 -- Tạo bảng activation
@@ -205,22 +213,26 @@ GO
 
 -- Thêm dữ liệu vào bảng StaffStatus
 INSERT INTO Status (status_name) VALUES 
-(N'Inactive'),       -- Hoạt động
+(N'Pending'),       -- Hoạt động
 (N'Active'),     -- Không hoạt động
-(N'Suspended');    -- Tạm ngưng hoạt động
+(N'Deactive');    -- Tạm ngưng hoạt động
 
 -- Thêm dữ liệu vào bảng Staff (1 nurse, 2 doctor, 1 manager)
 INSERT INTO Staff ( username, password, email, phone, name, gender, avatar, address, role_id, status_id) VALUES 
 (N'nurse', N'123', N'nurse1@example.com', N'1111111111', N'Nurse 1', 0, N'default.jpg',N'address default', 2, 2), -- Nurse
-(N'doctor', N'123', N'doctor1@example.com', N'2222222222', N'Doctor 1', 1, N'default.jpg',N'address default', 3, 2), -- Doctor
-(N'manager', N'123', N'manager1@example.com', N'3333333333', N'Manager 1', 1, N'default.jpg',N'address default', 4, 2), -- Manager
-(N'doctor2', N'123', N'doctor2@example.com', N'4444444444', N'Doctor 2', 1, N'default.jpg',N'address default', 3, 2); -- Doctor
+(N'doctor1', N'123', N'doctor1@example.com', N'2222222222', N'Doctor 1', 1, N'default.jpg',N'address default', 3, 2), -- Doctor
+(N'doctor2', N'123', N'doctor2@example.com', N'2222222222', N'Doctor 2', 1, N'default.jpg',N'address default', 3, 2), -- Doctor
+(N'doctor3', N'123', N'doctor3@example.com', N'2222222222', N'Doctor 3', 1, N'default.jpg',N'address default', 3, 2), -- Doctor
+(N'manager', N'123', N'manager1@example.com', N'3333333333', N'Manager 1', 1, N'default.jpg',N'address default', 4, 2); -- Manager
 
 -- Thêm dữ liệu vào bảng Patient với các trạng thái từ bảng PatientStatus
 INSERT INTO Patient (username, password, email, phone, name, gender, avatar, address,role_id, status_id) VALUES 
-( N'p1', N'123', N'patient1@example.com', N'1111111111', N'Patient 1', 1,N'default.jpg',N'address default', 1, 1), -- inactive
-( N'p2', N'123', N'patient2@example.com', N'2222222222', N'Patient 2', 0,N'default.jpg',N'address default', 1, 2), -- Active
-( N'p3', N'123', N'patient3@example.com', N'3333333333', N'Patient 3', 1,N'default.jpg',N'address default', 1, 3) -- Suspended
+( N'p1', N'123', N'patient1@example.com', N'1111111111', N'Patient 1', 1,N'default.jpg',N'address default', 1, 2), --
+( N'p2', N'123', N'patient2@example.com', N'2222222222', N'Patient 2', 0,N'default.jpg',N'address default', 1, 2), -- 
+( N'p3', N'123', N'patient3@example.com', N'3333333333', N'Patient 3', 1,N'default.jpg',N'address default', 1, 2),
+( N'p4', N'123', N'patient4@example.com', N'4444444444', N'Patient 4', 1,N'default.jpg',N'address default', 1, 2), -- 
+( N'p5', N'123', N'patient5@example.com', N'5555555555', N'Patient 5', 0,N'default.jpg',N'address default', 1, 1), -- 
+( N'p6', N'123', N'patient6@example.com', N'6666666666', N'Patient 6', 1,N'default.jpg',N'address default', 1, 3) -- 
 
 -- Thêm dữ liệu vào bảng feature
 INSERT INTO Feature (name, url, note) VALUES
@@ -247,19 +259,19 @@ VALUES
 INSERT INTO service ( category_id, image, name, detail, price, discount, status_id )
 VALUES
 -- Dịch vụ cho Health Consultation (category_id = 1)
-( 1, 'health_consultation.jpg', 'Health Checkup', 'Regular health checkup and consultation.', 100.00, 0.00,1),
-( 1, 'diet_advice.jpg', 'Diet Advice', 'Nutritional consultation and personalized diet planning.', 80.00, 0.00,0),
-( 1, 'fitness_program.jpg', 'Fitness Program', 'Customized fitness program and exercise routines.', 120.00, 0.00,1),
+( 1, 'health_consultation.jpg', 'Health Checkup', 'Regular health checkup and consultation.', 100.00, 5.00,1),
+( 1, 'diet_advice.jpg', 'Diet Advice', 'Nutritional consultation and personalized diet planning.', 100.00, 10.00,1),
+( 1, 'fitness_program.jpg', 'Fitness Program', 'Customized fitness program and exercise routines.', 100.000, 15.00,1),
 
 -- Dịch vụ cho Medical Examination (category_id = 2)
-(2, 'medical_exam.jpg', 'General Medical Examination', 'Comprehensive medical examination for overall health assessment.', 150.00, 0.00,1),
-(2, 'blood_test.jpg', 'Blood Tests', 'Various blood tests to assess specific health parameters.', 60.00, 0.00,1),
-(2, 'x_ray.jpg', 'X-ray Services', 'X-ray imaging for diagnostic purposes.', 90.00, 0.00, 0),
+(2, 'medical_exam.jpg', 'General Medical Examination', 'Comprehensive medical examination for overall health assessment.', 100.00, 5.00,1),
+(2, 'blood_test.jpg', 'Blood Tests', 'Various blood tests to assess specific health parameters.', 100.00, 10.00,1),
+(2, 'x_ray.jpg', 'X-ray Services', 'X-ray imaging for diagnostic purposes.', 100.00, 15.00, 1),
 
 -- Dịch vụ cho Vaccination (category_id = 3)
-(3, 'vaccine1.jpg', 'Flu Vaccination', 'Annual flu vaccination to prevent influenza.', 40.00, 0.00, 0),
-(3, 'vaccine2.jpg', 'Childhood Vaccination', 'Routine vaccinations for children as per vaccination schedule.', 55.00, 0.00, 1),
-(3, 'vaccine3.jpg', 'Travel Vaccination', 'Vaccinations required for travel to specific regions.', 70.00, 0.00, 1);
+(3, 'vaccine1.jpg', 'Flu Vaccination', 'Annual flu vaccination to prevent influenza.', 100.00, 5.00, 1),
+(3, 'vaccine2.jpg', 'Childhood Vaccination', 'Routine vaccinations for children as per vaccination schedule.', 100.00, 10.00, 1),
+(3, 'vaccine3.jpg', 'Travel Vaccination', 'Vaccinations required for travel to specific regions.', 100.00, 15.00, 1);
 
 
 -- Thêm feedback 
@@ -281,38 +293,37 @@ VALUES
 (9, 1, 3, 'Travel Vaccination', 'The travel vaccinations were done adequately, but the waiting time was long.','10-10-23');
 GO
 
--- Thêm các reservation có sẵn
-insert into Reservation(staff_id, slot_id, patient_id,date) 
+-- Thêm một dòng dữ liệu vào bảng admin
+INSERT INTO Admin (username,password)
+VALUES ('admin','admin');
+
+-- Thêm một dòng dữ liệu vào bảng Children
+INSERT INTO Children (parent_id, name, gender, dob, Relation)
 VALUES 
-(2, 1, 1, '2023-10-22'), 
-(4, 1, null, '2023-10-22'), 
-(4, 1, null, '2023-10-23'), 
-(4, 2, null, '2023-10-21')
+	(1, 'Patient 1s Children 1', 1, '2000-01-15', 1),
+	(1, 'Patient 1s Children 2', 0, '2000-01-15', 2),
+	(1, 'Patient 1s Children 3', 1, '2000-01-15', 3),
+	(2, 'Patient 2s Children 1', 0, '2000-01-15', 1),
+	(2, 'Patient 2s Children 2', 1, '2000-01-15', 2),
+	(2, 'Patient 2s Children 3', 0, '2000-01-15', 3);
+
+
+
+-- Thêm các reservation có sẵn
+INSERT INTO Reservation (slot_id, patient_id, children_id, staff_id, status_id, date, total)
+VALUES (1, 1, 1, 5, 1, '2023-11-01', 270.00); 
 GO
+
+-- Thêm chi tiết đặt lịch hẹn (Reservation_detail) cho reservation_id vừa thêm vào
+INSERT INTO Reservation_detail (reservation_id, service_id, price)
+VALUES 
+(1, 1, 95), 
+(1, 2, 90), 
+(1, 3, 85); 
+GO
+
+
 
 ALTER DATABASE SWP391_Database SET MULTI_USER
 GO
 
---
-select r.reservation_id, s.staff_id, s.name, s.gender from Reservation r, Staff s where r.staff_id = s.staff_id
-
---get all doctors
-select f.staff_id, f.name from Staff f inner join Role r on f.role_id = r.role_id where r.role_name = 'doctor'
-
---Get available reservations
-select r.reservation_id, r.slot_id, s.staff_id, s.name, r.patient_id, r.[date] from Reservation r inner join Staff s on r.staff_id = s.staff_id where r.patient_id is null and r.date >= CAST(GETDATE() AS Date)
-
---Check accessible link from account with username and password
-(select f.feature_id, f.name, f.url from Staff s inner join RoleFeature rf on s.role_id = rf.role_id inner join Feature f on rf.feature_id = f.feature_id where username = 'p1' and [password] = '123')
-Union (select f.feature_id, f.name, f.url from Patient p inner join RoleFeature rf on p.role_id = rf.role_id inner join Feature f on rf.feature_id = f.feature_id where username like 'p1' and [password] = '123') 
-
---
-select * from Patient
-
---Recheck availability of the selected reservation
-select * from Reservation where reservation_id = 1 and patient_id = null
-
-select * from Reservation
-go
-
-select * from Patient

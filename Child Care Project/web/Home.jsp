@@ -65,7 +65,8 @@
                     </div>
 
                 </div>
-            </section><!-- End Cta Section -->
+            </section>
+            <!-- End Cta Section -->
 
             <!-- ======= About Us Section ======= -->
             <%--<jsp:include page="include/about-us_include.jsp" />--%>
@@ -82,8 +83,8 @@
                                 <i class="fas fa-user-md"></i>
                                 <span data-purecounter-start="0" data-purecounter-end="${DOCTOR_COUNT}" data-purecounter-duration="1" class="purecounter"></span>
 
-                                <p><strong>Doctors</strong> is activating</p>
-                                <a href="Doctor">Find out more &raquo;</a>
+                                <p><strong>Doctors</strong> Is Activating</p>
+                                <a href="Doctors">Find out more &raquo;</a>
                             </div>
                         </div>
 
@@ -91,7 +92,7 @@
                             <div class="count-box">
                                 <i class="far fa-hospital"></i>
                                 <span data-purecounter-start="0" data-purecounter-end="${SERVICE_COUNT}" data-purecounter-duration="1" class="purecounter"></span>
-                                <p><strong>Services</strong> is activating</p>
+                                <p><strong>Services</strong> Is Activating</p>
                                 <a href="Services">Find out more &raquo;</a>
                             </div>
                         </div>
@@ -134,7 +135,7 @@
                                                     <img src="assets/img/user/${staff.username}/${staff.avatar}" class="testimonial-img" alt="">
                                                 </c:if>
                                             </c:forEach>
-                                            
+
                                             <h3>${post.title}</h3>
                                             <h4>Author: ${post.authorId}</h4>
                                             <h4>Last Modified: ${post.updateDate}</h4>
