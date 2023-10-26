@@ -5,7 +5,7 @@
 
 package Servlet;
 
-import Model.Account;
+import Model.*;
 import dal.DAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -61,41 +61,20 @@ public class ReservationServlet extends HttpServlet {
     throws ServletException, IOException {
         DAO dao = new DAO();
         HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("ACCOUNT");
         
-        if(account == null){
-            
-            request.setAttribute("LOGIN_VALID", "Please Login First");
-            RequestDispatcher rd = request.getRequestDispatcher("Login_inner.jsp");
-            rd.forward(request, response);
-        }else if(account.getRoleId() == 3){
-            
-        }else if(account.getRoleId() == 4){
-            
-        }else{
-            RequestDispatcher rd = request.getRequestDispatcher("Reservation_patient_inner.jsp");
-            rd.forward(request, response);
-        }
+        //lay ra session
+        
         
     } 
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
+    
     @Override
     public String getServletInfo() {
         return "Short description";

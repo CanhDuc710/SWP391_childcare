@@ -1188,6 +1188,7 @@ public class DAO extends DBHelper {
         try {
             st = connection.prepareStatement(sql);
             st.setInt(1, id);
+            st.executeQuery();
 
             while (rs.next()) {
 
@@ -1207,6 +1208,31 @@ public class DAO extends DBHelper {
         }
         return list;
 
+    }
+
+    public ArrayList<Slot> get_slot_list() {
+        sql = "SELECT * FROM Slot";
+        ArrayList<Slot> list = new ArrayList<>();
+
+        try {
+            st = connection.prepareStatement(sql);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+
+                int id = rs.getInt("slot_id");
+                String start = rs.getString("start_time");
+                String end = rs.getString("end_time");
+
+                Slot slot = new Slot(id, start, end);
+                list.add(slot);
+
+            }
+
+        } catch (Exception ex) {
+
+        }
+        return list;
     }
 
     //admin servlet

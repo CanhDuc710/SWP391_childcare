@@ -44,7 +44,7 @@
                         <li><a class="nav-link scrollto " href="Home">Home</a></li>
                         <!--drop about-->
                         <li><a class="nav-link scrollto" href="Services?show=0">Services</a></li>
-                        <li><a class="nav-link scrollto" href="Reservation">Reservation</a></li>
+                        <li><a class="nav-link scrollto" href="ReservationDetail">Reservation</a></li>
 
                         <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down"></i></a>
                             <ul>

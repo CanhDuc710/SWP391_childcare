@@ -4,10 +4,8 @@
  */
 package Servlet;
 
-import Model.*;
-import Model.Reservation2;
-import Model.ReservationDetail2;
 import dal.DAO;
+import Model.*;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,34 +19,42 @@ import java.util.ArrayList;
 
 /**
  *
- * @author duchi
+ * @author BlackZ36
  */
-@WebServlet(name = "MyReservationServlet", urlPatterns = {"/MyReservation"})
-public class MyReservationServlet extends HttpServlet {
+@WebServlet(name = "ReservationDetailServlet", urlPatterns = {"/ReservationDetail"})
+public class ReservationDetailServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAO dao = new DAO();
         HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("ACCOUNT");
 
-        if (account == null) {
+        //lay ra danh sach service da chon
+        ArrayList<Services> chosen_service_list = (ArrayList<Services>) session.getAttribute("CHOSEN_SERVICE_LIST");
 
-            request.setAttribute("LOGIN_VALID", "Please Login First");
-            RequestDispatcher rd = request.getRequestDispatcher("Login_inner.jsp");
+        //lay ra danh sach category
+        ArrayList<ServicesCategory> category_list = dao.get_service_category_list();
+
+        if (chosen_service_list == null) {
+
+            request.setAttribute("count", 0);
+            RequestDispatcher rd = request.getRequestDispatcher("ReservationDetail_inner.jsp");
             rd.forward(request, response);
         } else {
-
-            ArrayList<Reservation2> reservation_list = dao.get_reservation_by_patientId(account.getAccountId());
-            ArrayList<Children> children_list = dao.get_children_by_parentID(account.getAccountId());
-            
-            request.setAttribute("CHILDREN_LIST", children_list);
-            request.setAttribute("RESERVATION_LIST", reservation_list);
-            RequestDispatcher rd = request.getRequestDispatcher("MyReservation_inner.jsp");
+            double totalPrice = 0.0;
+            for (Services service : chosen_service_list) {
+                totalPrice += service.getPrice() - (service.getPrice() * service.getDiscount() / 100);
+            }
+            request.setAttribute("totalPrice", totalPrice);
+            int count = chosen_service_list.size();
+            request.setAttribute("count", count);
+            request.setAttribute("CATEGORY_LIST", category_list);
+            request.setAttribute("CHOSEN_SERVICE_LIST", chosen_service_list);
+            RequestDispatcher rd = request.getRequestDispatcher("ReservationDetail_inner.jsp");
             rd.forward(request, response);
-
         }
+
     }
 
     @Override

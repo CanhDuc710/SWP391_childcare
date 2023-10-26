@@ -309,15 +309,15 @@
 
 
                     <c:forEach var="service" items="${SERVICE_LIST}">
+
                         <div class="col-md-4">
                             <section class="panel">
                                 <div class="pro-img-box">
                                     <img src="assets/img/service/${service.image}" alt="" />
-                                    <a href="#" class="adtocart">
+                                    <a href="AddService?serviceId=${service.serviceId}" class="adtocart">
                                         <i class="fa fa-clipboard-user"></i>
                                     </a>
                                 </div>
-
                                 <div class="panel-body text-center">
                                     <h3>
                                         <a href="ServiceDetail?serviceID=${service.serviceId}" class="pro-title">
@@ -365,6 +365,7 @@
                                 </div>
                             </section>
                         </div>
+
                     </c:forEach>
 
 

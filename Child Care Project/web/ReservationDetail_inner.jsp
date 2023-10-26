@@ -8,7 +8,7 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>My Reservation</title>
+        <title>Inner Page - Medicio Bootstrap Template</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
@@ -32,7 +32,13 @@
         <!-- Template Main CSS File -->
         <link href="assets/css/style.css" rel="stylesheet">
 
-
+        <!-- =======================================================
+        * Template Name: Medicio
+        * Updated: Sep 18 2023 with Bootstrap v5.3.2
+        * Template URL: https://bootstrapmade.com/medicio-free-bootstrap-theme/
+        * Author: BootstrapMade.com
+        * License: https://bootstrapmade.com/license/
+        ======================================================== -->
     </head>
 
     <body>
@@ -53,7 +59,7 @@
                 <div class="container">
 
                     <div class="d-flex justify-content-between align-items-center">
-                        <h2><a href="Reservation" >My Reservation</a></h2>
+                        <h2><a href="Login" >Login And Register</a></h2>
                         <ol>
                             <li><a href="Home">Home</a></li>
                             <li>Login</li>
@@ -65,9 +71,7 @@
 
             <section class="inner-page">
                 <div class="container">
-                    <p>
-                        Example inner page template
-                    </p>
+                    <jsp:include page="include/reservation_detail_include.jsp" />
                 </div>
             </section>
 

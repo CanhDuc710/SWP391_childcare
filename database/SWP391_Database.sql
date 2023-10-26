@@ -259,19 +259,19 @@ VALUES
 INSERT INTO service ( category_id, image, name, detail, price, discount, status_id )
 VALUES
 -- Dịch vụ cho Health Consultation (category_id = 1)
-( 1, 'health_consultation.jpg', 'Health Checkup', 'Regular health checkup and consultation.', 100.00, 5.00,1),
-( 1, 'diet_advice.jpg', 'Diet Advice', 'Nutritional consultation and personalized diet planning.', 100.00, 10.00,1),
-( 1, 'fitness_program.jpg', 'Fitness Program', 'Customized fitness program and exercise routines.', 100.000, 15.00,1),
+( 1, 'default.jpg', 'Health Checkup', 'Regular health checkup and consultation.', 100.00, 5.00,1),
+( 1, 'default.jpg', 'Diet Advice', 'Nutritional consultation and personalized diet planning.', 100.00, 10.00,1),
+( 1, 'default.jpg', 'Fitness Program', 'Customized fitness program and exercise routines.', 100.000, 15.00,1),
 
 -- Dịch vụ cho Medical Examination (category_id = 2)
-(2, 'medical_exam.jpg', 'General Medical Examination', 'Comprehensive medical examination for overall health assessment.', 100.00, 5.00,1),
-(2, 'blood_test.jpg', 'Blood Tests', 'Various blood tests to assess specific health parameters.', 100.00, 10.00,1),
-(2, 'x_ray.jpg', 'X-ray Services', 'X-ray imaging for diagnostic purposes.', 100.00, 15.00, 1),
+(2, 'default.jpg', 'General Medical Examination', 'Comprehensive medical examination for overall health assessment.', 100.00, 5.00,1),
+(2, 'default.jpg', 'Blood Tests', 'Various blood tests to assess specific health parameters.', 100.00, 10.00,1),
+(2, 'default.jpg', 'X-ray Services', 'X-ray imaging for diagnostic purposes.', 100.00, 15.00, 1),
 
 -- Dịch vụ cho Vaccination (category_id = 3)
-(3, 'vaccine1.jpg', 'Flu Vaccination', 'Annual flu vaccination to prevent influenza.', 100.00, 5.00, 1),
-(3, 'vaccine2.jpg', 'Childhood Vaccination', 'Routine vaccinations for children as per vaccination schedule.', 100.00, 10.00, 1),
-(3, 'vaccine3.jpg', 'Travel Vaccination', 'Vaccinations required for travel to specific regions.', 100.00, 15.00, 1);
+(3, 'default.jpg', 'Flu Vaccination', 'Annual flu vaccination to prevent influenza.', 100.00, 5.00, 1),
+(3, 'default.jpg', 'Childhood Vaccination', 'Routine vaccinations for children as per vaccination schedule.', 100.00, 10.00, 1),
+(3, 'default.jpg', 'Travel Vaccination', 'Vaccinations required for travel to specific regions.', 100.00, 15.00, 1);
 
 
 -- Thêm feedback 
@@ -300,12 +300,12 @@ VALUES ('admin','admin');
 -- Thêm một dòng dữ liệu vào bảng Children
 INSERT INTO Children (parent_id, name, gender, dob, Relation)
 VALUES 
-	(1, 'Patient 1s Children 1', 1, '2000-01-15', 1),
-	(1, 'Patient 1s Children 2', 0, '2000-01-15', 2),
-	(1, 'Patient 1s Children 3', 1, '2000-01-15', 3),
-	(2, 'Patient 2s Children 1', 0, '2000-01-15', 1),
-	(2, 'Patient 2s Children 2', 1, '2000-01-15', 2),
-	(2, 'Patient 2s Children 3', 0, '2000-01-15', 3);
+	(1, N'Nguyễn Văn A', 1, '2000-01-15', 1),
+	(1, N'Nguyễn Văn B', 0, '2000-01-15', 2),
+	(1, N'Nguyễn Văn C', 1, '2000-01-15', 3),
+	(2, N'Nguyễn Văn D', 0, '2000-01-15', 1),
+	(2, N'Nguyễn Văn E', 1, '2000-01-15', 2),
+	(2, N'Nguyễn Văn F', 0, '2000-01-15', 3);
 
 
 

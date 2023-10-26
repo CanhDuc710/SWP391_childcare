@@ -9,9 +9,19 @@ package Model;
  * @author GL
  */
 public class Slot {
+
     private int slotId;
     private String startTime;
     private String endTime;
+
+    public Slot() {
+    }
+
+    public Slot(int slotId, String startTime, String endTime) {
+        this.slotId = slotId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 
     public int getSlotId() {
         return slotId;
@@ -36,6 +46,5 @@ public class Slot {
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
-    
-    
+
 }
