@@ -16,8 +16,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 
 @WebServlet(name = "MyChildrenServlet", urlPatterns = {"/MyChildren"})
 public class MyChildrenServlet extends HttpServlet {
@@ -57,7 +58,7 @@ public class MyChildrenServlet extends HttpServlet {
 
         if (account != null) {
             ArrayList<Children> children_list = dao.get_children_by_parentID(account.getAccountId());
-            
+
             request.setAttribute("CHILDREN_LIST", children_list);
             request.setAttribute("ACCOUNT", account);
             RequestDispatcher rd = request.getRequestDispatcher("MyChildren_inner.jsp");
@@ -72,7 +73,56 @@ public class MyChildrenServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.getWriter().write(request.getParameter("txtType"));
+        String type = request.getParameter("txtType");
+        DAO dao = new DAO();
+
+        if (type.equals("Save")) {
+            Account parent = (Account) request.getSession().getAttribute("ACCOUNT");
+            int childId = Integer.parseInt(request.getParameter("txtID"));
+            int parentId = parent.getAccountId();
+            String name = request.getParameter("txtName");
+            Boolean gender = Boolean.parseBoolean(request.getParameter("txtGender"));
+            String dobString = request.getParameter("txtDob"); // Lấy chuỗi ngày sinh từ form
+            int relation = Integer.parseInt(request.getParameter("txtRelation"));
+
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date parsedDate = sdf.parse(dobString);
+                java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+                dao.update_children(childId, parentId, name, gender, sqlDate, relation);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            response.sendRedirect("MyChildren");
+        } else if (type.equals("Add")) {
+            Account parent = (Account) request.getSession().getAttribute("ACCOUNT");
+            int parentId = parent.getAccountId();
+            String name = request.getParameter("txtName");
+            Boolean gender = Boolean.parseBoolean(request.getParameter("txtGender"));
+            String dobString = request.getParameter("txtDob"); // Lấy chuỗi ngày sinh từ form
+            int relation = Integer.parseInt(request.getParameter("txtRelation"));
+
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date parsedDate = sdf.parse(dobString);
+                java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+                dao.add_children(parentId, name, gender, sqlDate, relation);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            response.sendRedirect("MyChildren");
+        } else if (type.equals("Delete")) {
+            int childId = Integer.parseInt(request.getParameter("txtID"));
+
+//            response.getWriter().write(type + " - " + childId);
+            boolean check = dao.remove_children(childId);
+            if (!check) {
+                response.getWriter().write(type + " - failed - " + childId);
+            } else {
+                response.sendRedirect("MyChildren");
+            }
+        }
+
     }
 
     @Override

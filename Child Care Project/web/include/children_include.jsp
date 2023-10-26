@@ -314,13 +314,13 @@
                                     </td>
                                     <td>
                                         <c:if test="${children.relation == 1}">
-                                            <p>Son</p>
+                                            Son
                                         </c:if>
                                         <c:if test="${children.relation == 2}">
-                                            <p>Daughter</p>
+                                            Daughter
                                         </c:if>
                                         <c:if test="${children.relation == 3}">
-                                            <p>Other</p>
+                                            Other
                                         </c:if>
                                     </td>
                                     <td>
@@ -380,7 +380,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Relationship</label>
-                                <select class="form-control" name="txtRelationship" id="relationSelect" required>
+                                <select class="form-control" name="txtRelation" id="relationSelect" required>
                                     <option value="1">Son</option>
                                     <option value="2">Daughter</option>
                                     <option value="3">Other</option>
@@ -423,11 +423,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Date Of Birth</label>
-                                <input type="date" id="dob" name="txtDob" class="form-control">
+                                <input type="date" id="dob" name="txtDob" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label>Relationship</label>
-                                <select class="form-control" name="txtRelationship" id="relationSelect" required>
+                                <select class="form-control" name="txtRelation" id="relationSelect" required>
                                     <option value="1">Son</option>
                                     <option value="2">Daughter</option>
                                     <option value="3">Other</option>

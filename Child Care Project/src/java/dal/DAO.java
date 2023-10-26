@@ -19,6 +19,7 @@ import Model.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 
 /**
@@ -1235,6 +1236,145 @@ public class DAO extends DBHelper {
         return list;
     }
 
+    public boolean check_slot_available(int doctorId, int slotId, Date date) {
+        String sql = "SELECT * FROM Reservation WHERE staff_id = ? AND slot_id = ? AND date = ?";
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, doctorId);
+            st.setInt(2, slotId);
+            st.setDate(3, date);
+
+            try ( ResultSet rs = st.executeQuery()) {
+                return !rs.next();
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public int add_reservation(int slot_id, int patient_id, int children_id, int staff_id, Date date, double total) {
+        String sql = "INSERT INTO Reservation (slot_id, patient_id, children_id, staff_id, status_id, book_date, date, total) VALUES (?, ?, ?, ?, 1, GETDATE(), ?, ?)";
+
+        try {
+            st = connection.prepareStatement(sql, st.RETURN_GENERATED_KEYS);
+            st.setInt(1, slot_id);
+            st.setInt(2, patient_id);
+            st.setInt(3, children_id);
+            st.setInt(4, staff_id);
+            st.setDate(5, date);
+            st.setDouble(6, total);
+
+            int rowsAffected = st.executeUpdate();
+
+            if (rowsAffected > 0) {
+                ResultSet generatedKeys = st.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    return -1;
+                }
+            } else {
+                return -1;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return -1;
+        }
+    }
+
+    public boolean add_reservation_detail(int reservation_id, int serviceId, double price) {
+        sql = "INSERT INTO Reservation_detail (reservation_id, service_id, price) "
+                + "VALUES (?,?,?)";
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, reservation_id);
+            st.setInt(2, serviceId);
+            st.setDouble(3, price);
+
+            int rowsAffected = st.executeUpdate();
+
+            if (rowsAffected > 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public boolean add_children(int parentId, String name, boolean gender, Date dob, int relation) {
+        sql = "INSERT INTO Children (parent_id, name, gender, dob, Relation) VALUES (?,?,?,?,?)";
+
+        try {
+
+            st = connection.prepareStatement(sql);
+            st.setInt(1, parentId);
+            st.setString(2, name);
+            st.setBoolean(3, gender);
+            st.setDate(4, dob);
+            st.setInt(5, relation);
+
+            int row = st.executeUpdate();
+
+            if (row > 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public boolean update_children(int childrenId, int parentId, String name, boolean gender, Date dob, int relation) {
+        sql = "UPDATE Children SET parent_id=?, name=?, gender=?, dob=?, Relation=? WHERE children_id=?";
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, parentId);
+            st.setString(2, name);
+            st.setBoolean(3, gender);
+            st.setDate(4, dob);
+            st.setInt(5, relation);
+            st.setInt(6, childrenId);
+
+            int row = st.executeUpdate();
+
+            if (row > 0) {
+                return true; // Cập nhật thành công
+            } else {
+                return false; // Cập nhật không thành công
+            }
+        } catch (SQLException e) {
+            return false; // Lỗi SQL khi thực hiện cập nhật
+        }
+    }
+
+    public boolean remove_children(int childId) {
+        String sql = "DELETE FROM Children WHERE children_id = ?";
+
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, childId);
+
+            int rowsAffected = st.executeUpdate();
+
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
     //admin servlet
     public Admin AdminLogin(String txtUsername, String txtPassword) {
         Admin admin = new Admin();
@@ -1459,4 +1599,22 @@ public class DAO extends DBHelper {
         }
         return false;
     }
+
+    public static void main(String[] args) {
+        DAO dao = new DAO();
+
+        int doctorId = 4;  // Thay thế bằng ID của bác sĩ cần kiểm tra
+        int slot = 2;  // Thay thế bằng ID của slot cần kiểm tra
+        java.sql.Date selectedDate = java.sql.Date.valueOf("2023-10-27");  // Thay thế bằng ngày cần kiểm tra (yyyy-MM-dd)
+
+        boolean available = dao.check_slot_available(doctorId, slot, selectedDate);
+
+        if (available) {
+            System.out.println("Slot is available.");
+        } else {
+            System.out.println("Slot is not available.");
+        }
+
+    }
+
 }

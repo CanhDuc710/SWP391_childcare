@@ -14,7 +14,51 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Reservation Contact</title>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var urlParams = new URLSearchParams(window.location.search);
+                var dateParam = urlParams.get('DateSelect');
+                console.log(dateParam);
 
+                if (dateParam) {
+                    var formattedDate = dateParam;
+                    var inputDate = document.getElementById("chosenDate");
+
+                    if (inputDate) {
+                        inputDate.value = formattedDate;
+                    } else {
+                        console.error("Element with id 'chosenDate' not found in the DOM.");
+                    }
+                }
+            });
+
+            function selectPaymentMethod(method) {
+                var checkboxId = method + "Checkbox";
+                var checkbox = document.getElementById(checkboxId);
+
+                // Kiểm tra xem checkbox đã được chọn hay không
+                if (checkbox.checked) {
+                    // Reset tất cả các checkbox và chọn checkbox được chọn
+                    document.getElementById("visaCheckbox").checked = false;
+                    document.getElementById("mastercardCheckbox").checked = false;
+                    document.getElementById("amexCheckbox").checked = false;
+                    checkbox.checked = true;
+                } else {
+                    // Nếu checkbox đã được chọn, hủy chọn nó
+                    checkbox.checked = false;
+                }
+
+                // Kiểm tra xem có nhiều hơn một phương thức thanh toán được chọn hay không
+                var selectedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                if (selectedCount > 1) {
+                    alert("Vui lòng chỉ chọn một phương thức thanh toán.");
+                    // Hủy chọn tất cả các checkbox
+                    document.getElementById("visaCheckbox").checked = false;
+                    document.getElementById("mastercardCheckbox").checked = false;
+                    document.getElementById("amexCheckbox").checked = false;
+                }
+            }
+        </script>
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -130,222 +174,249 @@
             .custom-button:hover {
                 background-color: #65c9cd;
             }
+            .custom-button:disabled {
+                background-color: gray;
+                color: white;
+            }
         </style>
     </head>
 
     <body>
-        <div class="container-xl px-4 mt-4">
+        <form action="CheckAvailable" method="POST">
+            <div class="container-xl px-4 mt-4">
 
-            <hr class="mt-0 mb-4">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <!-- Billing card 1-->
-                    <div class="card h-100 border-start-lg border-start-primary">
-                        <div class="card-body">
-                            <div class="small text-muted">Bill Total Price</div>
-                            <div class="h3">${TOTAL} $</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 mb-4">
-                    <!-- Billing card 2-->
-                    <div class="card h-100 border-start-lg border-start-secondary">
-                        <div class="card-body">
-                            <div class="small text-muted">Booked Date</div>
-                            <div class="h3">${DATE}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 mb-4">
-                    <!-- Billing card 3-->
-                    <div class="card h-100 border-start-lg border-start-success">
-                        <div class="card-body">
-                            <div class="small text-muted">Choose Children</div>
-                            <div class="h3 d-flex align-items-center">
-                                <select class="form-control" style="font-size: 15px;">
-                                    <c:forEach var="children" items="${CHILDREN_LIST}">
-                                        <option value="${children.childrenId}">${children.name}</option>
-                                    </c:forEach>
-                                </select>
+                <hr class="mt-0 mb-4">
+                <div class="row">
+                    <div class="col-lg-4 mb-4">
+                        <!-- Billing card 1-->
+                        <div class="card h-100 border-start-lg border-start-primary">
+                            <div class="card-body">
+                                <div class="small text-muted">Bill Total Price</div>
+                                <div class="h3">${TOTAL} $</div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-4">
+                        <!-- Billing card 2-->
+                        <div class="card h-100 border-start-lg border-start-secondary">
+                            <div class="card-body">
+                                <div class="small text-muted">Booked Date</div>
+                                <div class="h3">${DATE}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-4">
+                        <!-- Billing card 3-->
+                        <div class="card h-100 border-start-lg border-start-success">
+                            <div class="card-body">
+                                <div class="small text-muted">Choose Children</div>
+                                <div class="h3 d-flex align-items-center">
+                                    <select name="txtChildren" class="form-control" style="font-size: 15px;">
+                                        <c:forEach var="children" items="${CHILDREN_LIST}">
+                                            <c:choose>
+                                                <c:when test="${children.childrenId eq selectedChildId}">
+                                                    <option value="${children.childrenId}" selected>${children.name}</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${children.childrenId}">${children.name}</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </select>
+                                </div>
 
-                            <a class="text-arrow-icon small text-success" href="MyChildren">
-                                Add New Children
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                            </a>
+                                <a class="text-arrow-icon small text-success" href="MyChildren">
+                                    Add New Children
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Payment methods card-->
-            <div class="card card-header-actions mb-4">
-                <div class="card-header">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            Choose Doctor
+                <!-- Payment methods card-->
+                <div class="card card-header-actions mb-4">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                Choose Doctor
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-body px-0">
-                    <!-- Payment method 1-->
-                    <div class="d-flex align-items-center justify-content-between px-4">
-                        <p style="margin-right: 30px;">Doctor</p>
-                        <select class="form-control" style="font-size: 15px;">
-                            <c:forEach var="doctor" items="${DOCTOR_LIST}">
-                                <option value="${doctor.accountId}">${doctor.name}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <hr>
-                    <!-- Payment method 3-->
-                    <div class="d-flex align-items-center justify-content-between px-4">
-                        <p style="margin-right: 30px;">Date</p>
-                        <input type="date" class="form-control" style="font-size: 15px;" name="chosenDate">
-                    </div>
-                    <hr>
-                    <!-- Payment method 2-->
-                    <div class="d-flex align-items-center justify-content-between px-4">
-                        <p style="margin-right: 30px;">Slot</p>
-                        <select class="form-control" style="font-size: 15px;">
-                            <c:forEach var="slot" items="${SLOT_LIST}">
-                                <option value="${slot.slotId}">Slot ${slot.slotId}: ${slot.startTime} - ${slot.endTime}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <hr>
-                    <div class="d-flex align-items-center justify-content-between px-4">
-                        <p style="margin-right: 30px;">Status</p>
-                        <c:if test="${STATUS eq null}">
-                            <p style="color: red;">Please Check Before Submit</p>
-                        </c:if>
-                        <c:if test="${STATUS ne null}">
-                            <input type="text" name="txtStatus" style="color: green;" value="${STATUS}">
-                        </c:if>
-                    </div>
-                    <hr>
-                    <c:if test="${STATUS eq null}">
-                        <div class="d-flex align-items-center justify-content-center px-4">
-                            <button class="custom-button" type="button">Check Availability</button>
-                        </div>
-                    </c:if>
-                </div>
-            </div>
 
-            <!-- Billing history card-->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            Billing History
-                        </div>
-                        <div class="col-auto">
-                            <a href="ReservationDetail">
-                                <button class="custom-button" type="button">Change Service(s) Chosen List</button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body p-0">
-                    <!-- Billing history table-->
-                    <div class="table-responsive table-billing-history">
-                        <table class="table mb-0">
-                            <thead>
-                                <tr>
-                                    <th class="border-gray-200 text-center" scope="col">Image</th>
-                                    <th class="border-gray-200 text-center" scope="col">Service ID</th>
-                                    <th class="border-gray-200 text-center" scope="col">Category</th>
-                                    <th class="border-gray-200 text-center" scope="col">Name</th>
-                                    <th class="border-gray-200 text-center" scope="col">Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach var="service" items="${CHOSEN_SERVICE_LIST}">
-                                    <tr>
-                                        <td class="text-center"> <img src="assets/img/service/${service.image}" alt="alt" width="90px"
-                                                                      class="mx-auto d-block" /> </td>
-                                        <td class="text-center" style="padding-top: 30px;">${service.serviceId}</td>
-                                        <td class="text-center" style="padding-top: 30px;">
-                                            <c:forEach var="category" items="${CATEGORY_LIST}">
-                                                <c:if test="${category.categoryId eq service.categoryId}">
-                                                    ${category.name}
-                                                </c:if>
-                                            </c:forEach>
-                                        </td>
-                                        <td class="text-center" style="padding-top: 30px;">${service.name}</td>
-                                        <td class="text-center" style="padding-top: 30px;">${service.price - (service.price * (service.discount/100))}</td>
-                                    </tr>
+                    <div class="card-body px-0">
+                        <!-- Payment method 1-->
+                        <div class="d-flex align-items-center justify-content-between px-4">
+                            <p style="margin-right: 30px;">Doctor</p>
+                            <select name="txtDoctor" class="form-control" style="font-size: 15px;">
+                                <c:forEach var="doctor" items="${DOCTOR_LIST}">
+                                    <c:choose>
+                                        <c:when test="${doctor.accountId eq selectedDoctorId}">
+                                            <option value="${doctor.accountId}" selected>${doctor.name}</option>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <option value="${doctor.accountId}">${doctor.name}</option>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:forEach>
-                            </tbody>
-                        </table>
+                            </select>
+                        </div>
+                        <hr>
+                        <!-- Payment method 3-->
+                        <div class="d-flex align-items-center justify-content-between px-4">
+                            <p style="margin-right: 30px;">Date</p>
+                            <input name="txtDate" type="date" class="form-control" style="font-size: 15px;" name="chosenDate" id="chosenDate" required>
+                        </div>
+                        <hr>
+                        <!-- Payment method 2-->
+                        <div class="d-flex align-items-center justify-content-between px-4">
+                            <p style="margin-right: 30px;">Slot</p>
+                            <select name="txtSlot" class="form-control" style="font-size: 15px;">
+                                <c:forEach var="slot" items="${SLOT_LIST}">
+                                    <c:choose>
+                                        <c:when test="${slot.slotId eq selectedSlotId}">
+                                            <option value="${slot.slotId}" selected>Slot ${slot.slotId}: ${slot.startTime} - ${slot.endTime}</option>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <option value="${slot.slotId}">Slot ${slot.slotId}: ${slot.startTime} - ${slot.endTime}</option>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                            </select>
 
-                    </div>
-                </div>
-            </div>
-            <!-- Payment methods card-->
-            <div class="card card-header-actions mb-4">
-                <div class="card-header">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            Billing History
                         </div>
-                        <div class="col-auto">
-                            <a href="#">
-                                <button class="custom-button" type="button">Change Service(s) Chosen List</button>
-                            </a>
+                        <hr>
+                        <div class="d-flex align-items-center justify-content-between px-4">
+                            <p style="margin-right: 30px;">Status</p>
+                            <c:if test="${STATUS eq null}">
+                                <p style="color: red;">Please Check Before Submit</p>
+                            </c:if>
+                            <c:if test="${STATUS ne null}">
+                                <input type="text" name="txtStatus" style="color: ${color}; border: none; width: 350px; text-align: right;" value="${STATUS}">
+                            </c:if>
                         </div>
-                    </div>
-                </div>
-                <div class="card-body px-0">
-                    <!-- Payment method 1-->
-                    <div class="d-flex align-items-center justify-content-between px-4">
-                        <div class="d-flex align-items-center">
-                            <i class="fab fa-cc-visa fa-2x cc-color-visa"></i>
-                            <div class="ms-4">
-                                <div class="small">Visa ending in 1234</div>
-                                <div class="text-xs text-muted">Expires 04/2024</div>
-                            </div>
-                        </div>
-                        <div class="ms-4 small">
-                            <div class="badge bg-light text-dark me-3">Default</div>
-                            <a href="#!">Edit</a>
-                        </div>
-                    </div>
-                    <hr>
-                    <!-- Payment method 2-->
-                    <div class="d-flex align-items-center justify-content-between px-4">
-                        <div class="d-flex align-items-center">
-                            <i class="fab fa-cc-mastercard fa-2x cc-color-mastercard"></i>
-                            <div class="ms-4">
-                                <div class="small">Mastercard ending in 5678</div>
-                                <div class="text-xs text-muted">Expires 05/2022</div>
-                            </div>
-                        </div>
-                        <div class="ms-4 small">
-                            <a class="text-muted me-3" href="#!">Make Default</a>
-                            <a href="#!">Edit</a>
-                        </div>
-                    </div>
-                    <hr>
-                    <!-- Payment method 3-->
-                    <div class="d-flex align-items-center justify-content-between px-4">
-                        <div class="d-flex align-items-center">
-                            <i class="fab fa-cc-amex fa-2x cc-color-amex"></i>
-                            <div class="ms-4">
-                                <div class="small">American Express ending in 9012</div>
-                                <div class="text-xs text-muted">Expires 01/2026</div>
-                            </div>
-                        </div>
-                        <div class="ms-4 small">
-                            <a class="text-muted me-3" href="#!">Make Default</a>
-                            <a href="#!">Edit</a>
+                        <hr>
+
+                        <div class="d-flex align-items-center justify-content-center px-4">
+                            <button class="custom-button" name="btnType" value="check" type="submit">Check Availability</button>
                         </div>
                     </div>
                 </div>
+
+                <!-- Billing history card-->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                Billing History
+                            </div>
+                            <div class="col-auto">
+                                <a href="ReservationDetail">
+                                    <button class="custom-button" type="button">Change Service(s) Chosen List</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <!-- Billing history table-->
+                        <div class="table-responsive table-billing-history">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="border-gray-200 text-center" scope="col">Image</th>
+                                        <th class="border-gray-200 text-center" scope="col">Service ID</th>
+                                        <th class="border-gray-200 text-center" scope="col">Category</th>
+                                        <th class="border-gray-200 text-center" scope="col">Name</th>
+                                        <th class="border-gray-200 text-center" scope="col">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="service" items="${CHOSEN_SERVICE_LIST}">
+                                        <tr>
+                                            <td class="text-center"> <img src="assets/img/service/${service.image}" alt="alt" width="90px"
+                                                                          class="mx-auto d-block" /> </td>
+                                            <td class="text-center" style="padding-top: 30px;">${service.serviceId}</td>
+                                            <td class="text-center" style="padding-top: 30px;">
+                                                <c:forEach var="category" items="${CATEGORY_LIST}">
+                                                    <c:if test="${category.categoryId eq service.categoryId}">
+                                                        ${category.name}
+                                                    </c:if>
+                                                </c:forEach>
+                                            </td>
+                                            <td class="text-center" style="padding-top: 30px;">${service.name}</td>
+                                            <td class="text-center" style="padding-top: 30px;">${service.price - (service.price * (service.discount/100))}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Payment methods card-->
+                <div class="card card-header-actions mb-4">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                Billing History
+                            </div>
+                            <div class="col-auto">
+                                <a href="#">
+                                    <button class="custom-button" type="button">Change Service(s) Chosen List</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body px-0">
+                        <!-- Payment method 1-->
+                        <div class="d-flex align-items-center justify-content-between px-4" id="visa" onclick="selectPaymentMethod('visa')">
+                            <div class="d-flex align-items-center">
+                                <i class="fab fa-cc-visa fa-2x cc-color-visa"></i>
+                                <div class="ms-4">
+                                    <div class="small">Visa ending in 1234</div>
+                                    <div class="text-xs text-muted">Expires 04/2024</div>
+                                </div>
+                            </div>
+                            <div class="ms-4 small">
+                                <input type="checkbox" class="form-check-input" id="visaCheckbox" onclick="selectPaymentMethod('visa')" checked>
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- Payment method 2-->
+                        <div class="d-flex align-items-center justify-content-between px-4" id="mastercard" onclick="selectPaymentMethod('mastercard')">
+                            <div class="d-flex align-items-center">
+                                <i class="fab fa-cc-mastercard fa-2x cc-color-mastercard"></i>
+                                <div class="ms-4">
+                                    <div class="small">Mastercard ending in 5678</div>
+                                    <div class="text-xs text-muted">Expires 05/2022</div>
+                                </div>
+                            </div>
+                            <div class="ms-4 small">
+                                <input type="checkbox" class="form-check-input" id="mastercardCheckbox" onclick="selectPaymentMethod('mastercard')">
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- Payment method 3-->
+                        <div class="d-flex align-items-center justify-content-between px-4" id="amex" onclick="selectPaymentMethod('amex')">
+                            <div class="d-flex align-items-center">
+                                <i class="fab fa-cc-amex fa-2x cc-color-amex"></i>
+                                <div class="ms-4">
+                                    <div class="small">American Express ending in 9012</div>
+                                    <div class="text-xs text-muted">Expires 01/2026</div>
+                                </div>
+                            </div>
+                            <div class="ms-4 small">
+                                <input type="checkbox" class="form-check-input" id="amexCheckbox" onclick="selectPaymentMethod('amex')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-header-actions mb-4">
+                    <button class="custom-button" style="height: 50px;" type="submit" name="btnType" value="add" ${button}>MAKE RESERVATION</button>
+                </div>
             </div>
-            <div class="card card-header-actions mb-4">
-                <button class="custom-button" style="height: 50px;" type="submit">MAKE RESERVATION</button>
-            </div>
-        </div>
+        </form>
+
+
     </body>
 
 </html>

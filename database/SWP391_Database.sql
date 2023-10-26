@@ -23,6 +23,11 @@ CREATE TABLE Status (
     status_name NVARCHAR(50) NULL
 );
 
+-- Tạo bảng Reservation Status
+CREATE TABLE ReservationStatus (
+    status_id INT IDENTITY(1,1) PRIMARY KEY,
+    status_name NVARCHAR(50) NULL
+);
 
 -- Tạo bảng Role
 CREATE TABLE Role (
@@ -165,7 +170,7 @@ CREATE TABLE Reservation (
     FOREIGN KEY (patient_id) REFERENCES Patient(patient_id),
     FOREIGN KEY (children_id) REFERENCES Children(children_id), -- Liên kết với thông tin trẻ em
     FOREIGN KEY (staff_id) REFERENCES Staff(staff_id),
-    FOREIGN KEY (status_id) REFERENCES Status(status_id)
+    FOREIGN KEY (status_id) REFERENCES ReservationStatus(status_id)
 );
 
 -- Tạo bảng Reservation_detail
@@ -216,6 +221,15 @@ INSERT INTO Status (status_name) VALUES
 (N'Pending'),       -- Hoạt động
 (N'Active'),     -- Không hoạt động
 (N'Deactive');    -- Tạm ngưng hoạt động
+
+-- Thêm dữ liệu vào bảng Reservation Status
+INSERT INTO ReservationStatus (status_name) VALUES 
+(N'Pending Confirmation'),
+(N'Confirmed'),
+(N'Completed'),
+(N'Cancelled'),
+(N'Rescheduled'),
+(N'No Show'); 
 
 -- Thêm dữ liệu vào bảng Staff (1 nurse, 2 doctor, 1 manager)
 INSERT INTO Staff ( username, password, email, phone, name, gender, avatar, address, role_id, status_id) VALUES 
@@ -310,8 +324,9 @@ VALUES
 
 
 -- Thêm các reservation có sẵn
-INSERT INTO Reservation (slot_id, patient_id, children_id, staff_id, status_id, date, total)
-VALUES (1, 1, 1, 5, 1, '2023-11-01', 270.00); 
+INSERT INTO Reservation (slot_id, patient_id, children_id, staff_id, status_id, book_date, date, total) VALUES 
+(1, 1, 1, 4, 1,'2023-10-25' ,'2023-10-27', 270.00), 
+(1, 1, 3, 4, 1,'2023-10-25' ,'2023-10-28', 270.00);
 GO
 
 -- Thêm chi tiết đặt lịch hẹn (Reservation_detail) cho reservation_id vừa thêm vào

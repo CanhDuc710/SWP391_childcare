@@ -197,6 +197,38 @@
             .mb-30 {
                 margin-bottom: 30px;
             }
+            .btn-custom-1 {
+                padding: 5px 10px;
+                font-size: 16px;
+                border-radius: 5px;
+                border: none;
+
+            }
+
+            /* Nếu bạn muốn thêm hiệu ứng hover */
+            .btn-custom-1:hover {
+                background-color: #e2e6ea;
+
+            }
+
+            .select{
+                height: 34px;
+                width: 150px;
+                padding: 5px 0 5px 5px;
+                background-color: rgba(255, 255, 255, 0.2);
+                color: white;
+                border-radius: 5px;
+                border: none;
+
+
+                /*hide default down arrow in webkit */
+                -webkit-appearance: none;
+            }
+
+            .select option {
+                color: black;
+            }
+
         </style>
     </head>
     <body>
@@ -215,39 +247,32 @@
                     <div class="career-search mb-60">
                         <form action="MyReservation" method="post" class="career-form mb-60">
                             <div class="row">
-                                <div class="col-md-6 col-lg-3 my-3">
+                                <div class="col-md-6 col-lg-10 my-3">
                                     <div class="input-group position-relative" >
-                                        <input style="height: 48px;" type="text" class="form-control" placeholder="Enter Keywords"  id="keywords">
+                                        <input style="height: 48px;" type="text" class="form-control" placeholder="Enter Children Name"  id="keywords">
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-lg-3 my-3">
-                                    <div class="select-container">
-                                        <select class="custom-select">
-                                            <option selected>All</option>
-                                            <option value="1" >Chilren Name</option>
-                                            <option value="2">Chilren ID</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-3 my-3">
-                                    <div class="select-container">
-                                        <select class="custom-select">
-                                            <option selected>d</option>
-                                            <option value="1">c</option>
-                                            <option value="2">b</option>
-                                            <option value="3">a</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-3 my-3">
+                                <div class="col-md-6 col-lg-2 my-3">
                                     <button type="button" class="btn btn-lg btn-block btn-light btn-custom" id="contact-submit">
                                         Search
                                     </button>
                                 </div>
+
+                                <div class="col-md-3 col-lg-3 my-3 d-flex justify-content-between align-items-center">
+                                    <select class="select">
+                                        <option value="1">Date: Newest First</option>
+                                        <option value="2">Date: Oldest First</option>
+                                        <option value="3">Status</option>
+                                    </select>
+                                    <button type="button" class="btn-custom-1" id="contact-submit">
+                                        Filter
+                                    </button>
+                                </div>
+
                             </div>
                         </form>
                         <div class="filter-result">
-                            <p class="mb-30 ff-montserrat">
+                            <p class="mb-30 ff-montserrat mt-4">
                                 <c:forEach var="reservation" items="${RESERVATION_LIST}" varStatus="loop">
                                     <c:set var="totalReservations" value="${loop.count}" />
                                 </c:forEach>
@@ -262,29 +287,17 @@
 
                                 <div class="job-box d-md-flex align-items-center justify-content-between mb-30">
                                     <div class="job-left my-4 d-md-flex align-items-center flex-wrap">
-                                        <c:if test="${reservation.statusId == 1}">
-                                            <div style="background-color: orange;" class="img-holder mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex" >
-                                            </div>
-                                        </c:if>
-                                        <c:if test="${reservation.statusId == 2}">
-                                            <div style="background-color: green;" class="img-holder mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex" >
-                                            </div>
-                                        </c:if>
-                                        <c:if test="${reservation.statusId == 3}">
-                                            <div style="background-color: yellowgreen;" class="img-holder mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex" >
-                                            </div>
-                                        </c:if>
                                         <div class="job-content">
                                             <h5 class="text-center text-md-left">
                                                 <c:forEach var="child" items="${CHILDREN_LIST}">
                                                     <c:if test="${child.childrenId eq reservation.childrenId}">
-                                                        ${child.name}
+                                                        Name: ${child.name}
                                                     </c:if>
                                                 </c:forEach>
                                             </h5>
                                             <ul class="d-md-flex flex-wrap text-capitalize ff-open-sans p-0 mt-4">
                                                 <li class="mr-md-4">
-                                                    <i class="fa-solid fa-id-badge"></i> ID:${reservation.reservationId}
+                                                    <i class="fa-solid fa-list-check"></i> ID:${reservation.reservationId}
                                                 </li>
                                                 <li class="mr-md-4">
                                                     <i class="fa-solid fa-calendar-days"></i> ${reservation.bookDate}
@@ -297,20 +310,52 @@
                                                 </li>
                                                 <li class="mr-md-4">
                                                     <c:if test="${reservation.statusId == 1}">
-                                                        <i class="fa-regular fa-circle-pause" style="color: orange"></i>
+                                                        <i class="fa-regular fa-circle-pause" style="color: orange; display: inline-block; vertical-align: middle;">
+                                                            <span style="font-size: 12px; display: inline-block; vertical-align: middle;">Pending Confirmation</span>
+                                                        </i>
                                                     </c:if>
                                                     <c:if test="${reservation.statusId == 2}">
-                                                        <p style="color: orange">Pending</p>
+                                                        <i class="fa-regular fa-square-check" style="color: darkgreen; display: inline-block; vertical-align: middle;">
+                                                            <span style="font-size: 12px; display: inline-block; vertical-align: middle;">Confirmed</span>
+                                                        </i>
                                                     </c:if>
                                                     <c:if test="${reservation.statusId == 3}">
-                                                        <i class="fa-regular fa-circle-pause"></i>
+                                                        <i class="fa-solid fa-user-check" style="color: skyblue; display: inline-block; vertical-align: middle;">
+                                                            <span style="font-size: 12px; display: inline-block; vertical-align: middle;">Completed</span>
+                                                        </i>
+                                                    </c:if>
+                                                    <c:if test="${reservation.statusId == 4}">
+                                                        <i class="fa-solid fa-ban" style="color: red; display: inline-block; vertical-align: middle;">
+                                                            <span style="font-size: 12px; display: inline-block; vertical-align: middle;">Cancelled</span>
+                                                        </i>
+                                                    </c:if>
+                                                    <c:if test="${reservation.statusId == 5}">
+                                                        <i class="fa-regular fa-calendar-check" style="color: purple; display: inline-block; vertical-align: middle;">
+                                                            <span style="font-size: 12px; display: inline-block; vertical-align: middle;">Rescheduled</span>
+                                                        </i>
+                                                    </c:if>
+                                                    <c:if test="${reservation.statusId == 6}">
+                                                        <i class="fa-solid fa-phone-slash" style="color: grey; display: inline-block; vertical-align: middle;">
+                                                            <span style="font-size: 12px; display: inline-block; vertical-align: middle;">No Show</span>
+                                                        </i>
                                                     </c:if>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="job-right my-4 flex-shrink-0">
-                                        <a href="#" class="btn d-block w-100 d-sm-inline-block btn-light" style="background-color: #3fbbc0; color: white;">Detail</a>
+                                        <c:if test="${reservation.statusId == 1}">
+                                            <a href="#" style="text-decoration: none;"> 
+                                                <i class="fa-regular fa-bell-slash text-center" style="color: red; font-size: 35px;">
+                                                    <p style="font-size: 10px; margin-top: 15px;">Cancel</p>
+                                                </i> 
+                                            </a>
+                                        </c:if>
+                                        <a href="#" style="text-decoration: none;"> 
+                                            <i class="fa-solid fa-clipboard-list text-center" style="color: skyblue; font-size: 35px; margin-left: 30px;">
+                                                <p style="font-size: 10px; margin-top: 15px;">Detail</p>
+                                            </i>
+                                        </a>
                                     </div>
                                 </div>
 

@@ -43,7 +43,7 @@
                 }
             }
             .summary{
-                background-color: #ddd;
+                background-color: #ecf8f9;
                 border-top-right-radius: 1rem;
                 border-bottom-right-radius: 1rem;
                 padding: 4vh;
@@ -119,33 +119,17 @@
                 color:transparent;
             }
             .btn{
-                background-color: #000;
-                border-color: #000;
+                background-color: #3fbbc0;
                 color: white;
                 width: 100%;
                 font-size: 0.7rem;
                 margin-top: 4vh;
                 padding: 1vh;
-                border-radius: 0;
-            }
-            .btn:focus{
-                box-shadow: none;
-                outline: none;
-                box-shadow: none;
-                color: white;
-                -webkit-box-shadow: none;
-                -webkit-user-select: none;
-                transition: none;
+                border-radius: 5px;
             }
             .btn:hover{
+                background-color: #3fbbc0;
                 color: white;
-            }
-            a{
-                color: black;
-            }
-            a:hover{
-                color: black;
-                text-decoration: none;
             }
             #code{
                 background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253) , rgba(255, 255, 255, 0.185)), url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
@@ -166,22 +150,28 @@
                             <div class="col align-self-center text-right text-muted">${count} Service(s)</div>
                         </div>
                     </div>    
-
+                    <c:if test="${CHOSEN_SERVICE_LIST eq null}">
+                        <div class="border-top border-bottom">
+                            <div class="mt-5 mb-5">
+                                Please Add At Least 1 Or More<a href="Services" style="text-decoration: underline">Service(s)</a>
+                            </div>
+                        </div>
+                    </c:if>
                     <c:if test="${CHOSEN_SERVICE_LIST ne null}">
                         <c:forEach var="service" items="${CHOSEN_SERVICE_LIST}">
 
                             <div class="row border-top border-bottom">
                                 <div class="row main align-items-center">
-                                    <div class="col-2"><img class="img-fluid" src="assets/img/service/${service.image}"></div>
+                                    <div class="col-2"><img class="img-fluid" style="width: 70px;" src="assets/img/service/${service.image}"></div>
 
                                     <!--name and category-->
                                     <div class="col-6">
                                         <c:forEach var="category" items="${CATEGORY_LIST}">
                                             <c:if test="${service.categoryId eq category.categoryId}">
-                                                <div class="row text-muted">${category.name}</div>
+                                                <div class="row text-muted" style="font-size: 15px;">Category: ${category.name}</div>
                                             </c:if>
                                         </c:forEach>
-                                        <div class="row">${service.name}</div>
+                                        <div class="row" style="font-weight: bold;">Name: ${service.name}</div>
                                     </div>
 
                                     <!--price-->
@@ -199,7 +189,7 @@
                         </c:forEach>
                     </c:if>
 
-                    <div class="back-to-shop"><a href="Services">&leftarrow;</a><span class="text-muted">Back to Services</span></div>
+                        <div class="back-to-shop"><a href="Services" style="font-size: 25px;">&leftarrow;<span class="text-muted" style="font-size: 21px; text-decoration: underline">Back to Services</span></a></div>
                 </div>
                 <div class="col-md-4 summary">
                     <div><h5><b>Summary</b></h5></div>
@@ -212,7 +202,9 @@
                         <div class="col">TOTAL PRICE</div>
                         <div class="col text-right">&dollar; ${totalPrice}</div>
                     </div>
-                    <a href="ReservationContact"> <button class="btn">TO RESERVATION CONTACT</button> </a>
+                    <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); margin-top: 50px;">
+                        <a href="ReservationContact"> <button class="btn" style="font-size: 15px">TO RESERVATION CONTACT</button> </a>
+                    </div>
                 </div>
             </div>
 

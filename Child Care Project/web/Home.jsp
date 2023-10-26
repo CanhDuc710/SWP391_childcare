@@ -61,7 +61,7 @@
                     <div class="text-center">
                         <h3>In an emergency? Need help now?</h3>
                         <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <a class="cta-btn scrollto" href="Booking">Make an Make an Appointment</a>
+                        <a class="cta-btn scrollto" href="ReservationContact">Make an Make an Appointment</a>
                     </div>
 
                 </div>
